@@ -1,0 +1,13 @@
+{
+  "name": "q-blockyfighter-server",
+  "version": "0.3.0",
+  "description": "Q版方块人大乱斗 - 帧同步服务器",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}
