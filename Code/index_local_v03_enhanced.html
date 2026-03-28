@@ -464,7 +464,11 @@ canvas { display: block; }
   <div id="challenge-wave" style="color:#ffd700;font-size:16px;font-weight:bold;text-shadow:0 0 8px rgba(255,215,0,0.5)"></div>
   <div id="challenge-score" style="color:#aaa;font-size:12px;margin-top:2px"></div>
 </div>
-<div id="challenge-btn" style="position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:15;pointer-events:auto;padding:8px 20px;background:rgba(255,50,50,0.3);border:2px solid #ff4444;border-radius:8px;color:#ff8888;font-size:14px;cursor:pointer;font-family:inherit;" onclick="startChallenge()">🎯 闯关挑战</div>
+<div id="zone-btns" style="position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:15;pointer-events:auto;display:flex;gap:8px;">
+  <div style="padding:8px 16px;background:rgba(255,50,50,0.3);border:2px solid #ff4444;border-radius:8px;color:#ff8888;font-size:13px;cursor:pointer;font-family:inherit" onclick="startChallenge()">🎯 闯关挑战</div>
+  <div style="padding:8px 16px;background:rgba(0,150,255,0.3);border:2px solid #4488ff;border-radius:8px;color:#88bbff;font-size:13px;cursor:pointer;font-family:inherit" onclick="startWeaponRack()">🗡 武器架</div>
+  <div style="padding:8px 16px;background:rgba(255,100,0,0.3);border:2px solid #ff6600;border-radius:8px;color:#ff9944;font-size:13px;cursor:pointer;font-family:inherit" onclick="startBossSimulation()">👹 Boss</div>
+</div>
 <div id="minimap">
     <canvas id="minimap-canvas" width="140" height="140"></canvas>
   </div>
@@ -1079,6 +1083,228 @@ function updateChallengeHUD() {
     hud.style.display = 'none';
   }
 }
+
+// ==================== 武器架试炼系统 ====================
+let weaponRackState = {
+  active: false,
+  currentWeapon: 0,
+  weaponList: [
+    { name: '鱼肠短剑', icon: '🗡', type: 'sword', desc: '快速连击，剑气纵横' },
+    { name: '软剑', icon: '🌀', type: 'whip', desc: '中距缠绕，灵活控制' },
+    { name: '苦无', icon: '🔷', type: 'kunai', desc: '暗器投掷，高速突袭' },
+    { name: '锁镰', icon: '⛓', type: 'kama', desc: '链式攻击，中距离牵制' },
+    { name: '青龙刀', icon: '🔪', type: 'halberd', desc: '重斩AOE，横扫千军' },
+    { name: '长弓', icon: '🏹', type: 'bow', desc: '远程狙击，箭矢追踪' },
+    { name: '飞刀', icon: '🗡', type: 'throwknife', desc: 'DOT毒伤，减速消耗' },
+    { name: '双手斧', icon: '🪓', type: 'axe', desc: '重击开团，正面硬刚' },
+    { name: '弯刀', icon: '🌙', type: 'saber', desc: '骑战冲锋，游走收割' },
+    { name: '方盾', icon: '🛡', type: 'shield', desc: '格挡反击，保护队友' },
+    { name: '火铳', icon: '🔫', type: 'musket', desc: '单发爆发，架设炮台' },
+    { name: '图腾法杖', icon: '🪄', type: 'totem', desc: '治疗光环，群体增益' },
+    { name: '机关弩', icon: '🏹', type: 'crossbow', desc: '陷阱布置，傀儡探路' },
+    { name: '双弯刀', icon: '🌀', type: 'chakra', desc: '旋转攻击，雷暴风暴' },
+    { name: '短剑', icon: '🗡', type: 'gladius', desc: '近战输出，盾牌配合' },
+    { name: '弩炮', icon: '💣', type: 'cannon', desc: '炮台封锁，火力压制' },
+  ],
+  dummy: null,
+  dummyMesh: null,
+  damageLog: [],
+  bestCombo: 0,
+};
+
+function startWeaponRack() {
+  weaponRackState.active = true;
+  weaponRackState.currentWeapon = 0;
+  weaponRackState.damageLog = [];
+  weaponRackState.bestCombo = 0;
+  
+  // Create a practice dummy
+  if (weaponRackState.dummyMesh) scene.remove(weaponRackState.dummyMesh);
+  const dummyChar = CHARACTERS[0]; // Use first character as dummy
+  weaponRackState.dummyMesh = createCharacter(0x888888, 0x444444, false, 'sword');
+  weaponRackState.dummyMesh.position.set(-25, 0, 0);
+  scene.add(weaponRackState.dummyMesh);
+  
+  // Create dummy state
+  weaponRackState.dummy = {
+    hp: 99999, maxHp: 99999, isDead: false, type: 'dummy',
+    position: new THREE.Vector3(-25, 0, 0), char: dummyChar,
+    stamina: 100, maxStamina: 100, rotation: 0,
+    respawnTimer: 0, mesh: weaponRackState.dummyMesh,
+    stunTimer: 0, isBlocking: false, isDodging: false,
+    isAttacking: false, attackTimer: 0, attackPhase: 0,
+    comboCount: 0, lastAttackTime: 0,
+  };
+  
+  // Add to dummies array for combat interaction
+  state.dummies.push(weaponRackState.dummy);
+  
+  showWeaponRackUI();
+  showStatus('Weapon Rack - Test all weapons! Current: ' + weaponRackState.weaponList[0].name);
+}
+
+function switchWeapon(index) {
+  if (index < 0 || index >= weaponRackState.weaponList.length) return;
+  weaponRackState.currentWeapon = index;
+  const w = weaponRackState.weaponList[index];
+  
+  // Visual feedback
+  showStatus('Weapon: ' + w.name + ' - ' + w.desc);
+  
+  // Update weapon rack UI
+  const wrUI = document.getElementById('weapon-rack-panel');
+  if (wrUI) {
+    wrUI.querySelector('.wr-weapon-name').textContent = w.icon + ' ' + w.name;
+    wrUI.querySelector('.wr-weapon-desc').textContent = w.desc;
+  }
+}
+
+function showWeaponRackUI() {
+  const existing = document.getElementById('weapon-rack-panel');
+  if (existing) existing.remove();
+  
+  const panel = document.createElement('div');
+  panel.id = 'weapon-rack-panel';
+  panel.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translateX(-50%);z-index:16;pointer-events:auto;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:800px;';
+  
+  let html = '<div style="width:100%;text-align:center;color:#ffd700;font-size:14px;margin-bottom:6px"><span class="wr-weapon-name">🗡 鱼肠短剑</span> <span style="color:#888;font-size:12px">-</span> <span class="wr-weapon-desc" style="color:#aaa;font-size:12px">快速连击，剑气纵横</span></div>';
+  
+  weaponRackState.weaponList.forEach((w, i) => {
+    html += '<div onclick="switchWeapon(' + i + ')" style="width:48px;height:36px;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.2);border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#ccc;transition:all 0.15s" title="' + w.name + ' - ' + w.desc + '">' + w.icon + '</div>';
+  });
+  
+  html += '<div style="width:100%;text-align:center;margin-top:4px"><button onclick="stopWeaponRack()" style="padding:4px 12px;font-size:11px;background:rgba(255,50,50,0.3);border:1px solid #ff4444;border-radius:4px;color:#ff8888;cursor:pointer;font-family:inherit">Exit Rack</button></div>';
+  
+  panel.innerHTML = html;
+  document.body.appendChild(panel);
+}
+
+function stopWeaponRack() {
+  weaponRackState.active = false;
+  if (weaponRackState.dummyMesh) {
+    scene.remove(weaponRackState.dummyMesh);
+    weaponRackState.dummyMesh = null;
+  }
+  // Remove from dummies
+  state.dummies = state.dummies.filter(d => d !== weaponRackState.dummy);
+  weaponRackState.dummy = null;
+  
+  const panel = document.getElementById('weapon-rack-panel');
+  if (panel) panel.remove();
+  showStatus('Weapon Rack closed');
+}
+
+// ==================== Boss 模拟系统 ====================
+let bossState = {
+  active: false,
+  boss: null,
+  bossMesh: null,
+  bossType: 0,
+  bestTime: null,
+  bestDamage: 0,
+  timer: 0,
+};
+
+const BOSS_TYPES = [
+  { name: '暗影巨兽', color: 0x440044, emissive: 0x880088, hp: 5000, atk: 80, desc: '高血量，暗影攻击' },
+  { name: '冰霜领主', color: 0x004488, emissive: 0x0088ff, hp: 3000, atk: 100, desc: '减速光环，冰霜攻击' },
+  { name: '烈焰魔神', color: 0x882200, emissive: 0xff4400, hp: 4000, atk: 120, desc: '火焰AOE，持续灼烧' },
+];
+
+function startBossSimulation(typeIndex) {
+  if (typeIndex === undefined) typeIndex = bossState.bossType;
+  bossState.bossType = typeIndex;
+  bossState.active = true;
+  bossState.timer = 0;
+  
+  const bType = BOSS_TYPES[typeIndex];
+  
+  // Create boss mesh (larger)
+  if (bossState.bossMesh) scene.remove(bossState.bossMesh);
+  bossState.bossMesh = createCharacter(bType.color, bType.emissive, false, 'axe');
+  bossState.bossMesh.position.set(0, 0, 30);
+  bossState.bossMesh.scale.set(2, 2, 2);
+  scene.add(bossState.bossMesh);
+  
+  // Create boss state
+  bossState.boss = {
+    hp: bType.hp, maxHp: bType.hp, isDead: false, type: 'enemy',
+    name: bType.name, char: CHARACTERS[5], // Use tank character
+    position: new THREE.Vector3(0, 0, 30), rotation: Math.PI,
+    stamina: 100, maxStamina: 100, respawnTimer: 0,
+    mesh: bossState.bossMesh, stunTimer: 0, isBlocking: false,
+    isDodging: false, isAttacking: false, attackTimer: 0, attackPhase: 0,
+    comboCount: 0, lastAttackTime: 0, isBoss: true,
+  };
+  
+  state.enemies.push(bossState.boss);
+  state.enemyMeshes.push(bossState.bossMesh);
+  
+  showStatus('BOSS: ' + bType.name + ' | HP: ' + bType.hp + ' | ' + bType.desc);
+  showBossUI(bType);
+}
+
+function showBossUI(bType) {
+  const existing = document.getElementById('boss-panel');
+  if (existing) existing.remove();
+  
+  const panel = document.createElement('div');
+  panel.id = 'boss-panel';
+  panel.style.cssText = 'position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:16;pointer-events:none;text-align:center;';
+  panel.innerHTML = '<div style="color:#ff4444;font-size:18px;font-weight:bold;text-shadow:0 0 10px #ff4444">⚔️ ' + bType.name + '</div>' +
+    '<div id="boss-hp-bar" style="width:300px;height:12px;background:rgba(0,0,0,0.7);border-radius:6px;overflow:hidden;margin:6px auto"><div id="boss-hp-fill" style="width:100%;height:100%;background:linear-gradient(90deg,#ff4444,#ff8800);border-radius:6px;transition:width 0.15s"></div></div>' +
+    '<div id="boss-hp-text" style="color:#aaa;font-size:12px">' + bType.hp + ' / ' + bType.hp + '</div>' +
+    '<div id="boss-timer" style="color:#888;font-size:11px;margin-top:2px">00:00</div>';
+  document.body.appendChild(panel);
+}
+
+function updateBossUI() {
+  if (!bossState.active || !bossState.boss) return;
+  const fill = document.getElementById('boss-hp-fill');
+  const text = document.getElementById('boss-hp-text');
+  const timer = document.getElementById('boss-timer');
+  if (fill) fill.style.width = (bossState.boss.hp / bossState.boss.maxHp * 100) + '%';
+  if (text) text.textContent = Math.max(0, Math.ceil(bossState.boss.hp)) + ' / ' + bossState.boss.maxHp;
+  if (timer) {
+    bossState.timer += 1/60;
+    const min = Math.floor(bossState.timer / 60).toString().padStart(2, '0');
+    const sec = Math.floor(bossState.timer % 60).toString().padStart(2, '0');
+    timer.textContent = min + ':' + sec;
+  }
+  
+  if (bossState.boss.isDead) {
+    showBossResult(true);
+    bossState.active = false;
+  }
+}
+
+function showBossResult(won) {
+  const overlay = document.createElement('div');
+  overlay.id = 'boss-result';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;';
+  
+  const title = won ? 'BOSS DEFEATED!' : 'DEFEATED';
+  const titleColor = won ? '#ffd700' : '#ff4444';
+  const bType = BOSS_TYPES[bossState.bossType];
+  const time = Math.floor(bossState.timer);
+  const min = Math.floor(time / 60).toString().padStart(2, '0');
+  const sec = (time % 60).toString().padStart(2, '0');
+  
+  if (!bossState.bestTime || time < bossState.bestTime) bossState.bestTime = time;
+  
+  overlay.innerHTML = '<div style="font-size:48px;color:' + titleColor + ';font-weight:bold;text-shadow:0 0 30px ' + titleColor + '">' + title + '</div>' +
+    '<div style="color:#aaa;font-size:20px;margin-top:10px">' + bType.name + '</div>' +
+    '<div style="color:#aaa;font-size:18px;margin-top:10px">Time: ' + min + ':' + sec + '</div>' +
+    '<div style="color:#888;font-size:14px;margin-top:8px">Best: ' + Math.floor(bossState.bestTime/60).toString().padStart(2,'0') + ':' + (bossState.bestTime%60).toString().padStart(2,'0') + '</div>' +
+    '<div style="display:flex;gap:8px;margin-top:20px">' +
+    BOSS_TYPES.map((bt, i) => '<button onclick="this.parentElement.parentElement.remove();bossState.bossType=' + i + ';startBossSimulation(' + i + ')" style="padding:10px 16px;font-size:14px;background:#222;color:#fff;border:1px solid ' + (i === bossState.bossType ? '#ffd700' : '#555') + ';border-radius:6px;cursor:pointer;font-family:inherit">🔄 ' + bt.name + '</button>').join('') +
+    '</div>' +
+    '<button onclick="this.parentElement.parentElement.remove();bossState.active=false;const p=document.getElementById('boss-panel');if(p)p.remove()" style="margin-top:12px;padding:8px 30px;font-size:14px;background:#222;color:#aaa;border:1px solid #555;border-radius:6px;cursor:pointer;font-family:inherit">Exit</button>';
+  
+  document.body.appendChild(overlay);
+}
+
+
 function showWaveBanner(text, isBoss) {
   const banner = document.createElement('div');
   banner.style.cssText = 'position:fixed;top:30%;left:50%;transform:translate(-50%,-50%);z-index:200;pointer-events:none;animation:waveBanner 2s ease forwards;';
@@ -1154,13 +1380,13 @@ const CONFIG = {
   DUMMY_COUNT: 3, AI_COUNT: 3,
   // 受身
   RECOVERY_WINDOW: 0.8, RECOVERY_SPEED: 12,
-  // 训练场区�?  ZONES: {
-    DUMMY: { cx: 0, cz: -20, r: 12, name: '🪵 木人桩训练区' },
-    ARENA: { cx: 0, cz: 10, r: 14, name: '�?对战擂台' },
-    CHALLENGE: { cx: 25, cz: 0, r: 10, name: '🎯 闯关挑战�? }
-  },
-  // 脱战回血速率（按角色定位，每秒恢复最大生命值百分比�?  ROLE_REGEN: { assassin: 0.01, warrior: 0.02, ranger: 0.02, support: 0.03, tank: 0.03 }
-};
+  // 训练场区�?  ZONES: ZONES: {
+    DUMMY: { cx: 0, cz: -20, r: 12, name: '木人桩训练区' },
+    ARENA: { cx: 0, cz: 10, r: 14, name: '对战擂台' },
+    CHALLENGE: { cx: 25, cz: 0, r: 10, name: '闯关挑战区' },
+    WEAPONS: { cx: -25, cz: 0, r: 10, name: '武器架试炼' },
+    BOSS: { cx: 0, cz: 30, r: 12, name: 'Boss模拟区' }
+  };
 
 // ==================== 武器品质系统 ====================
 const WEAPON_QUALITY = {
@@ -2255,6 +2481,7 @@ document.addEventListener('keydown', e => {
     state.panelF3 = !state.panelF3;
     document.getElementById('panel-f3').classList.toggle('visible', state.panelF3);
     if (state.panelF3) updateEnemyInfoPanel();
+  updateBossUI();
   updateChallengeHUD();
   updateEnemyHp3D();
   }
