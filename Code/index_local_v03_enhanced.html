@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>流星蝴蝶�?· Web 原型 V0.3 Enhanced</title>
+<title>流星蝴蝶�?· Web 原型 V0.3 Enhanced</title>
 <script src="../Client/network.js"></script>
 <script src="../Client/lobby.js"></script>
 <style>
@@ -329,102 +329,122 @@ canvas { display: block; }
 #quality-toast.q-bronze { color: #44cc44; background: rgba(68,204,68,0.15); border: 1px solid #44cc44; }
 #quality-toast.q-silver { color: #6688ff; background: rgba(102,136,255,0.15); border: 1px solid #6688ff; }
 #quality-toast.q-gold { color: #ffd700; background: rgba(255,215,0,0.2); border: 1px solid #ffd700; box-shadow: 0 0 20px rgba(255,215,0,0.3); }
+
+/* Map Selection */
+.map-select-section { margin: 16px 0 8px; pointer-events: auto; }
+.map-subtitle { text-align: center; color: #888; font-size: 16px; margin-bottom: 10px; letter-spacing: 2px; }
+.map-grid { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; max-width: 900px; margin: 0 auto; }
+.map-card {
+  width: 260px; padding: 16px; background: rgba(20,20,40,0.9); border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 10px; cursor: pointer; transition: all 0.2s; text-align: center;
+}
+.map-card:hover { border-color: rgba(255,255,255,0.4); background: rgba(30,30,60,0.95); }
+.map-card.selected { border-color: #ffd700; background: rgba(255,215,0,0.1); box-shadow: 0 0 15px rgba(255,215,0,0.25); }
+.map-icon { font-size: 36px; margin-bottom: 6px; }
+.map-name { color: #fff; font-size: 16px; font-weight: bold; margin-bottom: 4px; }
+.map-desc { color: #888; font-size: 12px; }
+
 </style>
 </head>
 <body>
 
 <!-- ===== 角色选择 ===== -->
 <div id="char-select">
-  <h1>�?�?�?�?�?/h1>
-  <div class="subtitle">Web 原型 V0.2 Enhanced · 选择你的武�?/div>
+  <h1>�?�?�?�?�?/h1>
+  <div class="subtitle">Web 原型 V0.2 Enhanced · 选择你的武�?/div>
   <div class="char-grid">
     <div class="char-card selected" data-char="0" onclick="selectChar(0)">
-      <div class="char-icon">🗡�?/div>
+      <div class="char-icon">🗡�?/div>
       <div class="char-name">冷月 · 荆如</div>
       <div class="char-title">刺客 · 破晓</div>
       <div class="char-system system-wushu">武术</div>
-      <div class="char-desc">剑气纵横，近身缠�?br>弹反反击专家，连招犀�?br>🗡 鱼肠短剑 + 🌀 软剑</div>
+      <div class="char-desc">剑气纵横，近身缠�?br>弹反反击专家，连招犀�?br>🗡 鱼肠短剑 + 🌀 软剑</div>
     </div>
     <div class="char-card" data-char="1" onclick="selectChar(1)">
       <div class="char-icon">🥷</div>
       <div class="char-name">影忍 · 雾隐</div>
       <div class="char-title">刺客 · 黄昏</div>
       <div class="char-system system-wushu2">巫术</div>
-      <div class="char-desc">影遁暗杀，持续毒�?br>隐身突袭，DOT叠层<br>🔪 苦无 + ⛓️ 锁镰</div>
+      <div class="char-desc">影遁暗杀，持续毒�?br>隐身突袭，DOT叠层<br>🔪 苦无 + ⛓️ 锁镰</div>
     </div>
     <div class="char-card" data-char="2" onclick="selectChar(2)">
       <div class="char-icon">⚔️</div>
       <div class="char-name">傲骨 · 关云</div>
       <div class="char-title">战士 · 破晓</div>
       <div class="char-system system-magic">武术</div>
-      <div class="char-desc">大开大合，AOE核心<br>霸体重斩，横扫千�?br>🔪 青龙刀 + 🗡 短刀</div>
+      <div class="char-desc">大开大合，AOE核心<br>霸体重斩，横扫千�?br>🔪 青龙刀 + 🗡 短刀</div>
     </div>
     <div class="char-card" data-char="3" onclick="selectChar(3)">
       <div class="char-icon">🏹</div>
-      <div class="char-name">追风 · 花木�?/div>
+      <div class="char-name">追风 · 花木�?/div>
       <div class="char-title">远程 · 破晓</div>
       <div class="char-system system-xianshu">仙术</div>
-      <div class="char-desc">远距狙击，陷阱布局<br>天眼锁定，箭雨覆�?br>🏹 长弓 + 💫 袖箭</div>
+      <div class="char-desc">远距狙击，陷阱布局<br>天眼锁定，箭雨覆�?br>🏹 长弓 + 💫 袖箭</div>
     </div>
-    <!-- V0.4 新角�?-->
+    <!-- V0.4 新角�?-->
     <div class="char-card" data-char="4" onclick="selectChar(4)">
       <div class="char-icon">🦂</div>
       <div class="char-name">毒蝎 · 哈桑</div>
       <div class="char-title">远程 · 黄昏</div>
       <div class="char-system system-wushu2">巫术</div>
-      <div class="char-desc">蛊毒叠层，风筝消�?br>暗影瞬移，蛊爆收�?br>🔪 飞刀 + ☠️ 毒镖</div>
+      <div class="char-desc">蛊毒叠层，风筝消�?br>暗影瞬移，蛊爆收�?br>🔪 飞刀 + ☠️ 毒镖</div>
     </div>
     <div class="char-card" data-char="5" onclick="selectChar(5)">
-      <div class="char-icon">🛡�?/div>
-      <div class="char-name">磐石 · 奥拉�?/div>
+      <div class="char-icon">🛡�?/div>
+      <div class="char-name">磐石 · 奥拉�?/div>
       <div class="char-title">坦克 · 破晓</div>
       <div class="char-system system-xianshu">仙术</div>
-      <div class="char-desc">无畏冲锋，越战越�?br>血量越低攻击越�?br>🪓 战斧 + 🎯 飞斧</div>
+      <div class="char-desc">无畏冲锋，越战越�?br>血量越低攻击越�?br>🪓 战斧 + 🎯 飞斧</div>
     </div>
     <div class="char-card" data-char="6" onclick="selectChar(6)">
-      <div class="char-icon">�?/div>
+      <div class="char-icon">�?/div>
       <div class="char-name">雷鸣 · 卡利</div>
       <div class="char-title">战士 · 黄昏</div>
       <div class="char-system system-magic">魔法</div>
-      <div class="char-desc">雷电附魔，旋转攻�?br>雷暴风暴，越战越�?br>🌀 查克�?+ 🥏 飞刃</div>
+      <div class="char-desc">雷电附魔，旋转攻�?br>雷暴风暴，越战越�?br>🌀 查克�?+ 🥏 飞刃</div>
     </div>
     <div class="char-card" data-char="7" onclick="selectChar(7)">
       <div class="char-icon">🏇</div>
       <div class="char-name">铁骑 · 哲别</div>
       <div class="char-title">战士 · 黄昏</div>
       <div class="char-system system-wushu">武术</div>
-      <div class="char-desc">骑马冲锋，游走收�?br>套索拉扯，万马奔�?br>🌙 弯刀 + 🪢 套马�?/div>
+      <div class="char-desc">骑马冲锋，游走收�?br>套索拉扯，万马奔�?br>🌙 弯刀 + 🪢 套马�?/div>
     </div>
     <div class="char-card" data-char="8" onclick="selectChar(8)">
-      <div class="char-icon">🏛�?/div>
-      <div class="char-name">铁壁 · 马克�?/div>
+      <div class="char-icon">🏛�?/div>
+      <div class="char-name">铁壁 · 马克�?/div>
       <div class="char-title">坦克 · 黄昏</div>
       <div class="char-system system-wushu">武术</div>
-      <div class="char-desc">盾牌格挡，控制反�?br>完美格挡触发气劲<br>🗡 短剑 + 🛡�?方盾</div>
+      <div class="char-desc">盾牌格挡，控制反�?br>完美格挡触发气劲<br>🗡 短剑 + 🛡�?方盾</div>
     </div>
     <div class="char-card" data-char="9" onclick="selectChar(9)">
       <div class="char-icon">💣</div>
-      <div class="char-name">破军 · 李舜�?/div>
+      <div class="char-name">破军 · 李舜�?/div>
       <div class="char-title">远程 · 破晓</div>
       <div class="char-system system-magic">魔法</div>
-      <div class="char-desc">架设炮台，区域封�?br>龟船炮阵，火力压�?br>🔫 火铳 + 💣 弩炮</div>
+      <div class="char-desc">架设炮台，区域封�?br>龟船炮阵，火力压�?br>🔫 火铳 + 💣 弩炮</div>
     </div>
     <div class="char-card" data-char="10" onclick="selectChar(10)">
       <div class="char-icon">🎵</div>
-      <div class="char-name">圣歌 · 阿玛�?/div>
+      <div class="char-name">圣歌 · 阿玛�?/div>
       <div class="char-title">辅助 · 破晓</div>
       <div class="char-system system-wushu2">巫术</div>
-      <div class="char-desc">治疗光环，群体增�?br>祖灵降临，范围复�?br>🪄 图腾法杖 + 🔔 骨铃</div>
+      <div class="char-desc">治疗光环，群体增�?br>祖灵降临，范围复�?br>🪄 图腾法杖 + 🔔 骨铃</div>
     </div>
     <div class="char-card" data-char="11" onclick="selectChar(11)">
       <div class="char-icon">🔧</div>
-      <div class="char-name">天机 · 达芬�?/div>
+      <div class="char-name">天机 · 达芬�?/div>
       <div class="char-title">辅助 · 黄昏</div>
       <div class="char-system system-magic">魔法</div>
-      <div class="char-desc">符文陷阱，傀儡探�?br>机关布置，控制减�?br>🏹 机关�?+ 🤖 傀�?/div>
+      <div class="char-desc">符文陷阱，傀儡探�?br>机关布置，控制减�?br>🏹 机关�?+ 🤖 傀�?/div>
     </div>
   </div>
-  <button id="btn-start" onclick="startGame()">�?�?�?�?/button>
+  <!-- Map Selection -->
+  <div class="map-select-section">
+    <div class="map-subtitle">Select Map</div>
+    <div class="map-grid" id="map-grid"></div>
+  </div>
+  <button id="btn-start" onclick="startGame()">�?�?�?�?/button>
 </div>
 
 <div id="crosshair"></div>
@@ -436,17 +456,17 @@ canvas { display: block; }
   </div>
   <div id="stats-bar">
     <span>击杀 <span class="stat-val" id="stat-kills">0</span></span>
-    <span>连招最�?<span class="stat-val" id="stat-maxcombo">0</span></span>
+    <span>连招最�?<span class="stat-val" id="stat-maxcombo">0</span></span>
     <span>弹反 <span class="stat-val" id="stat-parries">0</span></span>
   </div>
   <div id="kill-feed"></div>
   <div id="controls-help">
-    <div class="title">�?操作</div>
+    <div class="title">�?操作</div>
     <kbd>WASD</kbd> 移动<br>
-    <kbd>空格</kbd> 跳跃（二段跳�?· <kbd>Shift</kbd> 闪避<br>
-    <kbd>F</kbd> 格挡 · <kbd>左键</kbd> 轻攻�?· <kbd>右键</kbd> 重攻�?br>
-    <kbd>Q/E/R</kbd> 技�?· <kbd>Tab</kbd> 切武�?br>
-    <kbd>V</kbd> 锁定 · <kbd>滚轮</kbd> 缩放 · <kbd>1-4</kbd> 切角�?br>
+    <kbd>空格</kbd> 跳跃（二段跳�?· <kbd>Shift</kbd> 闪避<br>
+    <kbd>F</kbd> 格挡 · <kbd>左键</kbd> 轻攻�?· <kbd>右键</kbd> 重攻�?br>
+    <kbd>Q/E/R</kbd> 技�?· <kbd>Tab</kbd> 切武�?br>
+    <kbd>V</kbd> 锁定 · <kbd>滚轮</kbd> 缩放 · <kbd>1-4</kbd> 切角�?br>
     <kbd>F1</kbd> 设置 · <kbd>F2</kbd> 地图 · <kbd>F3</kbd> 敌人
   </div>
   <div id="combo-display">
@@ -454,12 +474,12 @@ canvas { display: block; }
     <div id="combo-label">COMBO</div>
   </div>
   <div id="status-msg"></div>
-  <div id="parry-flash">�?�?�?/div>
+  <div id="parry-flash">�?�?�?/div>
   <div id="zone-hint"></div>
-  <div id="recovery-hint">�?<kbd>空格</kbd> 受身</div>
-  <div id="parry-riposte-hint">�?反击窗口�?/div>
+  <div id="recovery-hint">�?<kbd>空格</kbd> 受身</div>
+  <div id="parry-riposte-hint">�?反击窗口�?/div>
   <div id="player-hud">
-    <div id="player-portrait">�?/div>
+    <div id="player-portrait">�?/div>
     <div>
       <div id="player-level">Lv.1</div>
       <div id="player-bars">
@@ -475,24 +495,24 @@ canvas { display: block; }
     </div>
   </div>
   <div id="weapon-bar">
-    <div class="weapon-slot active" id="weapon-a"><span>🗡</span><span class="wname" id="wa-name">鱼肠�?/span></div>
+    <div class="weapon-slot active" id="weapon-a"><span>🗡</span><span class="wname" id="wa-name">鱼肠�?/span></div>
     <div class="weapon-slot" id="weapon-b"><span>🌀</span><span class="wname" id="wb-name">软剑</span></div>
   </div>
   <div id="skill-bar">
     <div class="skill-slot" id="skill-q"><span class="key">Q</span><span class="icon" id="skill-q-icon">💨</span></div>
     <div class="skill-slot" id="skill-e"><span class="key">E</span><span class="icon" id="skill-e-icon">🌀</span></div>
-    <div class="skill-slot" id="skill-r"><span class="key">R</span><span class="icon" id="skill-r-icon">�?/span></div>
-    <div class="skill-slot" id="skill-passive"><span class="key">被动</span><span class="icon" id="skill-p-icon">�?/span></div>
+    <div class="skill-slot" id="skill-r"><span class="key">R</span><span class="icon" id="skill-r-icon">�?/span></div>
+    <div class="skill-slot" id="skill-passive"><span class="key">被动</span><span class="icon" id="skill-p-icon">�?/span></div>
   </div>
-  <div id="stamina-warning">�?体力耗尽！无法闪避和格挡�?/div>
+  <div id="stamina-warning">�?体力耗尽！无法闪避和格挡�?/div>
   <div id="quality-toast"></div>
 </div>
 
 <!-- F1 设置面板 -->
 <div class="info-panel" id="panel-f1" style="min-width:380px">
-  <h2>�?游戏设置</h2>
+  <h2>�?游戏设置</h2>
   <div class="setting-row">
-    <span>鼠标灵敏�?/span>
+    <span>鼠标灵敏�?/span>
     <input type="range" id="set-sensitivity" min="1" max="10" value="5" step="1">
     <span class="val" id="val-sensitivity">5</span>
   </div>
@@ -530,13 +550,13 @@ canvas { display: block; }
   <div class="setting-btns">
     <button id="btn-reset-settings">恢复默认</button>
   </div>
-  <div class="close-hint">�?F1 关闭</div>
+  <div class="close-hint">�?F1 关闭</div>
 </div>
 
 <div class="info-panel" id="panel-f3">
   <h2>🔍 附近敌人</h2>
   <div id="enemy-info-list"></div>
-  <div class="close-hint">�?F3 关闭</div>
+  <div class="close-hint">�?F3 关闭</div>
 </div>
 
 <div class="weakness-overlay" id="weakness-overlay"></div>
@@ -568,7 +588,7 @@ if (!CanvasRenderingContext2D.prototype.roundRect) {
 const CHARACTERS = [
   {
     id: 'jingru', name: '冷月 · 荆如', title: '刺客 · 武术',
-    color: 0x2244aa, emissive: 0x1122ff, portrait: '🗡�?,
+    color: 0x2244aa, emissive: 0x1122ff, portrait: '🗡�?,
     system: 'wushu', systemName: '武术',
     bodyColor: '#2244aa', accentColor: '#4488ff',
     weapons: [
@@ -578,9 +598,9 @@ const CHARACTERS = [
     skills: {
       Q: { name: '剑气突刺', icon: '💨', cd: 8, range: 6, dmg: 120, type: 'dash' },
       E: { name: '缠绕', icon: '🌀', cd: 12, range: 8, dmg: 60, type: 'stun', stunDur: 1.0 },
-      R: { name: '月影�?, icon: '�?, cd: 30, range: 10, dmg: 250, type: 'aoe' }
+      R: { name: '月影�?, icon: '�?, cd: 30, range: 10, dmg: 250, type: 'aoe' }
     },
-    passive: { name: '剑意', icon: '�?, desc: '弹反成功后下一击伤�?50%' },
+    passive: { name: '剑意', icon: '�?, desc: '弹反成功后下一击伤�?50%' },
     lightDmg: [30, 35, 40, 55], heavyDmg: [80, 90, 100],
     hpRegen: 20, style: 'balanced'
   },
@@ -614,14 +634,14 @@ const CHARACTERS = [
     skills: {
       Q: { name: '龙斩', icon: '🐉', cd: 8, range: 6, dmg: 150, type: 'line', width: 2 },
       E: { name: '武圣气场', icon: '💫', cd: 15, range: 5, dmg: 80, type: 'buff', atkBuff: 1.3, dur: 5 },
-      R: { name: '青龙�?, icon: '🐲', cd: 35, range: 12, dmg: 350, type: 'aoe', hasSuperArmor: true }
+      R: { name: '青龙�?, icon: '🐲', cd: 35, range: 12, dmg: 350, type: 'aoe', hasSuperArmor: true }
     },
     passive: { name: '武圣', icon: '💪', desc: '重攻击自带霸体，不被打断' },
     lightDmg: [35, 40, 48, 65], heavyDmg: [100, 120, 140],
     hpRegen: 20, style: 'berserker'
   },
   {
-    id: 'mulan', name: '追风 · 花木�?, title: '远程 · 仙术',
+    id: 'mulan', name: '追风 · 花木�?, title: '远程 · 仙术',
     color: 0xcc8800, emissive: 0xffaa00, portrait: '🏹',
     system: 'xianshu', systemName: '仙术',
     bodyColor: '#886600', accentColor: '#ffcc44',
@@ -630,11 +650,11 @@ const CHARACTERS = [
       { name: '袖箭', icon: '💫', range: 5, atkAngle: Math.PI/4, type: 'dart' }
     ],
     skills: {
-      Q: { name: '天眼', icon: '👁�?, cd: 10, range: 15, dmg: 100, type: 'snipe' },
-      E: { name: '仙阵', icon: '�?, cd: 12, range: 8, dmg: 50, type: 'trap', slowDur: 3 },
-      R: { name: '箭雨', icon: '🌧�?, cd: 25, range: 12, dmg: 180, type: 'rain', hits: 8 }
+      Q: { name: '天眼', icon: '👁�?, cd: 10, range: 15, dmg: 100, type: 'snipe' },
+      E: { name: '仙阵', icon: '�?, cd: 12, range: 8, dmg: 50, type: 'trap', slowDur: 3 },
+      R: { name: '箭雨', icon: '🌧�?, cd: 25, range: 12, dmg: 180, type: 'rain', hits: 8 }
     },
-    passive: { name: '追风', icon: '💨', desc: '远程攻击有几率减速敌�? },
+    passive: { name: '追风', icon: '💨', desc: '远程攻击有几率减速敌�? },
     lightDmg: [20, 24, 28, 35], heavyDmg: [60, 70, 90],
     hpRegen: 20, style: 'ranger'
   },
@@ -649,8 +669,8 @@ const CHARACTERS = [
       { name: '毒镖', icon: '☠️', range: 8, atkAngle: Math.PI/5, type: 'poison_dart' }
     ],
     skills: {
-      Q: { name: '蛊毒�?, icon: '🦂', cd: 8, range: 10, dmg: 60, type: 'dot', dotDmg: 15, dotDur: 6 },
-      E: { name: '暗影�?, icon: '👤', cd: 12, range: 8, dmg: 40, type: 'blink' },
+      Q: { name: '蛊毒�?, icon: '🦂', cd: 8, range: 10, dmg: 60, type: 'dot', dotDmg: 15, dotDur: 6 },
+      E: { name: '暗影�?, icon: '👤', cd: 12, range: 8, dmg: 40, type: 'blink' },
       R: { name: '蛊爆', icon: '💥', cd: 28, range: 8, dmg: 250, type: 'aoe', requiresDot: true }
     },
     passive: { name: '剧毒', icon: '☠️', desc: '攻击附带中毒，叠层后触发蛊爆伤害+100%' },
@@ -658,8 +678,8 @@ const CHARACTERS = [
     hpRegen: 10, style: 'ranger'
   },
   {
-    id: 'aolafu', name: '磐石 · 奥拉�?, title: '坦克 · 仙术',
-    color: 0x886644, emissive: 0xffcc00, portrait: '🛡�?,
+    id: 'aolafu', name: '磐石 · 奥拉�?, title: '坦克 · 仙术',
+    color: 0x886644, emissive: 0xffcc00, portrait: '🛡�?,
     system: 'xianshu', systemName: '仙术',
     bodyColor: '#664422', accentColor: '#ffaa00',
     weapons: [
@@ -669,27 +689,27 @@ const CHARACTERS = [
     skills: {
       Q: { name: '狂战冲锋', icon: '🏃', cd: 8, range: 8, dmg: 100, type: 'charge', hasSuperArmor: true },
       E: { name: '战嚎', icon: '📢', cd: 14, range: 6, dmg: 60, type: 'fear', fearDur: 1.5 },
-      R: { name: '神降', icon: '�?, cd: 35, range: 0, dmg: 0, type: 'transform', atkBuff: 2.0, defBuff: 2.0, dur: 8 }
+      R: { name: '神降', icon: '�?, cd: 35, range: 0, dmg: 0, type: 'transform', atkBuff: 2.0, defBuff: 2.0, dur: 8 }
     },
-    passive: { name: '不屈', icon: '💪', desc: '血量越低攻击力越高�?0%血以下攻击+50%' },
+    passive: { name: '不屈', icon: '💪', desc: '血量越低攻击力越高�?0%血以下攻击+50%' },
     lightDmg: [40, 48, 55, 70], heavyDmg: [110, 130, 160],
     hpRegen: 30, style: 'tank'
   },
   {
     id: 'kali', name: '雷鸣 · 卡利', title: '战士 · 魔法',
-    color: 0x0066cc, emissive: 0x00ccff, portrait: '�?,
+    color: 0x0066cc, emissive: 0x00ccff, portrait: '�?,
     system: 'magic', systemName: '魔法',
     bodyColor: '#003366', accentColor: '#00aaff',
     weapons: [
-      { name: '双弯刀·查克�?, icon: '🌀', range: 3.5, atkAngle: Math.PI*0.7, type: 'chakra' },
+      { name: '双弯刀·查克�?, icon: '🌀', range: 3.5, atkAngle: Math.PI*0.7, type: 'chakra' },
       { name: '投掷弯刀', icon: '🥏', range: 9, atkAngle: Math.PI/6, type: 'boomerang' }
     ],
     skills: {
-      Q: { name: '雷电附魔', icon: '�?, cd: 10, range: 0, dmg: 0, type: 'enchant', element: 'thunder', dur: 6 },
-      E: { name: '雷暴旋转', icon: '🌪�?, cd: 12, range: 5, dmg: 120, type: 'spin', hits: 4 },
-      R: { name: '天雷�?, icon: '⛈️', cd: 30, range: 10, dmg: 300, type: 'aoe', stunDur: 1.5 }
+      Q: { name: '雷电附魔', icon: '�?, cd: 10, range: 0, dmg: 0, type: 'enchant', element: 'thunder', dur: 6 },
+      E: { name: '雷暴旋转', icon: '🌪�?, cd: 12, range: 5, dmg: 120, type: 'spin', hits: 4 },
+      R: { name: '天雷�?, icon: '⛈️', cd: 30, range: 10, dmg: 300, type: 'aoe', stunDur: 1.5 }
     },
-    passive: { name: '雷鸣', icon: '�?, desc: '旋转攻击时生成电弧，对周围敌人造成额外伤害' },
+    passive: { name: '雷鸣', icon: '�?, desc: '旋转攻击时生成电弧，对周围敌人造成额外伤害' },
     lightDmg: [32, 38, 44, 58], heavyDmg: [85, 100, 120],
     hpRegen: 15, style: 'balanced'
   },
@@ -701,37 +721,37 @@ const CHARACTERS = [
     bodyColor: '#663311', accentColor: '#ff8833',
     weapons: [
       { name: '弯刀', icon: '🌙', range: 3.5, atkAngle: Math.PI/2, type: 'saber' },
-      { name: '套马�?, icon: '🪢', range: 8, atkAngle: Math.PI/6, type: 'lasso' }
+      { name: '套马�?, icon: '🪢', range: 8, atkAngle: Math.PI/6, type: 'lasso' }
     ],
     skills: {
       Q: { name: '冲锋', icon: '🐎', cd: 8, range: 10, dmg: 120, type: 'charge', hasSuperArmor: true },
       E: { name: '套索', icon: '🪢', cd: 12, range: 8, dmg: 50, type: 'hook', pullDist: 5 },
       R: { name: '万马奔腾', icon: '🏇', cd: 30, range: 12, dmg: 280, type: 'line', width: 3, hits: 3 }
     },
-    passive: { name: '骑术', icon: '🐎', desc: '移动速度+15%，冲锋伤�?20%' },
+    passive: { name: '骑术', icon: '🐎', desc: '移动速度+15%，冲锋伤�?20%' },
     lightDmg: [30, 35, 42, 55], heavyDmg: [80, 95, 115],
     hpRegen: 20, style: 'balanced'
   },
   {
-    id: 'makexi', name: '铁壁 · 马克�?, title: '坦克 · 武术',
-    color: 0x884400, emissive: 0xffaa44, portrait: '🏛�?,
+    id: 'makexi', name: '铁壁 · 马克�?, title: '坦克 · 武术',
+    color: 0x884400, emissive: 0xffaa44, portrait: '🏛�?,
     system: 'wushu', systemName: '武术',
     bodyColor: '#663300', accentColor: '#ff8800',
     weapons: [
       { name: '短剑', icon: '🗡', range: 2.5, atkAngle: Math.PI/3, type: 'gladius' },
-      { name: '方盾', icon: '🛡�?, range: 2, atkAngle: Math.PI, type: 'shield' }
+      { name: '方盾', icon: '🛡�?, range: 2, atkAngle: Math.PI, type: 'shield' }
     ],
     skills: {
-      Q: { name: '盾击', icon: '🛡�?, cd: 8, range: 3, dmg: 80, type: 'stun', stunDur: 1.2 },
+      Q: { name: '盾击', icon: '🛡�?, cd: 8, range: 3, dmg: 80, type: 'stun', stunDur: 1.2 },
       E: { name: '盾墙', icon: '🏰', cd: 15, range: 0, dmg: 0, type: 'shield_wall', defBuff: 3.0, dur: 4 },
       R: { name: '罗马阵列', icon: '⚔️', cd: 30, range: 8, dmg: 200, type: 'aoe', defBuff: 2.0, dur: 6 }
     },
-    passive: { name: '角斗�?, icon: '🏛�?, desc: '格挡成功后反击伤�?30%，完美格挡触发气劲反�? },
+    passive: { name: '角斗�?, icon: '🏛�?, desc: '格挡成功后反击伤�?30%，完美格挡触发气劲反�? },
     lightDmg: [28, 33, 38, 50], heavyDmg: [70, 85, 100],
     hpRegen: 30, style: 'tank'
   },
   {
-    id: 'lishunchen', name: '破军 · 李舜�?, title: '远程 · 魔法',
+    id: 'lishunchen', name: '破军 · 李舜�?, title: '远程 · 魔法',
     color: 0x224488, emissive: 0x4488ff, portrait: '💣',
     system: 'magic', systemName: '魔法',
     bodyColor: '#113355', accentColor: '#3366cc',
@@ -744,12 +764,12 @@ const CHARACTERS = [
       E: { name: '炮火覆盖', icon: '💥', cd: 14, range: 10, dmg: 150, type: 'aoe', radius: 4 },
       R: { name: '龟船炮阵', icon: '🐢', cd: 35, range: 12, dmg: 350, type: 'aoe', radius: 6, hits: 5 }
     },
-    passive: { name: '水军统帅', icon: '�?, desc: '炮台攻击附带减速，多个炮台同时攻击伤害+25%' },
+    passive: { name: '水军统帅', icon: '�?, desc: '炮台攻击附带减速，多个炮台同时攻击伤害+25%' },
     lightDmg: [22, 26, 32, 42], heavyDmg: [65, 78, 95],
     hpRegen: 15, style: 'ranger'
   },
   {
-    id: 'amani', name: '圣歌 · 阿玛�?, title: '辅助 · 巫术',
+    id: 'amani', name: '圣歌 · 阿玛�?, title: '辅助 · 巫术',
     color: 0x886644, emissive: 0xffcc88, portrait: '🎵',
     system: 'wushu2', systemName: '巫术',
     bodyColor: '#554422', accentColor: '#cc9955',
@@ -758,33 +778,163 @@ const CHARACTERS = [
       { name: '骨铃', icon: '🔔', range: 8, atkAngle: Math.PI/6, type: 'bell' }
     ],
     skills: {
-      Q: { name: '祖灵祝福', icon: '☀�?, cd: 10, range: 8, dmg: 0, type: 'heal', healAmt: 200 },
+      Q: { name: '祖灵祝福', icon: '☀�?, cd: 10, range: 8, dmg: 0, type: 'heal', healAmt: 200 },
       E: { name: '诅咒之铃', icon: '🔔', cd: 12, range: 8, dmg: 60, type: 'debuff', slowMult: 0.5, dur: 3 },
       R: { name: '祖灵降临', icon: '👻', cd: 35, range: 10, dmg: 0, type: 'resurrect', healAmt: 500, atkBuff: 1.5, dur: 8 }
     },
-    passive: { name: '祖灵守护', icon: '👻', desc: '附近队友每秒回复1%最大生命值，自身回复翻�? },
+    passive: { name: '祖灵守护', icon: '👻', desc: '附近队友每秒回复1%最大生命值，自身回复翻�? },
     lightDmg: [18, 22, 26, 35], heavyDmg: [50, 60, 75],
     hpRegen: 30, style: 'support'
   },
   {
-    id: 'dafenqi', name: '天机 · 达芬�?, title: '辅助 · 魔法',
+    id: 'dafenqi', name: '天机 · 达芬�?, title: '辅助 · 魔法',
     color: 0x664488, emissive: 0xaa66ff, portrait: '🔧',
     system: 'magic', systemName: '魔法',
     bodyColor: '#442266', accentColor: '#8844cc',
     weapons: [
-      { name: '机关�?, icon: '🏹', range: 10, atkAngle: Math.PI/6, type: 'crossbow' },
-      { name: '傀�?, icon: '🤖', range: 8, atkAngle: Math.PI/4, type: 'puppet' }
+      { name: '机关�?, icon: '🏹', range: 10, atkAngle: Math.PI/6, type: 'crossbow' },
+      { name: '傀�?, icon: '🤖', range: 8, atkAngle: Math.PI/4, type: 'puppet' }
     ],
     skills: {
-      Q: { name: '符文陷阱', icon: '�?, cd: 8, range: 6, dmg: 80, type: 'trap', stunDur: 1.5 },
-      E: { name: '傀儡探�?, icon: '🤖', cd: 12, range: 15, dmg: 40, type: 'scout', scoutDur: 8 },
+      Q: { name: '符文陷阱', icon: '�?, cd: 8, range: 6, dmg: 80, type: 'trap', stunDur: 1.5 },
+      E: { name: '傀儡探�?, icon: '🤖', cd: 12, range: 15, dmg: 40, type: 'scout', scoutDur: 8 },
       R: { name: '符文炮台', icon: '🔮', cd: 30, range: 10, dmg: 200, type: 'turret', turretDur: 12, hits: 6 }
     },
-    passive: { name: '机关大师', icon: '🔧', desc: '陷阱和炮台冷�?20%，傀儡可探查隐身单位' },
+    passive: { name: '机关大师', icon: '🔧', desc: '陷阱和炮台冷�?20%，傀儡可探查隐身单位' },
     lightDmg: [20, 24, 28, 38], heavyDmg: [55, 68, 85],
     hpRegen: 20, style: 'support'
   }
 ];
+
+// ==================== 地图数据 ====================
+const MAPS = [
+  {
+    id: 'dragon_arena', name: '龙城演武', desc: '古代校场，黄沙擂台',
+    icon: '🐉', accentColor: '#ff4400'
+  },
+  {
+    id: 'roman_colosseum', name: '罗马竞技场', desc: '巨型角斗场，观众环绕',
+    icon: '🏛️', accentColor: '#cc8844'
+  },
+  {
+    id: 'bamboo_forest', name: '竹林幽径', desc: '竹林密布，雾气弥漫，视野受限',
+    icon: '🎋', accentColor: '#44cc44'
+  }
+];
+let selectedMapIdx = 0;
+
+
+// ==================== 1V1 决斗系统 ====================
+let duelState = {
+  playerWins: 0,
+  enemyWins: 0,
+  roundNum: 1,
+  maxRounds: 3,
+  isDuel: true,
+  roundOver: false
+};
+
+function resetRound() {
+  duelState.roundOver = false;
+  duelState.roundNum++;
+  
+  // Reset player
+  if (state.player) {
+    state.player.hp = state.player.maxHp;
+    state.player.stamina = CONFIG.MAX_STAMINA;
+    state.player.isDead = false;
+    state.player.stunTimer = 0;
+    state.player.comboCount = 0;
+  }
+  if (state.playerMesh) {
+    state.playerMesh.visible = true;
+    state.playerMesh.position.set(0, 0, 5);
+  }
+  
+  // Reset enemy
+  if (state.enemies && state.enemies[0]) {
+    const e = state.enemies[0];
+    e.hp = e.maxHp;
+    e.stamina = CONFIG.MAX_STAMINA;
+    e.isDead = false;
+    e.stunTimer = 0;
+    e.comboCount = 0;
+  }
+  if (state.enemyMeshes && state.enemyMeshes[0]) {
+    state.enemyMeshes[0].visible = true;
+    state.enemyMeshes[0].position.set(0, 0, -5);
+  }
+  
+  showStatus('Round ' + duelState.roundNum + ' - FIGHT!');
+}
+
+function checkRoundEnd() {
+  if (!duelState.isDuel || duelState.roundOver) return;
+  
+  const playerDead = state.player && state.player.isDead;
+  const enemyDead = state.enemies && state.enemies[0] && state.enemies[0].isDead;
+  
+  if (playerDead) {
+    duelState.enemyWins++;
+    duelState.roundOver = true;
+    showStatus('Round Lost! (' + duelState.enemyWins + '-' + duelState.playerWins + ')');
+    if (duelState.enemyWins >= 2) {
+      setTimeout(() => showDuelResult(false), 2000);
+    } else {
+      setTimeout(resetRound, 3000);
+    }
+  } else if (enemyDead) {
+    duelState.playerWins++;
+    duelState.roundOver = true;
+    showStatus('Round Won! (' + duelState.playerWins + '-' + duelState.enemyWins + ')');
+    if (duelState.playerWins >= 2) {
+      setTimeout(() => showDuelResult(true), 2000);
+    } else {
+      setTimeout(resetRound, 3000);
+    }
+  }
+}
+
+function showDuelResult(playerWon) {
+  const overlay = document.createElement('div');
+  overlay.id = 'duel-result';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;';
+  
+  const title = playerWon ? 'VICTORY' : 'DEFEAT';
+  const titleColor = playerWon ? '#ffd700' : '#ff4444';
+  const kills = state.player ? state.player.kills : 0;
+  const pName = state.player ? state.player.char.name : 'Unknown';
+  const eName = state.enemies && state.enemies[0] ? state.enemies[0].char.name : 'Enemy';
+  
+  overlay.innerHTML = '<div style="font-size:64px;color:' + titleColor + ';font-weight:bold;text-shadow:0 0 30px ' + titleColor + '">' + title + '</div>' +
+    '<div style="color:#aaa;font-size:20px;margin-top:10px">' + duelState.playerWins + ' - ' + duelState.enemyWins + '</div>' +
+    '<div style="color:#888;font-size:16px;margin-top:20px">Kills: ' + kills + '</div>' +
+    '<div style="color:#888;font-size:16px;margin-top:5px">' + pName + ' vs ' + eName + '</div>' +
+    '<button onclick="restartDuel()" style="margin-top:30px;padding:12px 40px;font-size:18px;background:#333;color:#fff;border:2px solid ' + titleColor + ';border-radius:8px;cursor:pointer;font-family:inherit">Rematch</button>' +
+    '<button onclick="backToSelect()" style="margin-top:10px;padding:8px 30px;font-size:14px;background:#222;color:#aaa;border:1px solid #555;border-radius:6px;cursor:pointer;font-family:inherit">Back to Select</button>';
+  
+  document.body.appendChild(overlay);
+}
+
+function restartDuel() {
+  const el = document.getElementById('duel-result');
+  if (el) el.remove();
+  duelState = { playerWins: 0, enemyWins: 0, roundNum: 0, maxRounds: 3, isDuel: true, roundOver: false };
+  startGame();
+}
+
+function backToSelect() {
+  const el = document.getElementById('duel-result');
+  if (el) el.remove();
+  document.getElementById('hud').style.display = 'none';
+  document.getElementById('char-select').style.display = '';
+  duelState = { playerWins: 0, enemyWins: 0, roundNum: 0, maxRounds: 3, isDuel: true, roundOver: false };
+  // Clear entities
+  state.enemies = [];
+  state.enemyMeshes.forEach(m => scene.remove(m));
+  state.enemyMeshes = [];
+  if (state.playerMesh) { scene.remove(state.playerMesh); state.playerMesh = null; }
+}
 
 // ==================== 常量 ====================
 const CONFIG = {
@@ -800,12 +950,12 @@ const CONFIG = {
   DUMMY_COUNT: 3, AI_COUNT: 3,
   // 受身
   RECOVERY_WINDOW: 0.8, RECOVERY_SPEED: 12,
-  // 训练场区�?  ZONES: {
+  // 训练场区�?  ZONES: {
     DUMMY: { cx: 0, cz: -20, r: 12, name: '🪵 木人桩训练区' },
-    ARENA: { cx: 0, cz: 10, r: 14, name: '�?对战擂台' },
-    CHALLENGE: { cx: 25, cz: 0, r: 10, name: '🎯 闯关挑战�? }
+    ARENA: { cx: 0, cz: 10, r: 14, name: '�?对战擂台' },
+    CHALLENGE: { cx: 25, cz: 0, r: 10, name: '🎯 闯关挑战�? }
   },
-  // 脱战回血速率（按角色定位，每秒恢复最大生命值百分比�?  ROLE_REGEN: { assassin: 0.01, warrior: 0.02, ranger: 0.02, support: 0.03, tank: 0.03 }
+  // 脱战回血速率（按角色定位，每秒恢复最大生命值百分比�?  ROLE_REGEN: { assassin: 0.01, warrior: 0.02, ranger: 0.02, support: 0.03, tank: 0.03 }
 };
 
 // ==================== 武器品质系统 ====================
@@ -846,54 +996,54 @@ function createWeaponDrop(qualityKey, weaponDef) {
     name: weaponDef.name,
     icon: weaponDef.icon,
     special,
-    displayName: special ? `${q.name}·${weaponDef.name}�?{special}】` : `${q.name}·${weaponDef.name}`
+    displayName: special ? `${q.name}·${weaponDef.name}�?{special}】` : `${q.name}·${weaponDef.name}`
   };
 }
 
-// ==================== 角色专属连招�?====================
+// ==================== 角色专属连招�?====================
 const CHARACTER_COMBOS = {
   jingru: {
-    A: { // 鱼肠�?- 快�?连斩
-      name: '鱼肠�?· 快速四连斩',
+    A: { // 鱼肠�?- 快�?连斩
+      name: '鱼肠�?· 快速四连斩',
       lightDmg: [30, 35, 40, 55],
       heavyDmg: [80, 90, 100],
       lightCount: 4, heavyCount: 3,
-      desc: '轻�?快速连斩，重�?挑飞终结'
+      desc: '轻�?快速连斩，重�?挑飞终结'
     },
     B: { // 软剑 - 中距缠绕控制
       name: '软剑 · 缠绕控制',
       lightDmg: [25, 28, 32, 38],
       heavyDmg: [60, 70, 85],
       lightCount: 3, heavyCount: 2,
-      desc: '轻�?缠绕连击，重×2拉拽控制'
+      desc: '轻�?缠绕连击，重×2拉拽控制'
     }
   },
   wuyin: {
-    A: { // 苦无 - 极速近身连�?      name: '苦无 · 极速连�?,
+    A: { // 苦无 - 极速近身连�?      name: '苦无 · 极速连�?,
       lightDmg: [25, 28, 32, 45],
       heavyDmg: [65, 75, 85],
       lightCount: 4, heavyCount: 3,
-      desc: '轻�?极速突刺，重�?暗杀终结'
+      desc: '轻�?极速突刺，重�?暗杀终结'
     },
-    B: { // 锁镰 - 中距离牵�?      name: '锁镰 · 牵拉连招',
+    B: { // 锁镰 - 中距离牵�?      name: '锁镰 · 牵拉连招',
       lightDmg: [20, 24, 30],
       heavyDmg: [55, 65, 80],
       lightCount: 3, heavyCount: 3,
-      desc: '轻�?牵拉连击，重×3钩锁控制'
+      desc: '轻�?牵拉连击，重×3钩锁控制'
     }
   },
   guanyun: {
-    A: { // 青龙刀 - 大范围横�?      name: '青龙刀 · 横扫千军',
+    A: { // 青龙刀 - 大范围横�?      name: '青龙刀 · 横扫千军',
       lightDmg: [35, 40, 48, 65],
       heavyDmg: [100, 120, 140],
       lightCount: 4, heavyCount: 3,
-      desc: '轻�?大范围横扫，重�?霸体重斩'
+      desc: '轻�?大范围横扫，重�?霸体重斩'
     },
-    B: { // 短刀 - 快速应�?      name: '短刀 · 应急连�?,
+    B: { // 短刀 - 快速应�?      name: '短刀 · 应急连�?,
       lightDmg: [28, 32, 38, 50],
       heavyDmg: [70, 80, 95],
       lightCount: 4, heavyCount: 3,
-      desc: '轻�?快速应急连击，重�?突刺终结'
+      desc: '轻�?快速应急连击，重�?突刺终结'
     }
   },
   mulan: {
@@ -902,13 +1052,13 @@ const CHARACTER_COMBOS = {
       lightDmg: [20, 24, 28, 35],
       heavyDmg: [60, 70, 90],
       lightCount: 4, heavyCount: 3,
-      desc: '轻�?速射连击，重×3蓄力穿�?
+      desc: '轻�?速射连击，重×3蓄力穿�?
     },
-    B: { // 袖箭 - 快速连�?      name: '袖箭 · 快速连�?,
+    B: { // 袖箭 - 快速连�?      name: '袖箭 · 快速连�?,
       lightDmg: [18, 22, 26, 32],
       heavyDmg: [50, 60, 75],
       lightCount: 4, heavyCount: 2,
-      desc: '轻�?快速连射，重�?散射覆盖'
+      desc: '轻�?快速连射，重�?散射覆盖'
     }
   }
 };
@@ -1058,7 +1208,7 @@ const SFX = {
   }
 };
 
-// ==================== 状�?====================
+// ==================== 状�?====================
 let selectedCharIdx = 0;
 const state = {
   started: false, time: 0, dt: 0,
@@ -1069,7 +1219,7 @@ const state = {
   dummies: [], enemies: [], hitEffects: [],
   minimapZoomed: false, panelF1: false, panelF3: false,
   stats: { kills: 0, maxCombo: 0, parries: 0 },
-  // 受身状�?  canRecover: false, recoverTimer: 0,
+  // 受身状�?  canRecover: false, recoverTimer: 0,
   // 弹反反击窗口
   riposteWindow: 0,
   // 角色 buff
@@ -1117,7 +1267,7 @@ camera.position.set(0, 8, 15);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 if (!renderer.getContext()) {
-  document.body.innerHTML = '<h1 style="color:#f44;font-size:32px;text-align:center;margin-top:40vh">WebGL 不可�?/h1>';
+  document.body.innerHTML = '<h1 style="color:#f44;font-size:32px;text-align:center;margin-top:40vh">WebGL 不可�?/h1>';
 }
 renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -1205,13 +1355,13 @@ const dummyZone = new THREE.Mesh(dummyZoneGeo, dummyZoneMat);
 dummyZone.rotation.x = -Math.PI / 2; dummyZone.position.set(0, 0.43, -20);
 scene.add(dummyZone);
 
-// 闯关挑战区标�?const challengeZoneGeo = new THREE.RingGeometry(8, 10, 32);
+// 闯关挑战区标�?const challengeZoneGeo = new THREE.RingGeometry(8, 10, 32);
 const challengeZoneMat = new THREE.MeshBasicMaterial({ color: 0x884422, side: THREE.DoubleSide, transparent: true, opacity: 0.2 });
 const challengeZone = new THREE.Mesh(challengeZoneGeo, challengeZoneMat);
 challengeZone.rotation.x = -Math.PI / 2; challengeZone.position.set(25, 0.43, 0);
 scene.add(challengeZone);
 
-// 区域文字标识�?function createZoneSign(x, z, text, color) {
+// 区域文字标识�?function createZoneSign(x, z, text, color) {
   const c = document.createElement('canvas'); c.width = 256; c.height = 64;
   const ctx = c.getContext('2d');
   ctx.fillStyle = 'rgba(0,0,0,0.6)';
@@ -1226,8 +1376,8 @@ scene.add(challengeZone);
   scene.add(sp);
 }
 createZoneSign(0, -30, '🪵 木人桩训练区', '#cc8844');
-createZoneSign(0, 22, '�?对战擂台', '#ffcc44');
-createZoneSign(33, 0, '🎯 闯关挑战�?, '#ff8844');
+createZoneSign(0, 22, '�?对战擂台', '#ffcc44');
+createZoneSign(33, 0, '🎯 闯关挑战�?, '#ff8844');
 
 // 红柱 + 灯笼
 function createPillar(x, z) {
@@ -1367,7 +1517,92 @@ starsGeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
 scene.add(new THREE.Points(starsGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.3, transparent: true, opacity: 0.5 })));
 
 // ==================== 武器模型构建（独立函数，用于切换时重建）====================
-function buildWeaponGroup(wt) {
+function 
+// ==================== 地图动态加载 ====================
+function loadMap(idx) {
+  selectedMapIdx = idx;
+  const m = MAPS[idx];
+  
+  // Change scene ambiance
+  const ambiance = {
+    0: { bg: 0x0a0a1e, fog: 0x0a0a1e, fogDen: 0.008 },  // Dragon - dark night
+    1: { bg: 0x1a1510, fog: 0x1a1510, fogDen: 0.006 },  // Roman - warm sand
+    2: { bg: 0x0a1a0a, fog: 0x0a1a0a, fogDen: 0.02 },   // Bamboo - misty green
+  };
+  const a = ambiance[idx];
+  scene.background = new THREE.Color(a.bg);
+  scene.fog = new THREE.FogExp2(a.fog, a.fogDen);
+  
+  // Change ground color
+  const groundColors = [0x3a3226, 0x8a7a60, 0x2a3a1a];
+  const platColors = [0x5a5046, 0x9a8a70, 0x4a5a3a];
+  const borderColors = [0x8b4513, 0x7a6a50, 0x3a4a2a];
+  
+  // Update existing meshes
+  scene.traverse(child => {
+    if (child.isMesh) {
+      if (child.geometry.type === 'PlaneGeometry' && child.material.roughness > 0.8) {
+        child.material.color.setHex(groundColors[idx]);
+      }
+      if (child.geometry.type === 'BoxGeometry' && Math.abs(child.position.y - 0.2) < 0.01) {
+        child.material.color.setHex(platColors[idx]);
+      }
+    }
+  });
+  
+  // Update all lights
+  scene.traverse(child => {
+    if (child.isAmbientLight) {
+      const ambColors = [0x404060, 0x605040, 0x305030];
+      child.color.setHex(ambColors[idx]);
+    }
+    if (child.isDirectionalLight && child.intensity > 1) {
+      const sunColors = [0xffeedd, 0xffddaa, 0xccffcc];
+      child.color.setHex(sunColors[idx]);
+    }
+    if (child.isPointLight) {
+      if (child.color.getHex() === 0xff6644 || child.color.getHex() === 0xffaa44) {
+        const pl1Colors = [0xff6644, 0xffaa44, 0x44ff66];
+        child.color.setHex(pl1Colors[idx]);
+      }
+    }
+  });
+  
+  // Add map-specific decoration overlays
+  // Remove old overlays
+  const toRemove = [];
+  scene.traverse(child => { if (child.userData && child.userData.mapOverlay) toRemove.push(child); });
+  toRemove.forEach(c => scene.remove(c));
+  
+  if (idx === 1) {
+    // Roman - add stone pillars around arena
+    for (let i = 0; i < 16; i++) {
+      const angle = (i / 16) * Math.PI * 2;
+      const r = 22;
+      const pillarGeo = new THREE.CylinderGeometry(0.5, 0.6, 8, 8);
+      const pillarMat = new THREE.MeshStandardMaterial({ color: 0x9a8a70, roughness: 0.7 });
+      const pillar = new THREE.Mesh(pillarGeo, pillarMat);
+      pillar.position.set(Math.cos(angle)*r, 4, Math.sin(angle)*r);
+      pillar.castShadow = true;
+      pillar.userData.mapOverlay = true;
+      scene.add(pillar);
+    }
+  } else if (idx === 2) {
+    // Bamboo - extra fog particles
+    for (let i = 0; i < 40; i++) {
+      const fogGeo = new THREE.SphereGeometry(3 + Math.random()*4, 8, 6);
+      const fogMat = new THREE.MeshBasicMaterial({ color: 0x88aa88, transparent: true, opacity: 0.08 });
+      const fog = new THREE.Mesh(fogGeo, fogMat);
+      fog.position.set((Math.random()-0.5)*80, 2+Math.random()*3, (Math.random()-0.5)*80);
+      fog.userData.mapOverlay = true;
+      scene.add(fog);
+    }
+  }
+  
+  showStatus('Map: ' + m.name);
+}
+
+buildWeaponGroup(wt) {
   const wg = new THREE.Group();
   if (wt === 'sword' || wt === 'dagger' || wt === 'knife') {
     const bladeColor = wt === 'dagger' ? 0x8866aa : wt === 'knife' ? 0x44aa44 : 0xdddddd;
@@ -1471,7 +1706,7 @@ function createCharacter(color, emissiveColor, isPlayer, weaponType) {
   );
   cape.position.set(0, 1.3, -0.3); cape.rotation.x = 0.15; g.add(cape);
 
-  // �?  const helmetBase = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.36, 0.15, 8), armorMat);
+  // �?  const helmetBase = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.36, 0.15, 8), armorMat);
   helmetBase.position.y = 2.25; g.add(helmetBase);
   const head = new THREE.Mesh(new THREE.SphereGeometry(0.33, 10, 10), skinMat);
   head.position.y = 2.5; head.castShadow = true; g.add(head);
@@ -1512,7 +1747,7 @@ function createCharacter(color, emissiveColor, isPlayer, weaponType) {
   const gauntletL = new THREE.Mesh(gauntletGeo, armorMat); gauntletL.position.set(-0.58, 1.05, 0); g.add(gauntletL);
   const gauntletR = new THREE.Mesh(gauntletGeo, armorMat); gauntletR.position.set(0.58, 1.05, 0); g.add(gauntletR);
 
-  // �?  const legGeo = new THREE.BoxGeometry(0.26, 0.55, 0.26);
+  // �?  const legGeo = new THREE.BoxGeometry(0.26, 0.55, 0.26);
   const legL = new THREE.Mesh(legGeo, darkMat); legL.position.set(-0.2, 0.55, 0); legL.castShadow = true; g.add(legL);
   const legR = new THREE.Mesh(legGeo, darkMat); legR.position.set(0.2, 0.55, 0); legR.castShadow = true; g.add(legR);
 
@@ -1526,7 +1761,7 @@ function createCharacter(color, emissiveColor, isPlayer, weaponType) {
   const kneeL = new THREE.Mesh(kneeGeo, armorMat); kneeL.position.set(-0.2, 0.75, 0.1); g.add(kneeL);
   const kneeR = new THREE.Mesh(kneeGeo, armorMat); kneeR.position.set(0.2, 0.75, 0.1); g.add(kneeR);
 
-  // ===== 武器（根据类型差异化�?====
+  // ===== 武器（根据类型差异化�?====
   const wg = new THREE.Group();
   const wt = weaponType || 'sword';
 
@@ -1554,11 +1789,11 @@ function createCharacter(color, emissiveColor, isPlayer, weaponType) {
     pommel.position.y = -0.42; wg.add(pommel);
     wg.position.set(0.7, 1.3, 0.15); wg.rotation.z = -0.25;
   } else if (wt === 'halberd') {
-    // 大刀/�?    const bladeMat = new THREE.MeshStandardMaterial({ color: 0xccccdd, metalness: 0.9, roughness: 0.15, emissive: 0x22aa22, emissiveIntensity: 0.2 });
+    // 大刀/�?    const bladeMat = new THREE.MeshStandardMaterial({ color: 0xccccdd, metalness: 0.9, roughness: 0.15, emissive: 0x22aa22, emissiveIntensity: 0.2 });
     // 长柄
     const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 2.0, 6), new THREE.MeshStandardMaterial({ color: 0x6a4a2a, roughness: 0.8 }));
     pole.position.y = 0.8; wg.add(pole);
-    // 刀�?    const bladeShape = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.8, 0.04), bladeMat);
+    // 刀�?    const bladeShape = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.8, 0.04), bladeMat);
     bladeShape.position.set(0.1, 1.9, 0); bladeShape.rotation.z = -0.15; wg.add(bladeShape);
     const bladeTip = new THREE.Mesh(new THREE.ConeGeometry(0.12, 0.3, 4), bladeMat);
     bladeTip.position.set(0.15, 2.35, 0); wg.add(bladeTip);
@@ -1567,10 +1802,10 @@ function createCharacter(color, emissiveColor, isPlayer, weaponType) {
     guard.position.y = 1.45; wg.add(guard);
     wg.position.set(0.7, 0.5, 0.15); wg.rotation.z = -0.15;
   } else if (wt === 'bow') {
-    // �?    const bowMat = new THREE.MeshStandardMaterial({ color: 0xcc8800, roughness: 0.6, emissive: 0xffaa00, emissiveIntensity: 0.15 });
+    // �?    const bowMat = new THREE.MeshStandardMaterial({ color: 0xcc8800, roughness: 0.6, emissive: 0xffaa00, emissiveIntensity: 0.15 });
     const bowCurve = new THREE.Mesh(new THREE.TorusGeometry(0.7, 0.04, 6, 12, Math.PI * 0.8), bowMat);
     bowCurve.rotation.z = Math.PI / 2; wg.add(bowCurve);
-    // �?    const stringGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, -0.65, 0), new THREE.Vector3(0, 0.65, 0)]);
+    // �?    const stringGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, -0.65, 0), new THREE.Vector3(0, 0.65, 0)]);
     wg.add(new THREE.Line(stringGeo, new THREE.LineBasicMaterial({ color: 0xdddddd })));
     wg.position.set(0.6, 1.4, 0.2); wg.rotation.z = -0.3;
   } else if (wt === 'chain') {
@@ -1610,8 +1845,32 @@ function selectChar(idx) {
   document.querySelectorAll('.char-card').forEach((c, i) => c.classList.toggle('selected', i === idx));
 }
 
+
+function populateMapGrid() {
+  const grid = document.getElementById('map-grid');
+  grid.innerHTML = '';
+  MAPS.forEach((m, i) => {
+    const card = document.createElement('div');
+    card.className = 'map-card' + (i === 0 ? ' selected' : '');
+    card.setAttribute('data-map', i);
+    card.onclick = () => selectMap(i);
+    card.innerHTML = '<div class="map-icon">' + m.icon + '</div><div class="map-name">' + m.name + '</div><div class="map-desc">' + m.desc + '</div>';
+    grid.appendChild(card);
+  });
+}
+populateMapGrid();
+
+
+function selectMap(idx) {
+  selectedMapIdx = idx;
+  document.querySelectorAll('.map-card').forEach((c, i) => c.classList.toggle('selected', i === idx));
+  loadMap(idx);
+}
+
+
 function startGame() {
   SFX.init();
+  loadMap(selectedMapIdx);
   state.player = createPlayerState(selectedCharIdx);
   const c = state.player.char;
 
@@ -1653,7 +1912,7 @@ function startGame() {
   const pnCtx = pnC.getContext('2d');
   pnCtx.fillStyle = 'rgba(0,255,136,0.25)'; pnCtx.beginPath(); pnCtx.roundRect(0, 0, 256, 48, 8); pnCtx.fill();
   pnCtx.font = 'bold 20px Microsoft YaHei'; pnCtx.fillStyle = '#00ff88'; pnCtx.textAlign = 'center';
-  pnCtx.fillText(`�?${c.name}（你）`, 128, 32);
+  pnCtx.fillText(`�?${c.name}（你）`, 128, 32);
   const pnSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(pnC), transparent: true }));
   pnSprite.scale.set(3.5, 0.65, 1); pnSprite.position.y = 5.0;
   state.playerMesh.add(pnSprite);
@@ -1665,21 +1924,21 @@ function startGame() {
   document.getElementById('wb-name').textContent = c.weapons[1].name;
   document.getElementById('weapon-a').querySelector('span').textContent = c.weapons[0].icon;
   document.getElementById('weapon-b').querySelector('span').textContent = c.weapons[1].icon;
-  // 武器品质边框初始�?  document.getElementById('weapon-a').classList.add('quality-black');
+  // 武器品质边框初始�?  document.getElementById('weapon-a').classList.add('quality-black');
   document.getElementById('weapon-b').classList.add('quality-black');
   document.getElementById('skill-q-icon').textContent = c.skills.Q.icon;
   document.getElementById('skill-e-icon').textContent = c.skills.E.icon;
   document.getElementById('skill-r-icon').textContent = c.skills.R.icon;
   document.getElementById('skill-p-icon').textContent = c.passive.icon;
 
-  // 初始化木人桩和敌�?  initDummies();
+  // 初始化木人桩和敌�?  initDummies();
   initEnemies();
 
   state.started = true;
   try { document.body.requestPointerLock(); } catch(e) {}
 }
 
-// ==================== 木人�?====================
+// ==================== 木人�?====================
 function initDummies() {
   state.dummies.forEach(d => { if (d.mesh) scene.remove(d.mesh); });
   state.dummies = [];
@@ -1704,7 +1963,7 @@ function initDummies() {
 const ENEMY_DEFS = [
   { color: 0x882222, emissive: 0xff0000, name: '影忍·雾隐', charIdx: 1, style: 'assassin' },
   { color: 0x228822, emissive: 0x00ff00, name: '傲骨·关云', charIdx: 2, style: 'berserker' },
-  { color: 0xcc8800, emissive: 0xffaa00, name: '追风·花木�?, charIdx: 3, style: 'ranger' },
+  { color: 0xcc8800, emissive: 0xffaa00, name: '追风·花木�?, charIdx: 3, style: 'ranger' },
 ];
 
 function initEnemies() {
@@ -1742,7 +2001,7 @@ function initEnemies() {
   }
 }
 
-// ==================== 血�?D ====================
+// ==================== 血�?D ====================
 function createHPBar3D() {
   const c = document.createElement('canvas'); c.width = 128; c.height = 16;
   const tex = new THREE.CanvasTexture(c);
@@ -1902,7 +2161,7 @@ function switchCharacter(idx) {
   const pnCtx = pnC.getContext('2d');
   pnCtx.fillStyle = 'rgba(0,255,136,0.25)'; pnCtx.beginPath(); pnCtx.roundRect(0, 0, 256, 48, 8); pnCtx.fill();
   pnCtx.font = 'bold 20px Microsoft YaHei'; pnCtx.fillStyle = '#00ff88'; pnCtx.textAlign = 'center';
-  pnCtx.fillText(`�?${c.name}（你）`, 128, 32);
+  pnCtx.fillText(`�?${c.name}（你）`, 128, 32);
   const pnSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(pnC), transparent: true }));
   pnSprite.scale.set(3.5, 0.65, 1); pnSprite.position.y = 5.0;
   state.playerMesh.add(pnSprite);
@@ -1914,14 +2173,14 @@ function switchCharacter(idx) {
   document.getElementById('wb-name').textContent = c.weapons[1].name;
   document.getElementById('weapon-a').querySelector('span').textContent = c.weapons[0].icon;
   document.getElementById('weapon-b').querySelector('span').textContent = c.weapons[1].icon;
-  // 武器品质重置为黑�?  document.getElementById('weapon-a').className = 'weapon-slot active quality-black';
+  // 武器品质重置为黑�?  document.getElementById('weapon-a').className = 'weapon-slot active quality-black';
   document.getElementById('weapon-b').className = 'weapon-slot quality-black';
   document.getElementById('skill-q-icon').textContent = c.skills.Q.icon;
   document.getElementById('skill-e-icon').textContent = c.skills.E.icon;
   document.getElementById('skill-r-icon').textContent = c.skills.R.icon;
   document.getElementById('skill-p-icon').textContent = c.passive.icon;
 
-  showStatus(`切换�?${c.name}`);
+  showStatus(`切换�?${c.name}`);
   SFX.play('weapon_switch');
 }
 
@@ -1971,15 +2230,15 @@ function updateEnemyInfoPanel() {
   state.enemies.forEach(e => {
     const d = e.isDead ? '💀 已击杀' : `${Math.ceil(e.hp)} / ${e.maxHp}`;
     const dist = e.isDead ? '-' : Math.ceil(state.player.position.distanceTo(e.position)) + 'm';
-    const status = e.isDead ? '死亡' : (e.isAttacking ? '攻击�? : (e.isBlocking ? '格挡�? : '待机'));
+    const status = e.isDead ? '死亡' : (e.isAttacking ? '攻击�? : (e.isBlocking ? '格挡�? : '待机'));
     list.innerHTML += `
-      <div class="row"><span>${e.name}</span><span class="val">${e.isDead ? '💀' : '�?}</span></div>
-      <div class="row"><span>　血�?/span><span class="val">${d}</span></div>
+      <div class="row"><span>${e.name}</span><span class="val">${e.isDead ? '💀' : '�?}</span></div>
+      <div class="row"><span>　血�?/span><span class="val">${d}</span></div>
       <div class="row"><span>　距离</span><span class="val">${dist}</span></div>
-      <div class="row"><span>　状�?/span><span class="val">${status}</span></div>
+      <div class="row"><span>　状�?/span><span class="val">${status}</span></div>
     `;
   });
-  if (list.children.length === 0) list.innerHTML = '<div style="color:rgba(255,255,255,0.4);text-align:center">附近无敌�?/div>';
+  if (list.children.length === 0) list.innerHTML = '<div style="color:rgba(255,255,255,0.4);text-align:center">附近无敌�?/div>';
 }
 
 // ==================== 战斗 ====================
@@ -2052,7 +2311,7 @@ function performAttack(entity, type, isPlayer) {
       if (dir.dot(fwd) < Math.cos(angle)) return;
       applyDmg(t, getDmg(type, entity.attackPhase, entity.hasSwitchBonus, entity), entity);
       hitAny = true;
-      if (type === 'heavy' && entity.attackPhase === 2) { t.stunTimer = 1.0; showStatus('挑飞�?); }
+      if (type === 'heavy' && entity.attackPhase === 2) { t.stunTimer = 1.0; showStatus('挑飞�?); }
     });
     if (hitAny) {
       if (entity.hasSwitchBonus) entity.hasSwitchBonus = false;
@@ -2069,7 +2328,7 @@ function performAirAttack() {
   if (p.isDead || p.isGrounded) return;
   p.isAttacking = true; p.attackType = 'light'; p.attackTimer = 0.4;
   p.velocityY = -15;
-  showStatus('�?空中下砸�?);
+  showStatus('�?空中下砸�?);
   [...state.dummies, ...state.enemies].forEach(t => {
     if (t.isDead) return;
     if (p.position.distanceTo(t.position) < 3) applyDmg(t, 70, p);
@@ -2103,7 +2362,7 @@ function applyDmg(target, dmg, attacker) {
     if (target.stamina <= 0) {
       target.stamina = 0; target.isBlocking = false;
       target.isWeak = true; target.weakTimer = 2;
-      showStatus('破防�?);
+      showStatus('破防�?);
       SFX.play('weak');
     }
     showDmgText(dmg * 0.3, target.position, '#8888ff');
@@ -2127,7 +2386,7 @@ function applyDmg(target, dmg, attacker) {
   }
   if (target === state.player) state.player.lastHitTime = state.time;
 
-  // 巫术被动：中�?  if (attacker && attacker.char && attacker.char.system === 'wushu2' && attacker === state.player) {
+  // 巫术被动：中�?  if (attacker && attacker.char && attacker.char.system === 'wushu2' && attacker === state.player) {
     state.dotEffects.push({ target, dmg: 8, dur: 3, timer: 0, interval: 0.5 });
   }
 
@@ -2135,7 +2394,7 @@ function applyDmg(target, dmg, attacker) {
     target.isDead = true; target.mesh.visible = false;
     if (target.type === 'dummy') {
       target.respawnTimer = 3;
-      // 木人桩掉落黑铁武�?      if (attacker === state.player) {
+      // 木人桩掉落黑铁武�?      if (attacker === state.player) {
         const qKey = rollQuality('dummy');
         const wIdx = Math.random() < 0.5 ? 0 : 1;
         const drop = createWeaponDrop(qKey, attacker.char.weapons[wIdx]);
@@ -2150,13 +2409,13 @@ function applyDmg(target, dmg, attacker) {
         attacker.hp = Math.min(attacker.maxHp, attacker.hp + heal);
         attacker.kills++;
         state.stats.kills++;
-        // 击杀掉落武器（青�?白银/小概率黄金）
+        // 击杀掉落武器（青�?白银/小概率黄金）
         const qKey = rollQuality('enemy');
         const wIdx = Math.random() < 0.5 ? 0 : 1;
         const drop = createWeaponDrop(qKey, attacker.char.weapons[wIdx]);
         attacker.weaponQuality[wIdx === 0 ? 'A' : 'B'] = drop;
         showQualityToast(drop);
-        showStatus(`击杀 ${target.name}�?${heal} HP`);
+        showStatus(`击杀 ${target.name}�?${heal} HP`);
         addKillFeed(attacker.char.name, target.name);
         const ke = document.getElementById('kill-effect'); ke.style.opacity = '1';
         setTimeout(() => ke.style.opacity = '0', 200);
@@ -2165,6 +2424,8 @@ function applyDmg(target, dmg, attacker) {
     }
   }
 }
+
+  checkRoundEnd();
 
 // ==================== 特效 ====================
 function createHitEffect(pos, color) {
@@ -2209,10 +2470,10 @@ function showParry() {
 function showQualityToast(drop) {
   const el = document.getElementById('quality-toast');
   el.className = '';
-  const specialText = drop.special ? ` �?{drop.special}】` : '';
+  const specialText = drop.special ? ` �?{drop.special}】` : '';
   el.textContent = `获得 ${drop.qualityName}·${drop.name}${specialText}`;
   el.classList.add('q-' + drop.quality);
-  // 强制 reflow 后显�?  void el.offsetWidth;
+  // 强制 reflow 后显�?  void el.offsetWidth;
   el.classList.add('show');
   clearTimeout(el._qt);
   el._qt = setTimeout(() => { el.classList.remove('show'); }, 2500);
@@ -2220,7 +2481,7 @@ function showQualityToast(drop) {
 function addKillFeed(k, v) {
   const feed = document.getElementById('kill-feed');
   const msg = document.createElement('div'); msg.className = 'kill-msg';
-  msg.innerHTML = `�?<b>${k}</b> 击杀�?<b>${v}</b>`;
+  msg.innerHTML = `�?<b>${k}</b> 击杀�?<b>${v}</b>`;
   feed.appendChild(msg); setTimeout(() => msg.remove(), 3000);
 }
 
@@ -2275,7 +2536,7 @@ function updateAI(e, dt) {
       if (e.attackTimer <= 0 && !e.isAttacking) {
         let at;
         if (style === 'berserker') at = Math.random() < 0.4 ? 'light' : 'heavy';
-        else if (style === 'ranger') at = 'light'; // 远程主要轻攻�?        else at = Math.random() < 0.6 ? 'light' : 'heavy';
+        else if (style === 'ranger') at = 'light'; // 远程主要轻攻�?        else at = Math.random() < 0.6 ? 'light' : 'heavy';
 
         if (e.stamina < (at==='light'?5:15)) { e.state='retreat'; e.stateTimer=1; break; }
         e.isAttacking = true; e.attackType = at;
@@ -2334,7 +2595,7 @@ function updateAI(e, dt) {
   updateHPBar3D(e.hpBar, e.hp, e.maxHp);
 }
 
-// ==================== 技�?====================
+// ==================== 技�?====================
 function useSkill(sk) {
   const p = state.player;
   const c = p.char;
@@ -2551,7 +2812,7 @@ function updateHUD() {
   }
 }
 
-// ==================== 区域检�?====================
+// ==================== 区域检�?====================
 function updateZoneHint() {
   const p = state.player;
   if (!p) return;
@@ -2566,7 +2827,7 @@ function updateZoneHint() {
   else el.style.opacity = '0';
 }
 
-// ==================== 小地�?====================
+// ==================== 小地�?====================
 function updateMinimap() {
   const canvas = document.getElementById('minimap-canvas');
   const ctx = canvas.getContext('2d');
@@ -2621,7 +2882,7 @@ function updatePlayer(dt) {
     if (p.respawnTimer <= 0) {
       p.isDead = false; p.hp = p.maxHp; p.stamina = p.maxStamina; p.isWeak = false;
       p.position.set(0, 0, 5); state.playerMesh.position.copy(p.position);
-      state.playerMesh.visible = true; showStatus('复活�?);
+      state.playerMesh.visible = true; showStatus('复活�?);
     }
     return;
   }
@@ -2635,7 +2896,7 @@ function updatePlayer(dt) {
       p.stunTimer = 0;
       p.knockbackVel.set(0, 0, 0);
       SFX.play('recovery');
-      showStatus('受身�?);
+      showStatus('受身�?);
       state.keys['Space'] = false;
     }
     if (state.recoverTimer <= 0) state.canRecover = false;
@@ -2730,7 +2991,7 @@ function updatePlayer(dt) {
             const drop = createWeaponDrop(qKey, p.char.weapons[wIdx]);
             p.weaponQuality[wIdx === 0 ? 'A' : 'B'] = drop;
             showQualityToast(drop);
-            showStatus(`击杀 ${dot.target.name}�?�? +${heal} HP`);
+            showStatus(`击杀 ${dot.target.name}�?�? +${heal} HP`);
             addKillFeed(p.char.name + ' ☠️', dot.target.name);
             SFX.play('kill');
           }
@@ -2805,27 +3066,27 @@ function updatePlayer(dt) {
     p.isCharging = false;
   }
 
-  // 轻攻�?  if (state.mouseButtons.left && !p.isAttacking && !p.isDodging && !p.isWeak && !p.isCharging) {
+  // 轻攻�?  if (state.mouseButtons.left && !p.isAttacking && !p.isDodging && !p.isWeak && !p.isCharging) {
     if (!p.isGrounded) performAirAttack();
     else performAttack(p, 'light', true);
     state.mouseButtons.left = false;
   }
 
-  // 技�?  if (state.keys['KeyQ'] && p.skills.Q.cd <= 0) useSkill('Q');
+  // 技�?  if (state.keys['KeyQ'] && p.skills.Q.cd <= 0) useSkill('Q');
   if (state.keys['KeyE'] && p.skills.E.cd <= 0) useSkill('E');
   if (state.keys['KeyR'] && p.skills.R.cd <= 0) useSkill('R');
   for (const k in p.skills) p.skills[k].cd = Math.max(0, p.skills[k].cd - dt);
 
-  // 切武�?  if (state.keys['Tab'] && p.weaponSwitchTimer <= 0) {
+  // 切武�?  if (state.keys['Tab'] && p.weaponSwitchTimer <= 0) {
     p.currentWeapon = p.currentWeapon === 'A' ? 'B' : 'A';
     p.weaponSwitchTimer = CONFIG.WEAPON_SWITCH_TIME; p.hasSwitchBonus = true;
     SFX.play('weapon_switch');
     const wIdx = p.currentWeapon === 'B' ? 1 : 0;
     const wDef = p.char.weapons[wIdx];
-    showStatus(`切换武器 �?${wDef.icon} ${wDef.name}`);
+    showStatus(`切换武器 �?${wDef.icon} ${wDef.name}`);
     state.keys['Tab'] = false;
 
-    // ===== 视觉变化：重建武器模�?=====
+    // ===== 视觉变化：重建武器模�?=====
     const ud = state.playerMesh.userData;
     if (ud && ud.weaponGroup) {
       state.playerMesh.remove(ud.weaponGroup);
@@ -2834,7 +3095,7 @@ function updatePlayer(dt) {
     state.playerMesh.add(newWg);
     state.playerMesh.userData.weaponGroup = newWg;
 
-    // 切换动画�?.3秒内武器挥舞
+    // 切换动画�?.3秒内武器挥舞
     p._switchAnimTimer = CONFIG.WEAPON_SWITCH_TIME;
 
     // 更新 HUD 武器栏高亮和品质颜色
@@ -2848,7 +3109,7 @@ function updatePlayer(dt) {
     slotB.className = 'weapon-slot' + (p.currentWeapon === 'B' ? ' active' : '') + ' ' + qB.cssClass;
   }
   p.weaponSwitchTimer = Math.max(0, p.weaponSwitchTimer - dt);
-  // 切换动画�?.3秒武器挥舞效�?  if (p._switchAnimTimer > 0) {
+  // 切换动画�?.3秒武器挥舞效�?  if (p._switchAnimTimer > 0) {
     p._switchAnimTimer -= dt;
     const t = 1 - (p._switchAnimTimer / CONFIG.WEAPON_SWITCH_TIME);
     const ud = state.playerMesh.userData;
@@ -2868,7 +3129,7 @@ function updatePlayer(dt) {
   updateHUD();
 }
 
-// ==================== 主循�?====================
+// ==================== 主循�?====================
 const clock = new THREE.Clock();
 function gameLoop() {
   requestAnimationFrame(gameLoop);
@@ -2878,7 +3139,7 @@ function gameLoop() {
 
   updatePlayer(dt);
 
-  // 木人�?  state.dummies.forEach(d => {
+  // 木人�?  state.dummies.forEach(d => {
     if (d.isDead) { d.respawnTimer -= dt; if (d.respawnTimer<=0) { d.isDead=false; d.hp=d.maxHp; d.mesh.visible=true; } return; }
     updateHPBar3D(d.hpBar, d.hp, d.maxHp);
   });
@@ -2928,7 +3189,7 @@ window.addEventListener('resize', () => {
 });
 
 gameLoop();
-console.log('流星蝴蝶�?· Web 原型 V0.2 Enhanced 已加�?);
+console.log('流星蝴蝶�?· Web 原型 V0.2 Enhanced 已加�?);
 
 // ==================== V0.3 联机系统 ====================
 const net = new GameNetwork();
@@ -2940,7 +3201,7 @@ let gameMode = 'single'; // 'single' | '1v1' | 'training'
 
 // 网络事件绑定
 net.on('welcome', (data) => {
-  console.log(`[联机] 已连�? ${data.playerName} (ID: ${data.playerId})`);
+  console.log(`[联机] 已连�? ${data.playerName} (ID: ${data.playerId})`);
 });
 
 net.on('game_start', (data) => {
@@ -2948,7 +3209,7 @@ net.on('game_start', (data) => {
   isMultiplayer = data.mode === '1v1';
   lobby.hide();
   
-  // 如果是多人模式，初始化远程玩�?  if (isMultiplayer && data.players) {
+  // 如果是多人模式，初始化远程玩�?  if (isMultiplayer && data.players) {
     data.players.forEach(p => {
       if (p.id !== net.playerId) {
         createRemotePlayer(p);
@@ -2956,7 +3217,7 @@ net.on('game_start', (data) => {
     });
   }
   
-  // 开始游�?  if (!state.started) {
+  // 开始游�?  if (!state.started) {
     state.started = true;
   }
   showStatus(`游戏开始！模式: ${gameMode}`);
@@ -2985,7 +3246,7 @@ net.on('player_left', (data) => {
 });
 
 net.on('matched', (data) => {
-  showStatus(`匹配成功！对�? ${data.opponent?.name || '未知'}`);
+  showStatus(`匹配成功！对�? ${data.opponent?.name || '未知'}`);
   gameMode = '1v1';
   isMultiplayer = true;
 });
@@ -3024,7 +3285,7 @@ function updateRemotePlayer(playerId, input) {
   
   if (input.idle) return;
   
-  // 根据输入更新位置和状�?  if (input.keys) {
+  // 根据输入更新位置和状�?  if (input.keys) {
     const speed = CONFIG.MOVE_SPEED * (state.dt || 0.016);
     if (input.keys.KeyW) mesh.position.z -= speed;
     if (input.keys.KeyS) mesh.position.z += speed;
@@ -3048,7 +3309,7 @@ function removeRemotePlayer(playerId) {
   delete remotePlayers[playerId];
 }
 
-// 发送本地输入到服务�?function sendLocalInput() {
+// 发送本地输入到服务�?function sendLocalInput() {
   if (!net.connected || !isMultiplayer) return;
   
   net.sendInput(
@@ -3074,7 +3335,7 @@ function removeRemotePlayer(playerId) {
   );
 }
 
-// 修改主循环，加入网络输入发�?const originalGameLoop = gameLoop;
+// 修改主循环，加入网络输入发�?const originalGameLoop = gameLoop;
 function networkedGameLoop() {
   originalGameLoop();
   sendLocalInput();
@@ -3091,7 +3352,7 @@ setTimeout(() => {
   showLobby();
 }, 500);
 
-// 添加大厅按钮�?HUD
+// 添加大厅按钮�?HUD
 document.addEventListener('DOMContentLoaded', () => {
   const hud = document.getElementById('hud');
   if (hud) {
