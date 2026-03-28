@@ -1,4 +1,7 @@
 /**
+  // 静态文件
+  serveStatic(req, res);
+  return;
  * Q版方块人大乱斗 - 帧同步服务器 V0.3
  * 
  * 功能：
@@ -257,11 +260,49 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  res.writeHead(404);
-  res.end('Not Found');
+  // 静态文件
+  serveStatic(req, res);
 });
 
 // ==================== WebSocket 服务器 ====================
+
+// ==================== 静态文件服务 ====================
+const fs = require('fs');
+const path = require('path');
+const gameDir = path.join(__dirname, '..', 'Code');
+
+function serveStatic(req, res) {
+  let filePath = req.url === '/' ? '/index_local_v03_enhanced.html' : req.url;
+  filePath = path.join(gameDir, filePath);
+  
+  // Security: prevent directory traversal
+  if (!filePath.startsWith(gameDir)) {
+    res.writeHead(403);
+    res.end('Forbidden');
+    return;
+  }
+  
+  const ext = path.extname(filePath);
+  const mimeTypes = {
+    '.html': 'text/html',
+    '.js': 'text/javascript',
+    '.css': 'text/css',
+    '.json': 'application/json',
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.svg': 'image/svg+xml',
+  };
+  
+  try {
+    const data = fs.readFileSync(filePath);
+    res.writeHead(200, { 'Content-Type': mimeTypes[ext] || 'text/plain' });
+    res.end(data);
+  } catch (err) {
+    res.writeHead(404);
+    res.end('Not Found');
+  }
+}
+
 const wss = new WebSocketServer({ server });
 
 wss.on('connection', (ws) => {

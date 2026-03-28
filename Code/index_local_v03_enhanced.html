@@ -1870,6 +1870,20 @@ function selectMap(idx) {
 
 function startGame() {
   SFX.init();
+
+  // 连接服务器
+  if (typeof GameNetwork !== 'undefined') {
+    window.gameNetwork = new GameNetwork();
+    window.gameNetwork.connect().then(() => {
+      const playerName = window.gameNetwork.playerName || 'Player';
+      window.gameNetwork.setName(playerName);
+      window.gameNetwork.setCharacter(selectedCharIdx);
+      showStatus('Connected to server!');
+    }).catch(err => {
+      console.log('Server not available, local mode');
+      showStatus('Local mode (server offline)');
+    });
+  }
   loadMap(selectedMapIdx);
   state.player = createPlayerState(selectedCharIdx);
   const c = state.player.char;
