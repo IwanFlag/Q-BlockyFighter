@@ -344,6 +344,15 @@ canvas { display: block; }
 .map-name { color: #fff; font-size: 16px; font-weight: bold; margin-bottom: 4px; }
 .map-desc { color: #888; font-size: 12px; }
 
+
+@keyframes waveBanner {
+  0% { opacity: 0; transform: translate(-50%,-50%) scale(0.5); }
+  20% { opacity: 1; transform: translate(-50%,-50%) scale(1.1); }
+  40% { transform: translate(-50%,-50%) scale(1); }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1.2); }
+}
+
 </style>
 </head>
 <body>
@@ -451,7 +460,12 @@ canvas { display: block; }
 <div id="lock-marker"></div>
 
 <div id="hud" style="display:none;">
-  <div id="minimap">
+  <div id="challenge-hud" style="position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:15;pointer-events:auto;display:none;text-align:center;">
+  <div id="challenge-wave" style="color:#ffd700;font-size:16px;font-weight:bold;text-shadow:0 0 8px rgba(255,215,0,0.5)"></div>
+  <div id="challenge-score" style="color:#aaa;font-size:12px;margin-top:2px"></div>
+</div>
+<div id="challenge-btn" style="position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:15;pointer-events:auto;padding:8px 20px;background:rgba(255,50,50,0.3);border:2px solid #ff4444;border-radius:8px;color:#ff8888;font-size:14px;cursor:pointer;font-family:inherit;" onclick="startChallenge()">🎯 闯关挑战</div>
+<div id="minimap">
     <canvas id="minimap-canvas" width="140" height="140"></canvas>
   </div>
   <div id="stats-bar">
@@ -892,7 +906,8 @@ function checkRoundEnd() {
     } else {
       setTimeout(resetRound, 3000);
     }
-  }
+  }  checkWaveComplete();
+
 }
 
 function showDuelResult(playerWon) {
@@ -935,6 +950,195 @@ function backToSelect() {
   state.enemyMeshes = [];
   if (state.playerMesh) { scene.remove(state.playerMesh); state.playerMesh = null; }
 }
+
+// ==================== 闯关挑战系统 ====================
+let challengeState = {
+  active: false,
+  wave: 0,
+  maxWave: 10,
+  score: 0,
+  waveEnemies: [],
+  betweenWaves: false,
+  bestWave: 0,
+  bestScore: 0,
+  totalKills: 0,
+};
+
+const CHALLENGE_WAVES = [
+  // wave: enemy count, enemy level multiplier, name
+  { count: 2, lvlMult: 0.8, name: 'Wave 1', isBoss: false },
+  { count: 3, lvlMult: 1.0, name: 'Wave 2', isBoss: false },
+  { count: 3, lvlMult: 1.2, name: 'Wave 3', isBoss: false },
+  { count: 4, lvlMult: 1.3, name: 'Wave 4', isBoss: false },
+  { count: 4, lvlMult: 1.5, name: 'Wave 5 - Elite', isBoss: false },
+  { count: 3, lvlMult: 1.8, name: 'Wave 6', isBoss: false },
+  { count: 4, lvlMult: 2.0, name: 'Wave 7', isBoss: false },
+  { count: 5, lvlMult: 2.2, name: 'Wave 8', isBoss: false },
+  { count: 3, lvlMult: 2.5, name: 'Wave 9 - Elite', isBoss: false },
+  { count: 1, lvlMult: 4.0, name: 'BOSS', isBoss: true },
+];
+
+function startChallenge() {
+  challengeState = { active: true, wave: 0, maxWave: 10, score: 0, waveEnemies: [], betweenWaves: false, bestWave: challengeState.bestWave, bestScore: challengeState.bestScore, totalKills: 0 };
+  state.dummies.forEach(d => { d.isDead = true; d.mesh.visible = false; });
+  state.enemies.forEach(e => { scene.remove(e.mesh); });
+  state.enemies = [];
+  state.enemyMeshes.forEach(m => scene.remove(m));
+  state.enemyMeshes = [];
+  nextWave();
+}
+
+function nextWave() {
+  if (!challengeState.active) return;
+  challengeState.wave++;
+  if (challengeState.wave > challengeState.maxWave) {
+    showChallengeResult(true);
+    return;
+  }
+  challengeState.betweenWaves = false;
+  const waveData = CHALLENGE_WAVES[challengeState.wave - 1];
+  showStatus(waveData.name + ' - FIGHT!');
+  showWaveBanner(waveData.name, waveData.isBoss);
+  
+  const spawnR = 8;
+  for (let i = 0; i < waveData.count; i++) {
+    const angle = (i / waveData.count) * Math.PI * 2;
+    const sx = Math.cos(angle) * spawnR;
+    const sz = Math.sin(angle) * spawnR;
+    const charIdx = Math.floor(Math.random() * CHARACTERS.length);
+    const char = CHARACTERS[charIdx];
+    const enemy = createPlayerState(charIdx);
+    enemy.type = 'enemy';
+    enemy.name = char.name;
+    enemy.position.set(sx, 0, sz);
+    enemy.rotation = Math.atan2(-sx, -sz);
+    enemy.char = char;
+    enemy.maxHp = Math.floor(enemy.maxHp * waveData.lvlMult);
+    enemy.hp = enemy.maxHp;
+    enemy.meshRef = null;
+    
+    if (waveData.isBoss) {
+      enemy.maxHp = Math.floor(enemy.maxHp * 2);
+      enemy.hp = enemy.maxHp;
+      enemy.name = 'BOSS ' + char.name;
+    }
+    
+    state.enemies.push(enemy);
+    
+    const mesh = createCharacter(char.color, char.emissive, false, char.weapons[0].type);
+    mesh.position.set(sx, 0, sz);
+    if (waveData.isBoss) mesh.scale.set(1.5, 1.5, 1.5);
+    scene.add(mesh);
+    state.enemyMeshes.push(mesh);
+    enemy.meshRef = mesh;
+    
+    // Enemy info panel for HP bars
+    createEnemyHpBar3D(mesh, enemy);
+  }
+  
+  challengeState.betweenWaves = false;
+}
+
+function checkWaveComplete() {
+  if (!challengeState.active || challengeState.betweenWaves) return;
+  const allDead = state.enemies.every(e => e.isDead);
+  if (allDead && state.enemies.length > 0) {
+    challengeState.betweenWaves = true;
+    challengeState.totalKills += state.enemies.length;
+    challengeState.score += challengeState.wave * 100;
+    const bonus = Math.floor(50 * challengeState.wave);
+    if (state.player) {
+      state.player.hp = Math.min(state.player.maxHp, state.player.hp + bonus);
+      showStatus('Wave cleared! +' + bonus + ' HP | Next wave in 3s...');
+    }
+    setTimeout(() => {
+      // Clean up dead enemies
+      state.enemies.forEach(e => { if (e.meshRef) scene.remove(e.meshRef); });
+      state.enemies = [];
+      state.enemyMeshes.forEach(m => scene.remove(m));
+      state.enemyMeshes = [];
+      // Reset 3D HP bars for enemies
+      document.querySelectorAll('.enemy-hp-3d').forEach(el => el.remove());
+      nextWave();
+    }, 3000);
+  }
+}
+
+
+function updateChallengeHUD() {
+  const btn = document.getElementById('challenge-btn');
+  const hud = document.getElementById('challenge-hud');
+  if (!btn || !hud) return;
+  if (challengeState.active) {
+    btn.style.display = 'none';
+    hud.style.display = 'block';
+    document.getElementById('challenge-wave').textContent = 'Wave ' + challengeState.wave + '/' + challengeState.maxWave;
+    document.getElementById('challenge-score').textContent = 'Score: ' + challengeState.score + ' | Kills: ' + challengeState.totalKills;
+  } else {
+    btn.style.display = 'block';
+    hud.style.display = 'none';
+  }
+}
+function showWaveBanner(text, isBoss) {
+  const banner = document.createElement('div');
+  banner.style.cssText = 'position:fixed;top:30%;left:50%;transform:translate(-50%,-50%);z-index:200;pointer-events:none;animation:waveBanner 2s ease forwards;';
+  banner.innerHTML = '<div style="font-size:' + (isBoss ? '48' : '36') + 'px;color:' + (isBoss ? '#ff4444' : '#ffd700') + ';font-weight:bold;text-shadow:0 0 20px ' + (isBoss ? '#ff4444' : '#ffd700') + '">' + text + '</div>';
+  document.body.appendChild(banner);
+  setTimeout(() => banner.remove(), 2000);
+}
+
+function showChallengeResult(won) {
+  challengeState.active = false;
+  if (challengeState.wave > challengeState.bestWave) challengeState.bestWave = challengeState.wave - 1;
+  if (challengeState.score > challengeState.bestScore) challengeState.bestScore = challengeState.score;
+  
+  const overlay = document.createElement('div');
+  overlay.id = 'challenge-result';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;';
+  
+  const title = won ? 'CHALLENGE COMPLETE!' : 'DEFEATED';
+  const titleColor = won ? '#ffd700' : '#ff4444';
+  
+  overlay.innerHTML = '<div style="font-size:48px;color:' + titleColor + ';font-weight:bold;text-shadow:0 0 30px ' + titleColor + '">' + title + '</div>' +
+    '<div style="color:#aaa;font-size:18px;margin-top:16px">Wave Reached: ' + challengeState.wave + ' / ' + challengeState.maxWave + '</div>' +
+    '<div style="color:#aaa;font-size:18px;margin-top:8px">Score: ' + challengeState.score + '</div>' +
+    '<div style="color:#aaa;font-size:18px;margin-top:8px">Kills: ' + challengeState.totalKills + '</div>' +
+    '<div style="color:#888;font-size:14px;margin-top:16px">Best: Wave ' + challengeState.bestWave + ' / Score ' + challengeState.bestScore + '</div>' +
+    '<button onclick="this.parentElement.remove();startChallenge()" style="margin-top:24px;padding:12px 40px;font-size:18px;background:#333;color:#fff;border:2px solid ' + titleColor + ';border-radius:8px;cursor:pointer;font-family:inherit">Retry</button>' +
+    '<button onclick="this.parentElement.remove();challengeState.active=false" style="margin-top:10px;padding:8px 30px;font-size:14px;background:#222;color:#aaa;border:1px solid #555;border-radius:6px;cursor:pointer;font-family:inherit">Exit</button>';
+  
+  document.body.appendChild(overlay);
+}
+
+function createEnemyHpBar3D(mesh, enemy) {
+  const container = document.createElement('div');
+  container.className = 'enemy-hp-3d';
+  container.style.cssText = 'position:fixed;pointer-events:none;z-index:15;font-size:11px;text-align:center;';
+  container.innerHTML = '<div class="e-name" style="color:#ff8888;font-size:10px;margin-bottom:2px">' + enemy.name + '</div>' +
+    '<div style="width:80px;height:6px;background:rgba(0,0,0,0.7);border-radius:3px;overflow:hidden;margin:0 auto"><div class="e-hp" style="width:100%;height:100%;background:#ff4444;border-radius:3px;transition:width 0.15s"></div></div>';
+  container._mesh = mesh;
+  container._enemy = enemy;
+  document.getElementById('hud').appendChild(container);
+}
+
+function updateEnemyHp3D() {
+  document.querySelectorAll('.enemy-hp-3d').forEach(el => {
+    if (!el._mesh || !el._enemy) return;
+    const pos = el._mesh.position.clone();
+    pos.y += 4;
+    const projected = pos.project(camera);
+    if (projected.z > 1) { el.style.display = 'none'; return; }
+    el.style.display = '';
+    el.style.left = ((projected.x + 1) / 2 * innerWidth - 40) + 'px';
+    el.style.top = ((-projected.y + 1) / 2 * innerHeight) + 'px';
+    const hpPct = el._enemy.hp / el._enemy.maxHp * 100;
+    const hpBar = el.querySelector('.e-hp');
+    if (hpBar) hpBar.style.width = hpPct + '%';
+    if (el._enemy.isDead) el.style.display = 'none';
+  });
+}
+
+
 
 // ==================== 常量 ====================
 const CONFIG = {
@@ -2051,6 +2255,8 @@ document.addEventListener('keydown', e => {
     state.panelF3 = !state.panelF3;
     document.getElementById('panel-f3').classList.toggle('visible', state.panelF3);
     if (state.panelF3) updateEnemyInfoPanel();
+  updateChallengeHUD();
+  updateEnemyHp3D();
   }
   if (e.code === 'KeyV') lockNearestEnemy();
 
