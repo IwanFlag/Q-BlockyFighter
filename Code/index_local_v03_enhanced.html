@@ -465,7 +465,8 @@ canvas { display: block; }
   <div id="challenge-score" style="color:#aaa;font-size:12px;margin-top:2px"></div>
 </div>
 <div id="zone-btns" style="position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:15;pointer-events:auto;display:flex;gap:8px;">
-  <div style="padding:8px 16px;background:rgba(255,50,50,0.3);border:2px solid #ff4444;border-radius:8px;color:#ff8888;font-size:13px;cursor:pointer;font-family:inherit" onclick="startChallenge()">🎯 闯关挑战</div>
+  <div style="padding:8px 16px;background:rgba(255,50,50,0.3);border:2px solid #ff4444;border-radius:8px;color:#ff8888;font-size:13px;cursor:pointer;font-family:inherit" onclick="startChallenge()">🎯 闯关挑战
+  <div style="padding:8px 16px;background:rgba(255,0,0,0.3);border:2px solid #ff4444;border-radius:8px;color:#ff8888;font-size:13px;cursor:pointer;font-family:inherit" onclick="startTeamBattle()">⚔ 5V5团战</div></div>
   <div style="padding:8px 16px;background:rgba(0,150,255,0.3);border:2px solid #4488ff;border-radius:8px;color:#88bbff;font-size:13px;cursor:pointer;font-family:inherit" onclick="startWeaponRack()">🗡 武器架</div>
   <div style="padding:8px 16px;background:rgba(255,100,0,0.3);border:2px solid #ff6600;border-radius:8px;color:#ff9944;font-size:13px;cursor:pointer;font-family:inherit" onclick="startBossSimulation()">👹 Boss</div>
 </div>
@@ -915,6 +916,7 @@ function checkRoundEnd() {
 }
 
 function showDuelResult(playerWon) {
+  updateRankAfterMatch(playerWon);
   const overlay = document.createElement('div');
   overlay.id = 'duel-result';
   overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;';
@@ -1303,6 +1305,525 @@ function showBossResult(won) {
   
   document.body.appendChild(overlay);
 }
+
+// ==================== 武器掉落/拾取/消失系统 ====================
+const weaponDrops = []; // { mesh, quality, weapon, createdAt, position }
+
+function spawnWeaponDrop(position, weapon, quality) {
+  const qualityColors = { black: 0x888888, bronze: 0x44cc44, silver: 0x6688ff, gold: 0xffd700 };
+  const q = quality || 'black';
+  const color = qualityColors[q] || 0x888888;
+  
+  // Create weapon on ground
+  const dropGroup = new THREE.Group();
+  
+  // Weapon body (floating box with glow)
+  const bodyGeo = new THREE.BoxGeometry(0.3, 0.1, 0.8);
+  const bodyMat = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.5, metalness: 0.8 });
+  const body = new THREE.Mesh(bodyGeo, bodyMat);
+  body.position.y = 0.5;
+  dropGroup.add(body);
+  
+  // Glow ring
+  const ringGeo = new THREE.RingGeometry(0.4, 0.6, 16);
+  const ringMat = new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide, transparent: true, opacity: 0.4 });
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.rotation.x = -Math.PI / 2;
+  ring.position.y = 0.05;
+  dropGroup.add(ring);
+  
+  // Text sprite for weapon name
+  const canvas = document.createElement('canvas');
+  canvas.width = 128; canvas.height = 32;
+  const ctx = canvas.getContext('2d');
+  const wq = WEAPON_QUALITY[q];
+  ctx.font = 'bold 14px Microsoft YaHei';
+  ctx.fillStyle = wq.color;
+  ctx.textAlign = 'center';
+  ctx.fillText((weapon.icon || '⚔') + ' ' + (weapon.name || 'Weapon') + ' [' + wq.name + ']', 64, 20);
+  const tex = new THREE.CanvasTexture(canvas);
+  const label = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true }));
+  label.scale.set(2, 0.5, 1);
+  label.position.y = 1.2;
+  dropGroup.add(label);
+  
+  dropGroup.position.copy(position);
+  scene.add(dropGroup);
+  
+  const drop = {
+    mesh: dropGroup,
+    quality: q,
+    weapon: weapon,
+    createdAt: Date.now(),
+    position: position.clone(),
+    expiresIn: 30000, // 30 seconds
+  };
+  weaponDrops.push(drop);
+}
+
+function updateWeaponDrops() {
+  const now = Date.now();
+  
+  for (let i = weaponDrops.length - 1; i >= 0; i--) {
+    const drop = weaponDrops[i];
+    const age = now - drop.createdAt;
+    
+    // Floating animation
+    if (drop.mesh) {
+      drop.mesh.children[0].position.y = 0.5 + Math.sin(age / 500) * 0.15;
+      drop.mesh.children[0].rotation.y = age / 1000;
+    }
+    
+    // Blinking when about to expire
+    if (age > drop.expiresIn - 5000) {
+      const blink = Math.sin(age / 100) > 0;
+      if (drop.mesh) drop.mesh.visible = blink;
+    }
+    
+    // Expire
+    if (age > drop.expiresIn) {
+      scene.remove(drop.mesh);
+      weaponDrops.splice(i, 1);
+      continue;
+    }
+    
+    // Pickup detection
+    if (state.playerMesh && !state.player.isDead) {
+      const dist = state.playerMesh.position.distanceTo(drop.position);
+      if (dist < 2) {
+        // Pick up weapon
+        const qData = WEAPON_QUALITY[drop.quality];
+        const wIdx = drop.weapon === state.player.char.weapons[0] ? 'A' : 'B';
+        state.player.weaponQuality[wIdx] = { quality: drop.quality, weapon: drop.weapon, ...qData };
+        showQualityToast({ quality: drop.quality, weapon: drop.weapon, ...qData });
+        showStatus('Picked up ' + (drop.weapon.name || 'weapon') + ' [' + qData.name + ']');
+        SFX.play('pickup');
+        
+        scene.remove(drop.mesh);
+        weaponDrops.splice(i, 1);
+      }
+    }
+  }
+}
+
+// ==================== 排位系统 ====================
+const RANK_TIERS = [
+  { name: '初悟', icon: '🌱', color: '#88aa88', desc: '初窥门径', minPoints: 0 },
+  { name: '凝心', icon: '💎', color: '#66aacc', desc: '心神凝聚', minPoints: 500 },
+  { name: '破障', icon: '⚔️', color: '#cc8844', desc: '打破桎梏', minPoints: 1200 },
+  { name: '通玄', icon: '🔮', color: '#aa66cc', desc: '玄妙初显', minPoints: 2000 },
+  { name: '化境', icon: '🌟', color: '#ffcc00', desc: '出神入化', minPoints: 3000 },
+  { name: '归真', icon: '☀️', color: '#ff8844', desc: '返璞归真', minPoints: 4500 },
+  { name: '无极', icon: '♾️', color: '#ff4488', desc: '无穷无尽', minPoints: 6500 },
+];
+
+let playerRank = {
+  points: 0,
+  tier: 0,
+  wins: 0,
+  losses: 0,
+  winStreak: 0,
+  bestStreak: 0,
+  season: 1,
+};
+
+// Load from localStorage
+try {
+  const saved = localStorage.getItem('rankData');
+  if (saved) playerRank = JSON.parse(saved);
+} catch(e) {}
+
+function saveRank() {
+  try { localStorage.setItem('rankData', JSON.stringify(playerRank)); } catch(e) {}
+}
+
+function getRankTier(points) {
+  let tier = 0;
+  for (let i = RANK_TIERS.length - 1; i >= 0; i--) {
+    if (points >= RANK_TIERS[i].minPoints) { tier = i; break; }
+  }
+  return tier;
+}
+
+function updateRankAfterMatch(won) {
+  if (won) {
+    playerRank.wins++;
+    playerRank.winStreak++;
+    if (playerRank.winStreak > playerRank.bestStreak) playerRank.bestStreak = playerRank.winStreak;
+    const streakBonus = Math.min(playerRank.winStreak - 1, 5) * 5;
+    const basePoints = 50;
+    const totalPoints = basePoints + streakBonus;
+    playerRank.points += totalPoints;
+  } else {
+    playerRank.losses++;
+    playerRank.winStreak = 0;
+    const lossPoints = 30;
+    playerRank.points = Math.max(0, playerRank.points - lossPoints);
+  }
+  playerRank.tier = getRankTier(playerRank.points);
+  saveRank();
+}
+
+function showRankPanel() {
+  const existing = document.getElementById('rank-overlay');
+  if (existing) { existing.remove(); return; }
+  
+  const tier = RANK_TIERS[playerRank.tier];
+  const winRate = playerRank.wins + playerRank.losses > 0 
+    ? Math.round(playerRank.wins / (playerRank.wins + playerRank.losses) * 100) : 0;
+  
+  // Progress to next tier
+  let progress = 100;
+  let nextTierName = 'MAX';
+  if (playerRank.tier < RANK_TIERS.length - 1) {
+    const curr = RANK_TIERS[playerRank.tier].minPoints;
+    const next = RANK_TIERS[playerRank.tier + 1].minPoints;
+    progress = Math.round((playerRank.points - curr) / (next - curr) * 100);
+    nextTierName = RANK_TIERS[playerRank.tier + 1].name;
+  }
+  
+  const overlay = document.createElement('div');
+  overlay.id = 'rank-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;';
+  
+  let html = '<div style="font-size:64px;margin-bottom:10px">' + tier.icon + '</div>';
+  html += '<div style="font-size:36px;color:' + tier.color + ';font-weight:bold;text-shadow:0 0 20px ' + tier.color + '">' + tier.name + '</div>';
+  html += '<div style="color:#888;font-size:14px;margin-top:4px">' + tier.desc + '</div>';
+  html += '<div style="color:#aaa;font-size:24px;margin-top:16px;font-weight:bold">' + playerRank.points + ' <span style="font-size:14px;color:#666">pts</span></div>';
+  
+  // Progress bar
+  html += '<div style="width:300px;height:10px;background:rgba(255,255,255,0.1);border-radius:5px;margin-top:12px;overflow:hidden"><div style="width:' + progress + '%;height:100%;background:' + tier.color + ';border-radius:5px;transition:width 0.3s"></div></div>';
+  html += '<div style="color:#666;font-size:11px;margin-top:4px">Next: ' + nextTierName + ' (' + progress + '%)</div>';
+  
+  // Stats
+  html += '<div style="display:flex;gap:30px;margin-top:24px">';
+  html += '<div style="text-align:center"><div style="color:#44cc44;font-size:24px;font-weight:bold">' + playerRank.wins + '</div><div style="color:#888;font-size:11px">Wins</div></div>';
+  html += '<div style="text-align:center"><div style="color:#ff4444;font-size:24px;font-weight:bold">' + playerRank.losses + '</div><div style="color:#888;font-size:11px">Losses</div></div>';
+  html += '<div style="text-align:center"><div style="color:#ffcc00;font-size:24px;font-weight:bold">' + winRate + '%</div><div style="color:#888;font-size:11px">Win Rate</div></div>';
+  html += '<div style="text-align:center"><div style="color:#ff8844;font-size:24px;font-weight:bold">' + playerRank.bestStreak + '</div><div style="color:#888;font-size:11px">Best Streak</div></div>';
+  html += '</div>';
+  
+  // Tier list
+  html += '<div style="margin-top:30px;display:flex;gap:8px;align-items:center">';
+  RANK_TIERS.forEach((t, i) => {
+    const active = i === playerRank.tier;
+    html += '<div style="text-align:center;padding:6px 10px;border-radius:6px;' + (active ? 'background:rgba(255,255,255,0.1);border:1px solid ' + t.color : 'opacity:0.4') + '"><div style="font-size:18px">' + t.icon + '</div><div style="font-size:10px;color:' + t.color + '">' + t.name + '</div></div>';
+    if (i < RANK_TIERS.length - 1) html += '<div style="color:#333;font-size:10px">→</div>';
+  });
+  html += '</div>';
+  
+  html += '<button onclick="this.parentElement.remove()" style="margin-top:24px;padding:10px 30px;font-size:16px;background:#333;color:#fff;border:2px solid ' + tier.color + ';border-radius:8px;cursor:pointer;font-family:inherit">Close</button>';
+  
+  overlay.innerHTML = html;
+  document.body.appendChild(overlay);
+}
+
+// Add rank button to HUD (bottom right near stats)
+function addRankButton() {
+  const btn = document.createElement('div');
+  btn.style.cssText = 'position:fixed;bottom:30px;right:100px;z-index:16;pointer-events:auto;padding:6px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:#aaa;font-size:12px;cursor:pointer;font-family:inherit;';
+  btn.innerHTML = RANK_TIERS[playerRank.tier].icon + ' ' + RANK_TIERS[playerRank.tier].name + ' · ' + playerRank.points + 'pts';
+  btn.onclick = () => showRankPanel();
+  btn.id = 'rank-btn';
+  document.body.appendChild(btn);
+}
+addRankButton();
+
+function updateRankButton() {
+  const btn = document.getElementById('rank-btn');
+  if (btn) {
+    const tier = RANK_TIERS[playerRank.tier];
+    btn.innerHTML = tier.icon + ' ' + tier.name + ' · ' + playerRank.points + 'pts';
+  }
+}
+
+// ==================== 5V5 团战模式 ====================
+let teamState = {
+  active: false,
+  redTeam: [], // Your team (player + 4 AI allies)
+  blueTeam: [], // Enemy team (5 AI)
+  boss: null,
+  bossMesh: null,
+  bossSpawnTimer: 0,
+  score: { red: 0, blue: 0 },
+  matchTime: 0,
+  maxTime: 300, // 5 minutes
+  gameTime: 0,
+  kills: { red: 0, blue: 0 },
+  phase: 'fighting', // fighting | boss | finished
+  mapExpanded: false,
+};
+
+const TEAM_COMPOSITIONS = {
+  balanced: [
+    { role: 'assassin', count: 1 },
+    { role: 'warrior', count: 2 },
+    { role: 'tank', count: 1 },
+    { role: 'support', count: 1 },
+  ]
+};
+
+function getRandomCharIdx(role) {
+  const roleMap = {
+    assassin: [0, 1], // 荆如, 雾隐
+    warrior: [2, 4, 6, 7], // 关云, 哈桑, 卡利, 哲别
+    tank: [5, 8], // 奥拉夫, 马克西
+    support: [10, 11], // 阿玛尼, 达芬奇
+    ranger: [3, 9], // 花木兰, 李舜臣
+  };
+  const pool = roleMap[role] || roleMap.warrior;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function createTeamMember(charIdx, isAlly, spawnX, spawnZ) {
+  const char = CHARACTERS[charIdx];
+  const entity = createPlayerState(charIdx);
+  entity.type = isAlly ? 'ally' : 'enemy';
+  entity.name = (isAlly ? '🛡 ' : '⚔ ') + char.name;
+  entity.char = char;
+  entity.position.set(spawnX, 0, spawnZ);
+  entity.rotation = isAlly ? 0 : Math.PI;
+  entity.isAlly = isAlly;
+  entity.team = isAlly ? 'red' : 'blue';
+  entity.meshRef = null;
+  
+  // Boost stats for team mode
+  entity.maxHp = Math.floor(entity.maxHp * 1.5);
+  entity.hp = entity.maxHp;
+  
+  const mesh = createCharacter(char.color, char.emissive, false, char.weapons[0].type);
+  mesh.position.set(spawnX, 0, spawnZ);
+  scene.add(mesh);
+  entity.meshRef = mesh;
+  
+  return entity;
+}
+
+function startTeamBattle() {
+  teamState = {
+    active: true,
+    redTeam: [], blueTeam: [],
+    boss: null, bossMesh: null, bossSpawnTimer: 0,
+    score: { red: 0, blue: 0 },
+    matchTime: 0, maxTime: 300, gameTime: 0,
+    kills: { red: 0, blue: 0 },
+    phase: 'fighting', mapExpanded: false,
+  };
+  
+  // Clear existing
+  state.dummies.forEach(d => { d.isDead = true; d.mesh.visible = false; });
+  state.enemies.forEach(e => { if (e.meshRef) scene.remove(e.meshRef); });
+  state.enemies = [];
+  state.enemyMeshes.forEach(m => scene.remove(m));
+  state.enemyMeshes = [];
+  
+  // Expand map boundary temporarily
+  if (!teamState.mapExpanded) {
+    teamState.mapExpanded = true;
+  }
+  
+  const playerCharIdx = selectedCharIdx;
+  
+  // Red team (your side): player + 4 allies
+  state.player.position.set(0, 0, 25);
+  if (state.playerMesh) state.playerMesh.position.set(0, 0, 25);
+  
+  const redPositions = [
+    { x: -6, z: 28 }, { x: 6, z: 28 },
+    { x: -12, z: 25 }, { x: 12, z: 25 },
+  ];
+  
+  const roles = ['warrior', 'assassin', 'tank', 'support'];
+  redPositions.forEach((pos, i) => {
+    const roleIdx = getRandomCharIdx(roles[i]);
+    // Avoid picking the same character as the player
+    let ci = roleIdx;
+    if (ci === playerCharIdx) ci = (ci + 1) % CHARACTERS.length;
+    const ally = createTeamMember(ci, true, pos.x, pos.z);
+    teamState.redTeam.push(ally);
+    state.enemies.push(ally); // Reuse enemies array for AI logic
+    state.enemyMeshes.push(ally.meshRef);
+  });
+  
+  // Blue team (enemy side)
+  const bluePositions = [
+    { x: 0, z: -25 },
+    { x: -6, z: -28 }, { x: 6, z: -28 },
+    { x: -12, z: -25 }, { x: 12, z: -25 },
+  ];
+  
+  bluePositions.forEach((pos, i) => {
+    const roleIdx = getRandomCharIdx(roles[i % roles.length]);
+    const enemy = createTeamMember(roleIdx, false, pos.x, pos.z);
+    teamState.blueTeam.push(enemy);
+    state.enemies.push(enemy);
+    state.enemyMeshes.push(enemy.meshRef);
+  });
+  
+  // Boss spawn timer
+  teamState.bossSpawnTimer = 120; // 2 minutes
+  
+  showStatus('5V5 TEAM BATTLE - FIGHT!');
+  showTeamBattleUI();
+}
+
+function updateTeamBattle() {
+  if (!teamState.active) return;
+  
+  teamState.gameTime += 1/60;
+  
+  // Check win conditions
+  const redAlive = state.player && !state.player.isDead ? 1 : 0;
+  const blueAlive = teamState.blueTeam.filter(e => !e.isDead).length;
+  
+  // Update score
+  document.getElementById('team-score-red') && (document.getElementById('team-score-red').textContent = teamState.kills.red);
+  document.getElementById('team-score-blue') && (document.getElementById('team-score-blue').textContent = teamState.kills.blue);
+  
+  const timeLeft = Math.max(0, teamState.maxTime - teamState.gameTime);
+  const min = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+  const sec = Math.floor(timeLeft % 60).toString().padStart(2, '0');
+  const timerEl = document.getElementById('team-timer');
+  if (timerEl) timerEl.textContent = min + ':' + sec;
+  
+  // Boss spawn
+  if (teamState.phase === 'fighting') {
+    teamState.bossSpawnTimer -= 1/60;
+    if (teamState.bossSpawnTimer <= 0) {
+      spawnTeamBoss();
+      teamState.phase = 'boss';
+    }
+  }
+  
+  // Win/lose conditions
+  if (blueAlive === 0 && teamState.phase !== 'boss') {
+    endTeamBattle(true);
+  } else if (timeLeft <= 0) {
+    endTeamBattle(teamState.kills.red >= teamState.kills.blue);
+  }
+}
+
+function spawnTeamBoss() {
+  const bossChar = CHARACTERS[5]; // Use tank
+  teamState.bossMesh = createCharacter(0x880022, 0xff2200, false, 'axe');
+  teamState.bossMesh.position.set(0, 0, 0);
+  teamState.bossMesh.scale.set(2.5, 2.5, 2.5);
+  scene.add(teamState.bossMesh);
+  
+  teamState.boss = {
+    hp: 8000, maxHp: 8000, isDead: false, type: 'enemy',
+    name: '⚔ CRIMSON DRAGON', char: bossChar,
+    position: new THREE.Vector3(0, 0, 0), rotation: 0,
+    stamina: 100, maxStamina: 100, respawnTimer: 0,
+    mesh: teamState.bossMesh, stunTimer: 0, isBlocking: false,
+    isDodging: false, isAttacking: false, attackTimer: 0, attackPhase: 0,
+    comboCount: 0, lastAttackTime: 0, isBoss: true,
+  };
+  
+  state.enemies.push(teamState.boss);
+  state.enemyMeshes.push(teamState.bossMesh);
+  showStatus('CRIMSON DRAGON SPAWNED! Defeat it for victory!');
+}
+
+function endTeamBattle(playerWon) {
+  teamState.active = false;
+  updateRankAfterMatch(playerWon);
+  
+  const overlay = document.createElement('div');
+  overlay.id = 'team-result';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;';
+  
+  const title = playerWon ? 'VICTORY' : 'DEFEAT';
+  const titleColor = playerWon ? '#ffd700' : '#ff4444';
+  const tier = RANK_TIERS[playerRank.tier];
+  
+  overlay.innerHTML = '<div style="font-size:64px;color:' + titleColor + ';font-weight:bold;text-shadow:0 0 30px ' + titleColor + '">' + title + '</div>' +
+    '<div style="display:flex;gap:40px;margin-top:20px">' +
+    '<div style="text-align:center"><div style="color:#ff4444;font-size:28px;font-weight:bold">' + teamState.kills.red + '</div><div style="color:#888;font-size:14px">Red Team</div></div>' +
+    '<div style="color:#555;font-size:20px">VS</div>' +
+    '<div style="text-align:center"><div style="color:#4488ff;font-size:28px;font-weight:bold">' + teamState.kills.blue + '</div><div style="color:#888;font-size:14px">Blue Team</div></div>' +
+    '</div>' +
+    '<div style="margin-top:16px;color:' + tier.color + ';font-size:18px">' + tier.icon + ' ' + tier.name + ' · ' + playerRank.points + ' pts (' + (playerWon ? '+50' : '-30') + ')</div>' +
+    '<button onclick="this.parentElement.remove();startTeamBattle()" style="margin-top:24px;padding:12px 40px;font-size:18px;background:#333;color:#fff;border:2px solid ' + titleColor + ';border-radius:8px;cursor:pointer;font-family:inherit">Rematch</button>' +
+    '<button onclick="this.parentElement.remove();cleanupTeamBattle()" style="margin-top:10px;padding:8px 30px;font-size:14px;background:#222;color:#aaa;border:1px solid #555;border-radius:6px;cursor:pointer;font-family:inherit">Exit</button>';
+  
+  document.body.appendChild(overlay);
+}
+
+function cleanupTeamBattle() {
+  teamState.active = false;
+  state.enemies.forEach(e => { if (e.meshRef) scene.remove(e.meshRef); });
+  state.enemies = [];
+  state.enemyMeshes.forEach(m => scene.remove(m));
+  state.enemyMeshes = [];
+  if (teamState.bossMesh) { scene.remove(teamState.bossMesh); teamState.bossMesh = null; }
+  document.querySelectorAll('.team-hud').forEach(el => el.remove());
+  // Reset player position
+  if (state.playerMesh) state.playerMesh.position.set(0, 0, 5);
+  state.player.position.set(0, 0, 5);
+}
+
+function showTeamBattleUI() {
+  // Remove old
+  document.querySelectorAll('.team-hud').forEach(el => el.remove());
+  
+  // Score bar at top
+  const scoreBar = document.createElement('div');
+  scoreBar.className = 'team-hud';
+  scoreBar.style.cssText = 'position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:16;pointer-events:none;display:flex;align-items:center;gap:12px;padding:6px 20px;background:rgba(0,0,0,0.7);border-radius:8px;';
+  scoreBar.innerHTML = '<span style="color:#ff4444;font-size:18px;font-weight:bold" id="team-score-red">0</span>' +
+    '<span style="color:#666;font-size:12px">RED</span>' +
+    '<span style="color:#ffd700;font-size:14px;font-weight:bold" id="team-timer">05:00</span>' +
+    '<span style="color:#666;font-size:12px">BLUE</span>' +
+    '<span style="color:#4488ff;font-size:18px;font-weight:bold" id="team-score-blue">0</span>';
+  document.body.appendChild(scoreBar);
+  
+  // Team roster
+  const roster = document.createElement('div');
+  roster.className = 'team-hud';
+  roster.style.cssText = 'position:fixed;top:50px;left:10px;z-index:16;pointer-events:none;font-size:11px;';
+  roster.innerHTML = '<div style="color:#ff8888;margin-bottom:4px">RED TEAM</div>';
+  if (state.player) roster.innerHTML += '<div style="color:#ffd700">★ ' + state.player.char.name + ' (You)</div>';
+  teamState.redTeam.forEach(a => {
+    roster.innerHTML += '<div style="color:#cc6666">' + a.char.name + ' <span style="color:#888">' + a.char.systemName + '</span></div>';
+  });
+  roster.innerHTML += '<div style="color:#88aaff;margin:8px 0 4px">BLUE TEAM</div>';
+  teamState.blueTeam.forEach(e => {
+    roster.innerHTML += '<div style="color:#8888cc">' + e.char.name + ' <span style="color:#888">' + e.char.systemName + '</span></div>';
+  });
+  document.body.appendChild(roster);
+  
+  // Boss spawn timer
+  const bossTimer = document.createElement('div');
+  bossTimer.className = 'team-hud';
+  bossTimer.id = 'boss-spawn-timer';
+  bossTimer.style.cssText = 'position:fixed;top:50px;right:10px;z-index:16;pointer-events:none;color:#ff8844;font-size:12px;';
+  bossTimer.textContent = '🐉 Boss spawns in 2:00';
+  document.body.appendChild(bossTimer);
+}
+
+function updateBossSpawnTimer() {
+  if (!teamState.active) return;
+  const el = document.getElementById('boss-spawn-timer');
+  if (el && teamState.phase === 'fighting') {
+    const t = Math.max(0, teamState.bossSpawnTimer);
+    const min = Math.floor(t / 60).toString().padStart(2, '0');
+    const sec = Math.floor(t % 60).toString().padStart(2, '0');
+    el.textContent = '🐉 Boss spawns in ' + min + ':' + sec;
+  } else if (el && teamState.phase === 'boss') {
+    el.textContent = '🐉 CRIMSON DRAGON ACTIVE';
+    el.style.color = '#ff4444';
+  }
+}
+
+
+
+
+
+// Hook into death - drop weapon on death
+const origApplyDmg = typeof applyDmg !== 'undefined' ? applyDmg : null;
+
+
 
 
 function showWaveBanner(text, isBoss) {
@@ -2481,6 +3002,9 @@ document.addEventListener('keydown', e => {
     state.panelF3 = !state.panelF3;
     document.getElementById('panel-f3').classList.toggle('visible', state.panelF3);
     if (state.panelF3) updateEnemyInfoPanel();
+  updateTeamBattle(); updateBossSpawnTimer();
+  updateRankButton();
+  updateWeaponDrops();
   updateBossUI();
   updateChallengeHUD();
   updateEnemyHp3D();
@@ -2867,6 +3391,8 @@ function applyDmg(target, dmg, attacker) {
         const ke = document.getElementById('kill-effect'); ke.style.opacity = '1';
         setTimeout(() => ke.style.opacity = '0', 200);
         SFX.play('kill');
+            if (target.team === 'blue' && teamState.active) teamState.kills.red++; if (target.team === 'red' && teamState.active) teamState.kills.blue++;
+            if (attacker === state.player) spawnWeaponDrop(target.position.clone(), attacker.char.weapons[Math.floor(Math.random()*2)], rollQuality(target.type === 'dummy' ? 'dummy' : 'enemy'));
       }
     }
   }
@@ -3441,6 +3967,7 @@ function updatePlayer(dt) {
             showStatus(`击杀 ${dot.target.name}�?�? +${heal} HP`);
             addKillFeed(p.char.name + ' ☠️', dot.target.name);
             SFX.play('kill');
+            if (p === state.player) spawnWeaponDrop(dot.target.position.clone(), p.char.weapons[Math.floor(Math.random()*2)], rollQuality(dot.target.type === 'dummy' ? 'dummy' : 'enemy'));
           }
         }
       }
