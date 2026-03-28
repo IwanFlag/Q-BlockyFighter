@@ -410,15 +410,15 @@ class LobbyUI {
 
   populateCharacters() {
     const characters = [
-      { id: 'yinren', name: '影忍·雾隐', role: '刺客·巫术', icon: '🥷' },
-      { id: 'jingru', name: '冷月·荆如', role: '刺客·武术', icon: '⚔️' },
-      { id: 'zhebie', name: '铁骑·哲别', role: '战士·武术', icon: '🏇' },
-      { id: 'guanyun', name: '傲骨·关云', role: '战士·武术', icon: '🐉' },
-      { id: 'kali', name: '雷鸣·卡利', role: '战士·魔法', icon: '⚡' },
-      { id: 'aolafu', name: '磐石·奥拉夫', role: '坦克·仙术', icon: '🛡️' },
-      { id: 'makexi', name: '铁壁·马克西', role: '坦克·武术', icon: '🏛️' },
+      { id: 'jingru', name: '冷月·荆如', role: '刺客·武术', icon: '🗡️' },
+      { id: 'wuyin', name: '影忍·雾隐', role: '刺客·巫术', icon: '🥷' },
+      { id: 'guanyun', name: '傲骨·关云', role: '战士·武术', icon: '⚔️' },
       { id: 'mulan', name: '追风·花木兰', role: '远程·仙术', icon: '🏹' },
       { id: 'hasang', name: '毒蝎·哈桑', role: '远程·巫术', icon: '🦂' },
+      { id: 'aolafu', name: '磐石·奥拉夫', role: '坦克·仙术', icon: '🛡️' },
+      { id: 'kali', name: '雷鸣·卡利', role: '战士·魔法', icon: '⚡' },
+      { id: 'zhebie', name: '铁骑·哲别', role: '战士·武术', icon: '🏇' },
+      { id: 'makexi', name: '铁壁·马克西', role: '坦克·武术', icon: '🏛️' },
       { id: 'lishunchen', name: '破军·李舜臣', role: '远程·魔法', icon: '💣' },
       { id: 'amani', name: '圣歌·阿玛尼', role: '辅助·巫术', icon: '🎵' },
       { id: 'dafenqi', name: '天机·达芬奇', role: '辅助·魔法', icon: '🔧' },

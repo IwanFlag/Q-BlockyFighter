@@ -366,6 +366,28 @@ canvas { display: block; }
       <div class="char-system system-xianshu">仙术</div>
       <div class="char-desc">远距狙击，陷阱布局<br>天眼锁定，箭雨覆盖<br>🏹 长弓 + 💫 袖箭</div>
     </div>
+    <!-- V0.4 新角色 -->
+    <div class="char-card" data-char="4" onclick="selectChar(4)">
+      <div class="char-icon">🦂</div>
+      <div class="char-name">毒蝎 · 哈桑</div>
+      <div class="char-title">远程 · 黄昏</div>
+      <div class="char-system system-wushu2">巫术</div>
+      <div class="char-desc">蛊毒叠层，风筝消耗<br>暗影瞬移，蛊爆收割<br>🔪 飞刀 + ☠️ 毒镖</div>
+    </div>
+    <div class="char-card" data-char="5" onclick="selectChar(5)">
+      <div class="char-icon">🛡️</div>
+      <div class="char-name">磐石 · 奥拉夫</div>
+      <div class="char-title">坦克 · 破晓</div>
+      <div class="char-system system-xianshu">仙术</div>
+      <div class="char-desc">无畏冲锋，越战越勇<br>血量越低攻击越高<br>🪓 战斧 + 🎯 飞斧</div>
+    </div>
+    <div class="char-card" data-char="6" onclick="selectChar(6)">
+      <div class="char-icon">⚡</div>
+      <div class="char-name">雷鸣 · 卡利</div>
+      <div class="char-title">战士 · 黄昏</div>
+      <div class="char-system system-magic">魔法</div>
+      <div class="char-desc">雷电附魔，旋转攻击<br>雷暴风暴，越战越强<br>🌀 查克拉 + 🥏 飞刃</div>
+    </div>
   </div>
   <button id="btn-start" onclick="startGame()">踏 入 裂 隙</button>
 </div>
@@ -580,6 +602,61 @@ const CHARACTERS = [
     passive: { name: '追风', icon: '💨', desc: '远程攻击有几率减速敌人' },
     lightDmg: [20, 24, 28, 35], heavyDmg: [60, 70, 90],
     hpRegen: 20, style: 'ranger'
+  },
+  // ===== V0.4 新增角色 =====
+  {
+    id: 'hasang', name: '毒蝎 · 哈桑', title: '远程 · 巫术',
+    color: 0x448800, emissive: 0x88ff00, portrait: '🦂',
+    system: 'wushu2', systemName: '巫术',
+    bodyColor: '#334400', accentColor: '#aaff00',
+    weapons: [
+      { name: '飞刀', icon: '🔪', range: 10, atkAngle: Math.PI/6, type: 'throw' },
+      { name: '毒镖', icon: '☠️', range: 8, atkAngle: Math.PI/5, type: 'poison_dart' }
+    ],
+    skills: {
+      Q: { name: '蛊毒术', icon: '🦂', cd: 8, range: 10, dmg: 60, type: 'dot', dotDmg: 15, dotDur: 6 },
+      E: { name: '暗影步', icon: '👤', cd: 12, range: 8, dmg: 40, type: 'blink' },
+      R: { name: '蛊爆', icon: '💥', cd: 28, range: 8, dmg: 250, type: 'aoe', requiresDot: true }
+    },
+    passive: { name: '剧毒', icon: '☠️', desc: '攻击附带中毒，叠层后触发蛊爆伤害+100%' },
+    lightDmg: [22, 26, 30, 40], heavyDmg: [55, 65, 80],
+    hpRegen: 10, style: 'ranger'
+  },
+  {
+    id: 'aolafu', name: '磐石 · 奥拉夫', title: '坦克 · 仙术',
+    color: 0x886644, emissive: 0xffcc00, portrait: '🛡️',
+    system: 'xianshu', systemName: '仙术',
+    bodyColor: '#664422', accentColor: '#ffaa00',
+    weapons: [
+      { name: '双手战斧', icon: '🪓', range: 4.5, atkAngle: Math.PI*0.6, type: 'axe' },
+      { name: '飞斧', icon: '🎯', range: 8, atkAngle: Math.PI/6, type: 'thrown_axe' }
+    ],
+    skills: {
+      Q: { name: '狂战冲锋', icon: '🏃', cd: 8, range: 8, dmg: 100, type: 'charge', hasSuperArmor: true },
+      E: { name: '战嚎', icon: '📢', cd: 14, range: 6, dmg: 60, type: 'fear', fearDur: 1.5 },
+      R: { name: '神降', icon: '⚡', cd: 35, range: 0, dmg: 0, type: 'transform', atkBuff: 2.0, defBuff: 2.0, dur: 8 }
+    },
+    passive: { name: '不屈', icon: '💪', desc: '血量越低攻击力越高，30%血以下攻击+50%' },
+    lightDmg: [40, 48, 55, 70], heavyDmg: [110, 130, 160],
+    hpRegen: 30, style: 'tank'
+  },
+  {
+    id: 'kali', name: '雷鸣 · 卡利', title: '战士 · 魔法',
+    color: 0x0066cc, emissive: 0x00ccff, portrait: '⚡',
+    system: 'magic', systemName: '魔法',
+    bodyColor: '#003366', accentColor: '#00aaff',
+    weapons: [
+      { name: '双弯刀·查克拉', icon: '🌀', range: 3.5, atkAngle: Math.PI*0.7, type: 'chakra' },
+      { name: '投掷弯刀', icon: '🥏', range: 9, atkAngle: Math.PI/6, type: 'boomerang' }
+    ],
+    skills: {
+      Q: { name: '雷电附魔', icon: '⚡', cd: 10, range: 0, dmg: 0, type: 'enchant', element: 'thunder', dur: 6 },
+      E: { name: '雷暴旋转', icon: '🌪️', cd: 12, range: 5, dmg: 120, type: 'spin', hits: 4 },
+      R: { name: '天雷引', icon: '⛈️', cd: 30, range: 10, dmg: 300, type: 'aoe', stunDur: 1.5 }
+    },
+    passive: { name: '雷鸣', icon: '⚡', desc: '旋转攻击时生成电弧，对周围敌人造成额外伤害' },
+    lightDmg: [32, 38, 44, 58], heavyDmg: [85, 100, 120],
+    hpRegen: 15, style: 'balanced'
   }
 ];
 
