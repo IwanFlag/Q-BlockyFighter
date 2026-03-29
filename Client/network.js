@@ -23,7 +23,7 @@ class GameNetwork {
     this.reconnectAttempts = 0;
     this.maxReconnectAttempts = 5;
     this.reconnectDelay = 2000;
-    this.serverUrl = 'ws://localhost:3000';
+    this.serverUrl = 'ws://' + (location.hostname || 'localhost') + ':3000';
     this.tickRate = 20;
     this.lastFrameTime = 0;
     this.latency = 0;
@@ -330,7 +330,7 @@ class GameNetwork {
   // 获取房间列表
   async getRoomList() {
     try {
-      const response = await fetch('http://localhost:3000/api/rooms');
+      const response = await fetch('http://' + (location.hostname || 'localhost') + ':3000/api/rooms');
       return await response.json();
     } catch (err) {
       console.error('[网络] 获取房间列表失败:', err);
@@ -341,7 +341,7 @@ class GameNetwork {
   // 获取服务器状态
   async getServerStatus() {
     try {
-      const response = await fetch('http://localhost:3000/api/status');
+      const response = await fetch('http://' + (location.hostname || 'localhost') + ':3000/api/status');
       return await response.json();
     } catch (err) {
       console.error('[网络] 获取服务器状态失败:', err);

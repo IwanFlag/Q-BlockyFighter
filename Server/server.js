@@ -678,7 +678,7 @@ function cleanupRooms() {
 setInterval(cleanupRooms, CONFIG.ROOM_CLEANUP_INTERVAL);
 
 // ==================== 启动服务器 ====================
-server.listen(CONFIG.PORT, () => {
+server.listen(CONFIG.PORT, '0.0.0.0', () => {
   console.log('========================================');
   console.log('  Q版方块人大乱斗 - 帧同步服务器 V0.3');
   console.log('========================================');
