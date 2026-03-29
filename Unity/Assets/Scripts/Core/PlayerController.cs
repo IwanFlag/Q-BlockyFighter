@@ -23,6 +23,7 @@ namespace QBlockyFighter.Core
         [SerializeField] private float dodgeDuration = 0.3f;
 
         // State
+        public bool IsLocalPlayer { get; set; }
         public bool IsGrounded { get; private set; }
         public bool CanDoubleJump { get; private set; }
         public bool IsDodgeMoving { get; private set; }

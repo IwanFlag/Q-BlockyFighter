@@ -1,0 +1,39 @@
+{
+  "name": "q-blocky-fighter",
+  "version": "0.7.0",
+  "description": "Q版方块人大乱斗 - 桌面版",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win"
+  },
+  "build": {
+    "appId": "com.qblockyfighter.desktop",
+    "productName": "Q版方块人大乱斗",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "../Code/**/*",
+      "../Server/**/*",
+      "!dist",
+      "!node_modules"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Q版方块人大乱斗"
+    }
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.0"
+  }
+}

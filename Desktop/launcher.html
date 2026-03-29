@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q版方块人大乱斗</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Microsoft YaHei', sans-serif;
+  background: #0a0a1e;
+  color: #fff;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, #1a1a3e 0%, #0a0a1e 70%);
+}
+
+/* 背景粒子动画 */
+.particles {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+  background-image:
+    radial-gradient(2px 2px at 20% 30%, rgba(255,215,0,0.4), transparent),
+    radial-gradient(2px 2px at 80% 70%, rgba(100,150,255,0.3), transparent),
+    radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.2), transparent),
+    radial-gradient(1px 1px at 30% 80%, rgba(255,100,100,0.3), transparent),
+    radial-gradient(2px 2px at 70% 20%, rgba(100,255,150,0.3), transparent);
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+@keyframes twinkle {
+  0% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.container {
+  position: relative; z-index: 1;
+  text-align: center;
+  animation: fadeIn 1s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Logo */
+.logo {
+  font-size: 56px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #ffd700, #ff6b35, #ff4444);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  margin-bottom: 8px;
+  letter-spacing: 4px;
+}
+.subtitle {
+  font-size: 18px;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 50px;
+  letter-spacing: 8px;
+}
+
+/* 按钮 */
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.btn {
+  width: 320px;
+  padding: 16px 32px;
+  font-size: 20px;
+  font-family: inherit;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 2px;
+  position: relative;
+  overflow: hidden;
+}
+.btn::after {
+  content: '';
+  position: absolute; top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transition: left 0.5s ease;
+}
+.btn:hover::after { left: 100%; }
+
+.btn-guest {
+  background: linear-gradient(135deg, #ffd700, #ff9500);
+  color: #1a1a1a;
+  box-shadow: 0 4px 20px rgba(255,215,0,0.3);
+}
+.btn-guest:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px rgba(255,215,0,0.5);
+}
+
+.btn-login {
+  background: linear-gradient(135deg, #4488ff, #6644ff);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(68,136,255,0.3);
+}
+.btn-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px rgba(68,136,255,0.5);
+}
+
+.btn-login:disabled {
+  background: #333;
+  color: #666;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+.btn-login:disabled:hover {
+  transform: none;
+}
+
+.btn-sub {
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  margin-top: 4px;
+}
+
+/* 版本号 */
+.version {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.2);
+  z-index: 1;
+}
+
+/* 角色展示 */
+.chars {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 40px;
+  justify-content: center;
+}
+.char-icon {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  background: rgba(255,255,255,0.05);
+  animation: float 3s ease-in-out infinite;
+}
+.char-icon:nth-child(2) { animation-delay: 0.3s; }
+.char-icon:nth-child(3) { animation-delay: 0.6s; }
+.char-icon:nth-child(4) { animation-delay: 0.9s; }
+.char-icon:nth-child(5) { animation-delay: 1.2s; }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* 加载动画 */
+.loading {
+  display: none;
+  margin-top: 30px;
+}
+.loading.active { display: block; }
+.spinner {
+  width: 40px; height: 40px;
+  border: 3px solid rgba(255,255,255,0.1);
+  border-top-color: #ffd700;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text {
+  color: rgba(255,255,255,0.6);
+  font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<div class="particles"></div>
+
+<div class="container">
+  <div class="logo">⚔️ 方块人大乱斗</div>
+  <div class="subtitle">Q BLOCKY FIGHTER</div>
+
+  <div class="chars">
+    <div class="char-icon">🗡️</div>
+    <div class="char-icon">🏹</div>
+    <div class="char-icon">🛡️</div>
+    <div class="char-icon">🪓</div>
+    <div class="char-icon">🔪</div>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn btn-guest" id="btnGuest" onclick="startGuest()">
+      🎮 游客模式
+      <div class="btn-sub">离线游玩 · 与AI对战</div>
+    </button>
+
+    <button class="btn btn-login" id="btnLogin" onclick="startLogin()" disabled>
+      🔐 账号登录
+      <div class="btn-sub">即将推出 · 在线对战</div>
+    </button>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">正在启动游戏...</div>
+  </div>
+</div>
+
+<div class="version">v0.7.0 Desktop</div>
+
+<script>
+async function startGuest() {
+  const btn = document.getElementById('btnGuest');
+  const loading = document.getElementById('loading');
+  btn.disabled = true;
+  loading.classList.add('active');
+
+  try {
+    const result = await window.electronAPI.startGuest();
+    if (!result.success) {
+      btn.disabled = false;
+      loading.classList.remove('active');
+      alert('启动失败，请重试');
+    }
+  } catch (e) {
+    btn.disabled = false;
+    loading.classList.remove('active');
+    alert('启动失败: ' + e.message);
+  }
+}
+
+async function startLogin() {
+  const result = await window.electronAPI.startLogin();
+  if (!result.success) {
+    alert(result.message);
+  }
+}
+</script>
+</body>
+</html>
