@@ -466,7 +466,9 @@ canvas { display: block; }
 </div>
 <div id="zone-btns" style="position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:15;pointer-events:auto;display:flex;gap:8px;">
   <div style="padding:8px 16px;background:rgba(255,50,50,0.3);border:2px solid #ff4444;border-radius:8px;color:#ff8888;font-size:13px;cursor:pointer;font-family:inherit" onclick="startChallenge()">馃幆 闂叧鎸戞垬
-  <div style="padding:8px 16px;background:rgba(255,0,0,0.3);border:2px solid #ff4444;border-radius:8px;color:#ff8888;font-size:13px;cursor:pointer;font-family:inherit" onclick="startTeamBattle()">鈿?5V5鍥㈡垬</div></div>
+  <div style="padding:8px 16px;background:rgba(255,0,0,0.3);border:2px solid #ff4444;border-radius:8px;color:#ff8888;font-size:13px;cursor:pointer;font-family:inherit" onclick="startTeamBattle()">鈿?5V5鍥㈡垬
+  <div style="padding:8px 16px;background:rgba(200,200,0,0.3);border:2px solid #cccc00;border-radius:8px;color:#ffff88;font-size:13px;cursor:pointer;font-family:inherit" onclick="startSpectating()">👁 观战
+  <div style="padding:8px 16px;background:rgba(255,215,0,0.3);border:2px solid #ffd700;border-radius:8px;color:#ffd700;font-size:13px;cursor:pointer;font-family:inherit" onclick="showShopUI()">🏪 商城</div></div></div></div>
   <div style="padding:8px 16px;background:rgba(0,150,255,0.3);border:2px solid #4488ff;border-radius:8px;color:#88bbff;font-size:13px;cursor:pointer;font-family:inherit" onclick="startWeaponRack()">馃棥 姝﹀櫒鏋?/div>
   <div style="padding:8px 16px;background:rgba(255,100,0,0.3);border:2px solid #ff6600;border-radius:8px;color:#ff9944;font-size:13px;cursor:pointer;font-family:inherit" onclick="startBossSimulation()">馃懝 Boss</div>
 </div>
@@ -1779,6 +1781,247 @@ function cleanupTeamBattle() {
   if (state.playerMesh) state.playerMesh.position.set(0, 0, 5);
   state.player.position.set(0, 0, 5);
 }
+
+// ==================== 观战系统 ====================
+let spectatorState = {
+  active: false,
+  targetIdx: 0,
+  targets: [], // list of entities to spectate
+  mode: 'free', // free | follow | topdown
+  cameraOffset: new THREE.Vector3(0, 8, 12),
+};
+
+function startSpectating() {
+  spectatorState.active = true;
+  spectatorState.mode = 'follow';
+  spectatorState.targetIdx = 0;
+  
+  // Collect all active entities as targets
+  spectatorState.targets = [];
+  if (state.player && !state.player.isDead) spectatorState.targets.push({ entity: state.player, mesh: state.playerMesh, name: state.player.char.name + ' (You)' });
+  state.enemies.forEach(e => {
+    if (!e.isDead && e.meshRef) spectatorState.targets.push({ entity: e, mesh: e.meshRef, name: e.name || e.char.name });
+  });
+  
+  showSpectatorUI();
+  showStatus('Spectator Mode - Press TAB to switch target');
+}
+
+function switchSpectatorTarget() {
+  if (!spectatorState.active || spectatorState.targets.length === 0) return;
+  spectatorState.targetIdx = (spectatorState.targetIdx + 1) % spectatorState.targets.length;
+  const target = spectatorState.targets[spectatorState.targetIdx];
+  showStatus('Following: ' + target.name);
+  updateSpectatorUI();
+}
+
+function switchSpectatorMode() {
+  const modes = ['follow', 'free', 'topdown'];
+  const idx = modes.indexOf(spectatorState.mode);
+  spectatorState.mode = modes[(idx + 1) % modes.length];
+  showStatus('Camera: ' + spectatorState.mode);
+}
+
+function updateSpectator() {
+  if (!spectatorState.active) return;
+  
+  // Remove dead targets
+  spectatorState.targets = spectatorState.targets.filter(t => !t.entity.isDead);
+  if (spectatorState.targets.length === 0) {
+    stopSpectating();
+    return;
+  }
+  if (spectatorState.targetIdx >= spectatorState.targets.length) spectatorState.targetIdx = 0;
+  
+  const target = spectatorState.targets[spectatorState.targetIdx];
+  if (!target || !target.mesh) return;
+  
+  if (spectatorState.mode === 'follow') {
+    const tp = target.mesh.position;
+    const offset = spectatorState.cameraOffset;
+    camera.position.lerp(new THREE.Vector3(tp.x + offset.x * Math.sin(target.entity.rotation || 0), tp.y + offset.y, tp.z + offset.z * Math.cos(target.entity.rotation || 0)), 0.05);
+    camera.lookAt(tp.x, tp.y + 2, tp.z);
+  } else if (spectatorState.mode === 'topdown') {
+    const tp = target.mesh.position;
+    camera.position.lerp(new THREE.Vector3(tp.x, 30, tp.z), 0.05);
+    camera.lookAt(tp.x, 0, tp.z);
+  }
+  
+  updateSpectatorUI();
+}
+
+function stopSpectating() {
+  spectatorState.active = false;
+  const ui = document.getElementById('spectator-panel');
+  if (ui) ui.remove();
+  showStatus('Spectator mode off');
+}
+
+// ==================== 聊天系统 ====================
+let chatMessages = [];
+const MAX_CHAT = 50;
+
+function addChatMessage(sender, text, type) {
+  // type: 'system' | 'player' | 'team'
+  const msg = { sender, text, type: type || 'system', time: Date.now() };
+  chatMessages.push(msg);
+  if (chatMessages.length > MAX_CHAT) chatMessages.shift();
+  renderChat();
+  
+  // Send to server if connected
+  if (window.gameNetwork && window.gameNetwork.connected) {
+    window.gameNetwork.sendChat(sender + ': ' + text);
+  }
+}
+
+function renderChat() {
+  const container = document.getElementById('chat-messages');
+  if (!container) return;
+  container.innerHTML = '';
+  const recent = chatMessages.slice(-8);
+  recent.forEach(msg => {
+    const div = document.createElement('div');
+    div.style.cssText = 'font-size:11px;margin-bottom:2px;';
+    const color = msg.type === 'system' ? '#888' : (msg.type === 'team' ? '#4488ff' : '#fff');
+    div.innerHTML = '<span style="color:#ffd700;font-weight:bold">' + msg.sender + '</span> <span style="color:' + color + '">' + msg.text + '</span>';
+    container.appendChild(div);
+  });
+  container.scrollTop = container.scrollHeight;
+}
+
+function sendChat() {
+  const input = document.getElementById('chat-input');
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text) return;
+  
+  const playerName = state.player ? state.player.char.name : 'Player';
+  addChatMessage(playerName, text, 'player');
+  input.value = '';
+  
+  // AI response simulation
+  if (text.toLowerCase().includes('gg') || text.includes('好')) {
+    setTimeout(() => addChatMessage('System', 'Good game!', 'system'), 1000);
+  }
+}
+
+function showChatUI() {
+  const existing = document.getElementById('chat-panel');
+  if (existing) return;
+  
+  const panel = document.createElement('div');
+  panel.id = 'chat-panel';
+  panel.style.cssText = 'position:fixed;bottom:30px;left:10px;z-index:16;pointer-events:auto;width:250px;';
+  panel.innerHTML = '<div id="chat-messages" style="max-height:120px;overflow-y:auto;background:rgba(0,0,0,0.5);border-radius:6px;padding:6px;margin-bottom:4px"></div>' +
+    '<div style="display:flex;gap:4px">' +
+    '<input id="chat-input" type="text" placeholder="Chat..." style="flex:1;padding:4px 8px;font-size:11px;background:rgba(0,0,0,0.7);border:1px solid #555;border-radius:4px;color:#fff;outline:none;font-family:inherit" onkeydown="if(event.key==='Enter')sendChat()">' +
+    '<button onclick="sendChat()" style="padding:4px 10px;font-size:11px;background:rgba(255,215,0,0.2);border:1px solid #ffd700;border-radius:4px;color:#ffd700;cursor:pointer;font-family:inherit">Send</button>' +
+    '</div>';
+  document.body.appendChild(panel);
+}
+
+// Auto-show chat when game starts
+showChatUI();
+
+// Welcome message
+addChatMessage('System', 'Welcome to Q版方块人大乱斗! Press Enter to chat.', 'system');
+
+
+
+function showSpectatorUI() {
+  const existing = document.getElementById('spectator-panel');
+  if (existing) existing.remove();
+  
+  const panel = document.createElement('div');
+  panel.id = 'spectator-panel';
+  panel.style.cssText = 'position:fixed;bottom:10px;left:50%;transform:translateX(-50%);z-index:16;pointer-events:auto;display:flex;gap:8px;padding:8px 16px;background:rgba(0,0,0,0.7);border-radius:8px;font-size:12px;';
+  panel.innerHTML = '<span style="color:#ffd700" id="spec-target-name">👁 Spectating</span>' +
+    '<div style="color:#aaa;cursor:pointer;padding:2px 8px;border:1px solid #555;border-radius:4px" onclick="switchSpectatorTarget()">TAB: Switch</div>' +
+    '<div style="color:#aaa;cursor:pointer;padding:2px 8px;border:1px solid #555;border-radius:4px" onclick="switchSpectatorMode()">Mode: ' + spectatorState.mode + '</div>' +
+    '<div style="color:#ff8888;cursor:pointer;padding:2px 8px;border:1px solid #ff4444;border-radius:4px" onclick="stopSpectating()">Exit</div>';
+  document.body.appendChild(panel);
+}
+
+// ==================== 商城系统 ====================
+const SHOP_ITEMS = [
+  { id: 'skin_shadow', name: '暗影皮肤', icon: '👤', price: 500, type: 'skin', desc: '暗紫色特效外观' },
+  { id: 'skin_golden', name: '黄金皮肤', icon: '✨', price: 1000, type: 'skin', desc: '金色特效，尊贵身份' },
+  { id: 'skin_fire', name: '烈焰皮肤', icon: '🔥', price: 800, type: 'skin', desc: '火焰环绕，灼热特效' },
+  { id: 'skin_ice', name: '冰霜皮肤', icon: '❄️', price: 800, type: 'skin', desc: '冰晶特效，寒气逼人' },
+  { id: 'emote_victory', name: '胜利动作', icon: '🏆', price: 200, type: 'emote', desc: '击杀后播放胜利动画' },
+  { id: 'emote_taunt', name: '嘲讽动作', icon: '😈', price: 200, type: 'emote', desc: '挑衅对手的搞笑动作' },
+  { id: 'trail_rainbow', name: '彩虹尾迹', icon: '🌈', price: 600, type: 'trail', desc: '移动时留下彩虹轨迹' },
+  { id: 'trail_stars', name: '星辰尾迹', icon: '⭐', price: 600, type: 'trail', desc: '移动时留下星光轨迹' },
+  { id: 'effect_kill', name: '击杀特效', icon: '💥', price: 400, type: 'effect', desc: '击杀时播放华丽特效' },
+  { id: 'effect_heal', name: '回血特效', icon: '💚', price: 300, type: 'effect', desc: '回复生命时的治愈光效' },
+];
+
+let playerCoins = 9999; // Demo coins
+
+function showShopUI() {
+  const existing = document.getElementById('shop-overlay');
+  if (existing) { existing.remove(); return; }
+  
+  const overlay = document.createElement('div');
+  overlay.id = 'shop-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:300;display:flex;flex-direction:column;align-items:center;pointer-events:auto;overflow-y:auto;padding:40px 0;';
+  
+  let html = '<div style="font-size:32px;color:#ffd700;font-weight:bold;margin-bottom:6px">🏪 Shop</div>';
+  html += '<div style="color:#aaa;font-size:14px;margin-bottom:20px">Coins: <span style="color:#ffd700">' + playerCoins + '</span></div>';
+  
+  const categories = {};
+  SHOP_ITEMS.forEach(item => {
+    if (!categories[item.type]) categories[item.type] = [];
+    categories[item.type].push(item);
+  });
+  
+  const typeNames = { skin: '🎨 Skins', emote: '🎭 Emotes', trail: '✨ Trails', effect: '💫 Effects' };
+  
+  Object.keys(categories).forEach(cat => {
+    html += '<div style="color:#888;font-size:14px;margin:16px 0 8px;text-align:left;width:700px">' + (typeNames[cat] || cat) + '</div>';
+    html += '<div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;max-width:700px">';
+    categories[cat].forEach(item => {
+      html += '<div style="width:160px;padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;text-align:center;cursor:pointer;transition:all 0.15s" onmouseover="this.style.borderColor='rgba(255,215,0,0.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'" onclick="buyItem('' + item.id + '')">' +
+        '<div style="font-size:28px;margin-bottom:4px">' + item.icon + '</div>' +
+        '<div style="color:#fff;font-size:13px;font-weight:bold">' + item.name + '</div>' +
+        '<div style="color:#888;font-size:10px;margin:4px 0">' + item.desc + '</div>' +
+        '<div style="color:#ffd700;font-size:12px;font-weight:bold">🪙 ' + item.price + '</div>' +
+        '</div>';
+    });
+    html += '</div>';
+  });
+  
+  html += '<button onclick="this.parentElement.remove()" style="margin:20px;padding:10px 30px;font-size:16px;background:#333;color:#fff;border:2px solid #ffd700;border-radius:8px;cursor:pointer;font-family:inherit">Close</button>';
+  
+  overlay.innerHTML = html;
+  document.body.appendChild(overlay);
+}
+
+function buyItem(itemId) {
+  const item = SHOP_ITEMS.find(i => i.id === itemId);
+  if (!item) return;
+  if (playerCoins < item.price) {
+    showStatus('Not enough coins! Need ' + item.price);
+    return;
+  }
+  playerCoins -= item.price;
+  showStatus('Purchased: ' + item.name + '!');
+  // Refresh shop
+  const overlay = document.getElementById('shop-overlay');
+  if (overlay) { overlay.remove(); showShopUI(); }
+}
+
+
+
+function updateSpectatorUI() {
+  const nameEl = document.getElementById('spec-target-name');
+  if (nameEl && spectatorState.targets.length > 0) {
+    const t = spectatorState.targets[spectatorState.targetIdx];
+    nameEl.textContent = '👁 ' + (t.name || 'Unknown');
+  }
+}
+
+
 
 function showTeamBattleUI() {
   // Remove old
@@ -3111,6 +3354,15 @@ function updateHPBar3D(hpBar, cur, max) {
 
 // ==================== 杈撳叆 ====================
 document.addEventListener('keydown', e => {
+
+  // Spectator TAB switch
+  if (spectatorState.active && e.key === 'Tab') {
+    e.preventDefault();
+    switchSpectatorTarget();
+  }
+  if (spectatorState.active && e.key === 'v') {
+    switchSpectatorMode();
+  }
   state.keys[e.code] = true;
   if (e.code === 'Tab' || e.code.startsWith('F')) e.preventDefault();
   if (!state.started) return;
@@ -3126,6 +3378,7 @@ document.addEventListener('keydown', e => {
     state.panelF3 = !state.panelF3;
     document.getElementById('panel-f3').classList.toggle('visible', state.panelF3);
     if (state.panelF3) updateEnemyInfoPanel();
+  updateSpectator();
   updateTeamBattle(); updateBossSpawnTimer();
   updateRankButton();
   updateWeaponDrops();
@@ -4464,4 +4717,5 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+
 
