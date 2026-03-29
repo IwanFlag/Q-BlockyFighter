@@ -823,7 +823,24 @@ const CHARACTERS = [
     lightDmg: [20, 24, 28, 38], heavyDmg: [55, 68, 85],
     hpRegen: 20, style: 'support'
   }
-];
+,
+  // ===== 5V5 大地图 =====
+  {
+    id: 'flame_purgatory', name: '焰狱殿', desc: '岩浆环绕，火焰陷阱，高温灼烧',
+    icon: '🔥', accentColor: '#ff2200', is5v5: true
+  },
+  {
+    id: 'frozen_throne', name: '冰封王座', desc: '冰雪覆盖，冰面滑行，减速区域',
+    icon: '❄️', accentColor: '#44ddff', is5v5: true
+  },
+  {
+    id: 'misty_forest', name: '迷雾森林', desc: '浓雾弥漫，视野极低，草丛埋伏',
+    icon: '🌫️', accentColor: '#88cc44', is5v5: true
+  },
+  {
+    id: 'storm_fortress', name: '风暴要塞', desc: '雷电交加，风暴区域，击飞陷阱',
+    icon: '⛈️', accentColor: '#aa44ff', is5v5: true
+  }];
 
 // ==================== 鍦板浘鏁版嵁 ====================
 const MAPS = [
@@ -2465,6 +2482,109 @@ const starsGeo = new THREE.BufferGeometry();
 const sp = new Float32Array(600 * 3);
 for (let i = 0; i < 600; i++) { sp[i*3]=(Math.random()-0.5)*300; sp[i*3+1]=25+Math.random()*60; sp[i*3+2]=(Math.random()-0.5)*300; }
 starsGeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+
+  // ===== 5V5 大地图装饰 =====
+  if (m.id === 'flame_purgatory') {
+    // 岩浆池
+    for (let i = 0; i < 8; i++) {
+      const lavaGeo = new THREE.CircleGeometry(2 + Math.random()*3, 16);
+      const lavaMat = new THREE.MeshBasicMaterial({ color: 0xff4400, transparent: true, opacity: 0.7 });
+      const lava = new THREE.Mesh(lavaGeo, lavaMat);
+      lava.rotation.x = -Math.PI/2;
+      lava.position.set((Math.random()-0.5)*60, 0.03, (Math.random()-0.5)*60);
+      scene.add(lava); mapObjects.push(lava);
+      const lavaLight = new THREE.PointLight(0xff4400, 1, 8);
+      lavaLight.position.set(lava.position.x, 1, lava.position.z);
+      scene.add(lavaLight); mapObjects.push(lavaLight);
+    }
+    // 火焰柱
+    for (let i = 0; i < 12; i++) {
+      const pGeo = new THREE.CylinderGeometry(0.2, 0.3, 5, 6);
+      const pMat = new THREE.MeshStandardMaterial({ color: 0x442200, roughness: 0.8 });
+      const pillar = new THREE.Mesh(pGeo, pMat);
+      const angle = (i/12)*Math.PI*2;
+      const r = 15 + Math.random()*10;
+      pillar.position.set(Math.cos(angle)*r, 2.5, Math.sin(angle)*r);
+      scene.add(pillar); mapObjects.push(pillar);
+      const fireLight = new THREE.PointLight(0xff6600, 0.8, 6);
+      fireLight.position.set(pillar.position.x, 5, pillar.position.z);
+      scene.add(fireLight); mapObjects.push(fireLight);
+    }
+  }
+  
+  if (m.id === 'frozen_throne') {
+    // 冰面区域
+    for (let i = 0; i < 6; i++) {
+      const iceGeo = new THREE.CircleGeometry(3 + Math.random()*2, 16);
+      const iceMat = new THREE.MeshStandardMaterial({ color: 0x88ccff, transparent: true, opacity: 0.5, roughness: 0.1, metalness: 0.9 });
+      const ice = new THREE.Mesh(iceGeo, iceMat);
+      ice.rotation.x = -Math.PI/2;
+      ice.position.set((Math.random()-0.5)*40, 0.42, (Math.random()-0.5)*40);
+      ice.receiveShadow = true;
+      scene.add(ice); mapObjects.push(ice);
+    }
+    // 冰柱
+    for (let i = 0; i < 20; i++) {
+      const icePGeo = new THREE.ConeGeometry(0.3, 2 + Math.random()*3, 6);
+      const icePMat = new THREE.MeshStandardMaterial({ color: 0xaaddff, transparent: true, opacity: 0.6, roughness: 0.1 });
+      const iceP = new THREE.Mesh(icePGeo, icePMat);
+      iceP.position.set((Math.random()-0.5)*50, 1, (Math.random()-0.5)*50);
+      scene.add(iceP); mapObjects.push(iceP);
+    }
+    // 冰霜之王座（中心）
+    const throneGeo = new THREE.BoxGeometry(4, 3, 3);
+    const throneMat = new THREE.MeshStandardMaterial({ color: 0x4488cc, emissive: 0x2244aa, emissiveIntensity: 0.3, roughness: 0.2 });
+    const throne = new THREE.Mesh(throneGeo, throneMat);
+    throne.position.set(0, 1.5, 0);
+    scene.add(throne); mapObjects.push(throne);
+  }
+  
+  if (m.id === 'misty_forest') {
+    // 密集灌木
+    for (let i = 0; i < 40; i++) {
+      const bushGeo = new THREE.SphereGeometry(1 + Math.random()*1.5, 6, 5);
+      const bushMat = new THREE.MeshStandardMaterial({ color: 0x2a5a1a, roughness: 0.9, transparent: true, opacity: 0.6 });
+      const bush = new THREE.Mesh(bushGeo, bushMat);
+      bush.position.set((Math.random()-0.5)*60, 0.5, (Math.random()-0.5)*60);
+      bush.scale.y = 0.5;
+      scene.add(bush); mapObjects.push(bush);
+    }
+    // 迷雾粒子
+    for (let i = 0; i < 60; i++) {
+      const fogGeo = new THREE.SphereGeometry(4 + Math.random()*6, 8, 6);
+      const fogMat = new THREE.MeshBasicMaterial({ color: 0x88aa88, transparent: true, opacity: 0.05 });
+      const fog = new THREE.Mesh(fogGeo, fogMat);
+      fog.position.set((Math.random()-0.5)*80, 1+Math.random()*4, (Math.random()-0.5)*80);
+      scene.add(fog); mapObjects.push(fog);
+    }
+  }
+  
+  if (m.id === 'storm_fortress') {
+    // 城墙
+    for (let side = 0; side < 4; side++) {
+      const isX = side < 2;
+      const wallGeo = new THREE.BoxGeometry(isX ? 60 : 2, 8, isX ? 2 : 60);
+      const wallMat = new THREE.MeshStandardMaterial({ color: 0x3a3a4a, roughness: 0.7 });
+      const wall = new THREE.Mesh(wallGeo, wallMat);
+      const s = side % 2 === 0 ? 1 : -1;
+      wall.position.set(isX ? 0 : s*30, 4, isX ? s*30 : 0);
+      wall.castShadow = true;
+      scene.add(wall); mapObjects.push(wall);
+    }
+    // 雷电塔
+    for (let i = 0; i < 8; i++) {
+      const towerGeo = new THREE.CylinderGeometry(0.5, 0.8, 10, 8);
+      const towerMat = new THREE.MeshStandardMaterial({ color: 0x444466, emissive: 0x2222aa, emissiveIntensity: 0.3 });
+      const tower = new THREE.Mesh(towerGeo, towerMat);
+      const angle = (i/8)*Math.PI*2;
+      tower.position.set(Math.cos(angle)*20, 5, Math.sin(angle)*20);
+      tower.castShadow = true;
+      scene.add(tower); mapObjects.push(tower);
+      const lightTower = new THREE.PointLight(0x6666ff, 0.5, 10);
+      lightTower.position.set(tower.position.x, 10, tower.position.z);
+      scene.add(lightTower); mapObjects.push(lightTower);
+    }
+  }
 scene.add(new THREE.Points(starsGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.3, transparent: true, opacity: 0.5 })));
 
 // ==================== 姝﹀櫒妯″瀷鏋勫缓锛堢嫭绔嬪嚱鏁帮紝鐢ㄤ簬鍒囨崲鏃堕噸寤猴級====================
@@ -2479,15 +2599,19 @@ function loadMap(idx) {
     0: { bg: 0x0a0a1e, fog: 0x0a0a1e, fogDen: 0.008 },  // Dragon - dark night
     1: { bg: 0x1a1510, fog: 0x1a1510, fogDen: 0.006 },  // Roman - warm sand
     2: { bg: 0x0a1a0a, fog: 0x0a1a0a, fogDen: 0.02 },   // Bamboo - misty green
-  };
+  
+    3: { bg: 0x1a0500, fog: 0x1a0500, fogDen: 0.012 },  // Flame - red hot
+    4: { bg: 0x0a1a2a, fog: 0x0a1a2a, fogDen: 0.015 },  // Frozen - icy blue
+    5: { bg: 0x0a1a0a, fog: 0x0a1a0a, fogDen: 0.035 },  // Misty - very foggy
+    6: { bg: 0x0a0a1a, fog: 0x0a0a1a, fogDen: 0.010 },  // Storm - dark purple};
   const a = ambiance[idx];
   scene.background = new THREE.Color(a.bg);
   scene.fog = new THREE.FogExp2(a.fog, a.fogDen);
   
   // Change ground color
-  const groundColors = [0x3a3226, 0x8a7a60, 0x2a3a1a];
-  const platColors = [0x5a5046, 0x9a8a70, 0x4a5a3a];
-  const borderColors = [0x8b4513, 0x7a6a50, 0x3a4a2a];
+  const groundColors = [0x3a3226, 0x8a7a60, 0x2a3a1a, 0x1a0800, 0x0a1a2a, 0x0a2a0a, 0x1a0a2a];
+  const platColors = [0x5a5046, 0x9a8a70, 0x4a5a3a, 0x2a1000, 0x1a3a4a, 0x1a4a1a, 0x2a1a4a];
+  const borderColors = [0x8b4513, 0x7a6a50, 0x3a4a2a, 0x882200, 0x224488, 0x228822, 0x442288];
   
   // Update existing meshes
   scene.traverse(child => {
@@ -2805,7 +2929,7 @@ function populateMapGrid() {
     card.className = 'map-card' + (i === 0 ? ' selected' : '');
     card.setAttribute('data-map', i);
     card.onclick = () => selectMap(i);
-    card.innerHTML = '<div class="map-icon">' + m.icon + '</div><div class="map-name">' + m.name + '</div><div class="map-desc">' + m.desc + '</div>';
+    card.innerHTML = '<div class="map-icon">' + m.icon + '</div><div class="map-name">' + m.name + (m.is5v5 ? ' <span style="color:#ff4444;font-size:10px">5V5</span>' : '') + '</div><div class="map-desc">' + m.desc + '</div>';
     grid.appendChild(card);
   });
 }
