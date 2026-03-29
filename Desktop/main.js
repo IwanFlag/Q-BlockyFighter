@@ -27,8 +27,8 @@ function createWindow() {
 
 // Guest模式 - 直接加载游戏（单机版，不需要服务器）
 ipcMain.handle('start-guest', async () => {
-  const gamePath = path.join(__dirname, '..', 'Code', 'index_local_v03_enhanced.html');
-  await mainWindow.loadFile(gamePath);
+  // 加载本地game.html（与web版独立的PC版本）
+  await mainWindow.loadFile(path.join(__dirname, 'game.html'));
   mainWindow.setFullScreen(true);
   mainWindow.setMenuBarVisibility(false);
   return { success: true };
