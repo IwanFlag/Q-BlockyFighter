@@ -132,6 +132,9 @@ namespace QBlockyFighter.Core
             }
         }
 
+        /// <summary>带伤害来源的重载（AI和游戏模式使用）</summary>
+        public void TakeDamage(float damage, GameObject source) => TakeDamage(damage, true);
+
         public void Heal(float amount)
         {
             if (IsDead || amount <= 0) return;

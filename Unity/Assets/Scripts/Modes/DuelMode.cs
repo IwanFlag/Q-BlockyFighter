@@ -30,8 +30,8 @@ namespace QBlockyFighter.Modes
         protected override void OnTimeUp()
         {
             // 时间到，血量多的赢
-            float hp0 = players.Count > 0 ? players[0].GetComponent<HealthSystem>().CurrentHP : 0;
-            float hp1 = players.Count > 1 ? players[1].GetComponent<HealthSystem>().CurrentHP : 0;
+            float hp0 = players.Count > 0 ? players[0].GetComponent<HealthSystem>().CurrentHp : 0;
+            float hp1 = players.Count > 1 ? players[1].GetComponent<HealthSystem>().CurrentHp : 0;
             int winner = hp0 >= hp1 ? 0 : 1;
             wins[winner]++;
             CheckRoundEnd();
@@ -72,7 +72,7 @@ namespace QBlockyFighter.Modes
             foreach (var p in players)
             {
                 var hp = p.GetComponent<HealthSystem>();
-                hp?.ResetHealth();
+                hp?.ResetState();
                 // 重置位置
                 p.transform.position = players.IndexOf(p) == 0 ? new Vector3(-3, 0, 0) : new Vector3(3, 0, 0);
             }

@@ -89,8 +89,8 @@ namespace QBlockyFighter.Modes
             enemy.name = $"ChallengeEnemy_W{CurrentWave}";
 
             var health = enemy.AddComponent<HealthSystem>();
-            health.MaxHP = hp;
-            health.CurrentHP = hp;
+            health.MaxHp = hp;
+            health.CurrentHp = hp;
 
             var ai = enemy.AddComponent<AI.EnemyAI>();
             ai.AttackDamage = dmg;
@@ -107,8 +107,8 @@ namespace QBlockyFighter.Modes
             boss.name = $"ChallengeBoss_W{wave}";
 
             var health = boss.AddComponent<HealthSystem>();
-            health.MaxHP = 500 + wave * 200;
-            health.CurrentHP = health.MaxHP;
+            health.MaxHp = 500 + wave * 200;
+            health.CurrentHp = health.MaxHp;
 
             var ai = boss.AddComponent<AI.BossAI>();
             ai.BossType = (wave / 10) % 3;
@@ -137,7 +137,7 @@ namespace QBlockyFighter.Modes
             int waveScore = CurrentWave * 100 + (int)timeBonus + ComboMax * 10;
             TotalScore += waveScore;
 
-            if (players.Count > 0 && players[0].GetComponent<HealthSystem>().CurrentHP == players[0].GetComponent<HealthSystem>().MaxHP)
+            if (players.Count > 0 && players[0].GetComponent<HealthSystem>().CurrentHp == players[0].GetComponent<HealthSystem>().MaxHp)
             {
                 noDamageWaves++;
             }

@@ -40,9 +40,9 @@ namespace QBlockyFighter.AI
             // 阶段切换
             if (health != null)
             {
-                float hpPercent = health.CurrentHP / health.MaxHP;
-                if (hpPercent < 0.3f && currentPhase < 2) { currentPhase = 2; enraged = true; OnPhaseChange(); }
-                else if (hpPercent < 0.6f && currentPhase < 1) { currentPhase = 1; OnPhaseChange(); }
+                float HpPercent = health.CurrentHp / health.MaxHp;
+                if (HpPercent < 0.3f && currentPhase < 2) { currentPhase = 2; enraged = true; OnPhaseChange(); }
+                else if (HpPercent < 0.6f && currentPhase < 1) { currentPhase = 1; OnPhaseChange(); }
             }
 
             if (target != null)
@@ -150,8 +150,8 @@ namespace QBlockyFighter.AI
                 minion.name = "BossMinion";
                 minion.tag = "Enemy";
                 var mhp = minion.AddComponent<HealthSystem>();
-                mhp.MaxHP = 100;
-                mhp.CurrentHP = 100;
+                mhp.MaxHp = 100;
+                mhp.CurrentHp = 100;
                 var ai = minion.AddComponent<EnemyAI>();
                 ai.AttackDamage = 10;
             }

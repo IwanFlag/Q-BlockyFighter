@@ -304,6 +304,9 @@ namespace QBlockyFighter
             // 初始化HUD
             hudManager.Initialize(localHealth, localSkills, localWeapons, localCombat);
 
+            // 正确设置体力引用：体力系统在HealthSystem里
+            float stamina = localHealth != null ? localHealth.StaminaPercent : 1f;
+
             SetState(GameState.Playing);
         }
 
@@ -319,11 +322,8 @@ namespace QBlockyFighter
 
             // 设置角色
             var charData = CharacterData.GetCharacter(charIndex);
-            if (charData.HasValue)
-            {
-                localHealth.MaxHP = charData.Value.baseHP;
-                localHealth.CurrentHP = charData.Value.baseHP;
-            }
+            localHealth.MaxHp = charData.baseHp;
+            localHealth.CurrentHp = charData.baseHp;
 
             return go;
         }

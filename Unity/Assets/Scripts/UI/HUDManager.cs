@@ -57,7 +57,7 @@ namespace QBlockyFighter.UI
             float barH = 18;
             float barX2 = barX + 60;
 
-            DrawBar(barX2, barY, barW, barH, playerHealth.HPPercent, new Color(1f, 0.27f, 0.27f), $"HP: {Mathf.CeilToInt(playerHealth.CurrentHP)}/{Mathf.CeilToInt(playerHealth.MaxHP)}");
+            DrawBar(barX2, barY, barW, barH, playerHealth.HpPercent, new Color(1f, 0.27f, 0.27f), $"HP: {Mathf.CeilToInt(playerHealth.CurrentHp)}/{Mathf.CeilToInt(playerHealth.MaxHp)}");
 
             // 体力条
             float stamina = playerCombat != null ? playerCombat.StaminaPercent : 1f;

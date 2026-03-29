@@ -94,7 +94,7 @@ namespace QBlockyFighter.Modes
                 // 重置所有玩家
                 foreach (var p in players)
                 {
-                    p.GetComponent<HealthSystem>()?.ResetHealth();
+                    p.GetComponent<HealthSystem>()?.ResetState();
                 }
                 Invoke(nameof(OnModeStart), 3f);
             }

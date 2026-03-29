@@ -47,7 +47,7 @@ namespace QBlockyFighter.Modes
         {
             // 训练场不死，自动回满
             var hp = player.GetComponent<HealthSystem>();
-            hp?.ResetHealth();
+            hp?.ResetState();
         }
 
         private void InitDummies()
@@ -69,8 +69,8 @@ namespace QBlockyFighter.Modes
             dummy.name = "TrainingDummy";
 
             var hp = dummy.AddComponent<HealthSystem>();
-            hp.MaxHP = 999999;
-            hp.CurrentHP = 999999;
+            hp.MaxHp = 999999;
+            hp.CurrentHp = 999999;
 
             var rb = dummy.AddComponent<Rigidbody>();
             rb.isKinematic = true;
@@ -122,8 +122,8 @@ namespace QBlockyFighter.Modes
             enemy.name = $"ChallengeEnemy_W{ChallengeWave}";
 
             var health = enemy.AddComponent<HealthSystem>();
-            health.MaxHP = hp;
-            health.CurrentHP = hp;
+            health.MaxHp = hp;
+            health.CurrentHp = hp;
 
             var ai = enemy.AddComponent<AI.EnemyAI>();
             ai.AttackDamage = dmg;
@@ -171,8 +171,8 @@ namespace QBlockyFighter.Modes
             boss.name = $"Boss_Type{type}";
 
             var hp = boss.AddComponent<HealthSystem>();
-            hp.MaxHP = 5000;
-            hp.CurrentHP = 5000;
+            hp.MaxHp = 5000;
+            hp.CurrentHp = 5000;
 
             var ai = boss.AddComponent<AI.BossAI>();
             ai.BossType = type;
