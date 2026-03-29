@@ -42,8 +42,8 @@ namespace QBlockyFighter.Network
             _client = GameClient.Instance;
             if (_client != null)
             {
-                _client.OnFrame += OnNetworkFrame;
-                _client.OnGameStart += OnGameStart;
+                _client.OnFrameRaw += OnNetworkFrame;
+                _client.OnGameStartRaw += OnGameStart;
             }
         }
 

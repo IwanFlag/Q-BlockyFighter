@@ -316,6 +316,8 @@ namespace QBlockyFighter.Network
         public void EnterTraining() => Send("training");
 
         // 原始签名兼容
+        public void SendInput(object keys, object mouse) =>
+            Send("input", new { keys, mouse });
         public void SendJoin(string name, string character) => Send("join", new { name, character });
         public void SendCreateRoom(string mode = "1v1") => Send("create_room", new { mode });
         public void SendJoinRoom(int roomId) => Send("join_room", new { roomId });
