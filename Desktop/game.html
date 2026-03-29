@@ -241,7 +241,7 @@ canvas { display: block; }
   margin-top: 12px; font-size: 11px; color: rgba(255,255,255,0.3); text-align: center;
 }
 
-/* 璁剧疆闈㈡澘 */
+/* 设置闈㈡澘 */
 .setting-row {
   display: flex; align-items: center; justify-content: space-between;
   margin: 10px 0; font-size: 13px; color: rgba(255,255,255,0.8);
@@ -276,7 +276,7 @@ canvas { display: block; }
 }
 .setting-btns button:hover { background: rgba(255,215,0,0.35); }
 
-/* 閿佸畾鐩爣鏍囪 */
+/* 锁定目标标记 */
 #lock-marker {
   position: fixed; pointer-events: none; z-index: 15;
   width: 40px; height: 40px; border: 2px solid #ff4444;
@@ -301,7 +301,7 @@ canvas { display: block; }
   opacity: 0; transition: opacity 0.1s;
 }
 
-/* 鍑绘潃缁熻 */
+/* 击杀统计 */
 #stats-bar {
   position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
   display: flex; gap: 20px; background: rgba(0,0,0,0.5); padding: 8px 24px;
@@ -309,7 +309,7 @@ canvas { display: block; }
 }
 #stats-bar .stat-val { color: #ffd700; font-weight: bold; }
 
-/* 武器鍝佽川杈规 */
+/* 武器品质边框 */
 .weapon-slot.quality-black { border-color: #888; }
 .weapon-slot.quality-bronze { border-color: #44cc44; box-shadow: 0 0 6px rgba(68,204,68,0.3); }
 .weapon-slot.quality-silver { border-color: #6688ff; box-shadow: 0 0 8px rgba(102,136,255,0.4); }
@@ -365,86 +365,86 @@ canvas { display: block; }
     <div class="char-card selected" data-char="0" onclick="selectChar(0)">
       <div class="char-icon">🔪</div>
       <div class="char-name">冷月 · 荆如</div>
-      <div class="char-title">鍒哄 路 鐮存檽</div>
-      <div class="char-system system-wushu">姝︽湳</div>
+      <div class="char-title">刺客 · 破晓</div>
+      <div class="char-system system-wushu">武术</div>
       <div class="char-desc">剑气纵横，近身缠斗<br>弹反反击专家，连招犀利<br>🔪 鱼肠短剑 + 🎧 软剑</div>
     </div>
     <div class="char-card" data-char="1" onclick="selectChar(1)">
-      <div class="char-icon">馃シ</div>
+      <div class="char-icon">🎯</div>
       <div class="char-name">影忍 · 雾隐</div>
-      <div class="char-title">鍒哄 路 榛勬槒</div>
-      <div class="char-system system-wushu2">宸湳</div>
+      <div class="char-title">刺客 · 黄昏</div>
+      <div class="char-system system-wushu2">忍术</div>
       <div class="char-desc">影遏暗杀，持续毒伤<br>隐身突袭，DOT叠层<br>🔫 苦无 + 🔗 锁镰</div>
     </div>
     <div class="char-card" data-char="2" onclick="selectChar(2)">
-      <div class="char-icon">鈿旓笍</div>
+      <div class="char-icon">🌟</div>
       <div class="char-name">傲骨 · 关翎</div>
       <div class="char-title">战士 · 破晓</div>
-      <div class="char-system system-magic">姝︽湳</div>
+      <div class="char-system system-magic">武术</div>
       <div class="char-desc">大开大合，AOE核心<br>霸体重斩，横扫千军<br>🔫 青龙刀 + 🔥 短刀</div>
     </div>
     <div class="char-card" data-char="3" onclick="selectChar(3)">
-      <div class="char-icon">馃徆</div>
+      <div class="char-icon">🏹</div>
       <div class="char-name">追风 · 花木兰</div>
       <div class="char-title">远程 · 破晓</div>
-      <div class="char-system system-xianshu">浠欐湳</div>
+      <div class="char-system system-xianshu">仙术</div>
       <div class="char-desc">远程狙击，陷阱布局<br>天眿锁定，箭雨覆盖<br>🏹 长弓 + 🏷 袖箭</div>
     </div>
     <!-- V0.4 新角色 -->
     <div class="char-card" data-char="4" onclick="selectChar(4)">
-      <div class="char-icon">馃</div>
+      <div class="char-icon">☠</div>
       <div class="char-name">毒蝎 · 哈桑</div>
       <div class="char-title">远程 · 黄昏</div>
-      <div class="char-system system-wushu2">宸湳</div>
+      <div class="char-system system-wushu2">忍术</div>
       <div class="char-desc">蛊毒叠层，风筝消耗<br>暗影瞬移，蛊爆收割<br>🔫 飞刀 + ⚠️ 毒镖</div>
     </div>
     <div class="char-card" data-char="5" onclick="selectChar(5)">
       <div class="char-icon">🛡️</div>
       <div class="char-name">磐石 · 奥拉夫</div>
-      <div class="char-title">鍧﹀厠 路 鐮存檽</div>
-      <div class="char-system system-xianshu">浠欐湳</div>
+      <div class="char-title">坦克 · 破晓</div>
+      <div class="char-system system-xianshu">仙术</div>
       <div class="char-desc">无畏冲锋，越战越勇<br>血量越低攻击越高<br>🪓 战斧 + 🏹 飞斧</div>
     </div>
     <div class="char-card" data-char="6" onclick="selectChar(6)">
       <div class="char-icon">⚡</div>
       <div class="char-name">雷鸣 · 卡利</div>
       <div class="char-title">战士 · 黄昏</div>
-      <div class="char-system system-magic">榄旀硶</div>
+      <div class="char-system system-magic">魔法</div>
       <div class="char-desc">雷电附魔，旋转攻击<br>雷暴风暴，越战越勇<br>🔩 查克拉 + 🔫 飞刃</div>
     </div>
     <div class="char-card" data-char="7" onclick="selectChar(7)">
       <div class="char-icon">馃弴</div>
       <div class="char-name">铁骑 · 哲别</div>
       <div class="char-title">战士 · 黄昏</div>
-      <div class="char-system system-wushu">姝︽湳</div>
+      <div class="char-system system-wushu">武术</div>
       <div class="char-desc">骑马冲锋，游走收割<br>套索拉扯，万马奔腾<br>🔩 弯刀 + 🔗 套马索</div>
     </div>
     <div class="char-card" data-char="8" onclick="selectChar(8)">
       <div class="char-icon">🎯</div>
       <div class="char-name">铁壁 · 马克西</div>
       <div class="char-title">鍧﹀厠 路 榛勬槒</div>
-      <div class="char-system system-wushu">姝︽湳</div>
+      <div class="char-system system-wushu">武术</div>
       <div class="char-desc">盾牌格挡，控制反击<br>完美格挡触发气劲<br>🔥 短剑 + 🛡️ 方盾</div>
     </div>
     <div class="char-card" data-char="9" onclick="selectChar(9)">
-      <div class="char-icon">馃挘</div>
+      <div class="char-icon">💣</div>
       <div class="char-name">破军 · 李舜臣</div>
       <div class="char-title">远程 · 破晓</div>
-      <div class="char-system system-magic">榄旀硶</div>
+      <div class="char-system system-magic">魔法</div>
       <div class="char-desc">架设炮台，区域封锁<br>龟船炮阵，火力压制<br>🔫 火锴 + 🏹 弩炮</div>
     </div>
     <div class="char-card" data-char="10" onclick="selectChar(10)">
       <div class="char-icon">馃幍</div>
       <div class="char-name">圣歌 · 阿玛尼</div>
       <div class="char-title">辅助 · 破晓</div>
-      <div class="char-system system-wushu2">宸湳</div>
+      <div class="char-system system-wushu2">忍术</div>
       <div class="char-desc">治疗光环，群体增益<br>祖灵降临，范围复活<br>🎧 图腾法杖 + 🔔 骨铃</div>
     </div>
     <div class="char-card" data-char="11" onclick="selectChar(11)">
       <div class="char-icon">馃敡</div>
       <div class="char-name">天机 · 达芬奇</div>
       <div class="char-title">辅助 · 黄昏</div>
-      <div class="char-system system-magic">榄旀硶</div>
+      <div class="char-system system-magic">魔法</div>
       <div class="char-desc">符文陷阱，傀儡探路<br>机关布置，控制减速<br>🏹 机关弩 + 🤖 傀儡</div>
     </div>
   </div>
@@ -465,12 +465,12 @@ canvas { display: block; }
   <div id="challenge-score" style="color:#aaa;font-size:12px;margin-top:2px"></div>
 </div>
 <div id="zone-btns" style="position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:15;pointer-events:auto;display:flex;gap:8px;">
-  <div style="padding:8px 16px;background:rgba(255,50,50,0.3);border:2px solid #ff4444;border-radius:8px;color:#ff8888;font-size:13px;cursor:pointer;font-family:inherit" onclick="startChallenge()">馃幆 闂叧挑战垬
+  <div style="padding:8px 16px;background:rgba(255,50,50,0.3);border:2px solid #ff4444;border-radius:8px;color:#ff8888;font-size:13px;cursor:pointer;font-family:inherit" onclick="startChallenge()">⚔ 关卡挑战
   <div style="padding:8px 16px;background:rgba(255,0,0,0.3);border:2px solid #ff4444;border-radius:8px;color:#ff8888;font-size:13px;cursor:pointer;font-family:inherit" onclick="startTeamBattle()">鈿?5V5团战垬
   <div style="padding:8px 16px;background:rgba(200,200,0,0.3);border:2px solid #cccc00;border-radius:8px;color:#ffff88;font-size:13px;cursor:pointer;font-family:inherit" onclick="startSpectating()">👁 观战
   <div style="padding:8px 16px;background:rgba(255,215,0,0.3);border:2px solid #ffd700;border-radius:8px;color:#ffd700;font-size:13px;cursor:pointer;font-family:inherit" onclick="showShopUI()">🏪 商城
   <div style="padding:8px 16px;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.3);border-radius:8px;color:#ccc;font-size:13px;cursor:pointer;font-family:inherit" onclick="toggleFullscreen()">⛶ 全屏</div></div></div></div></div>
-  <div style="padding:8px 16px;background:rgba(0,150,255,0.3);border:2px solid #4488ff;border-radius:8px;color:#88bbff;font-size:13px;cursor:pointer;font-family:inherit" onclick="startWeaponRack()">馃棥 武器鏋?/div>
+  <div style="padding:8px 16px;background:rgba(0,150,255,0.3);border:2px solid #4488ff;border-radius:8px;color:#88bbff;font-size:13px;cursor:pointer;font-family:inherit" onclick="startWeaponRack()">🗡 武器鏋?/div>
   <div style="padding:8px 16px;background:rgba(255,100,0,0.3);border:2px solid #ff6600;border-radius:8px;color:#ff9944;font-size:13px;cursor:pointer;font-family:inherit" onclick="startBossSimulation()">馃懝 Boss</div>
 </div>
 <div id="minimap">
@@ -489,19 +489,19 @@ canvas { display: block; }
     <kbd>F</kbd> 格挡 · <kbd>左键</kbd> 轻攻 · <kbd>右键</kbd> 重攻<br>
     <kbd>Q/E/R</kbd> 技能 · <kbd>Tab</kbd> 切武器<br>
     <kbd>V</kbd> 锁定 · <kbd>滚轮</kbd> 缩放 · <kbd>1-4</kbd> 切角色<br>
-    <kbd>F1</kbd> 璁剧疆 路 <kbd>F2</kbd> 鍦板浘 路 <kbd>F3</kbd> 鏁屼汉
+    <kbd>F1</kbd> 设置 路 <kbd>F2</kbd> 鍦板浘 路 <kbd>F3</kbd> 鏁屼汉
   </div>
   <div id="combo-display">
     <div id="combo-count">0</div>
     <div id="combo-label">COMBO</div>
   </div>
   <div id="status-msg"></div>
-  <div id="parry-flash">锟?锟?锟?/div>
+  <div id="parry-flash">/div>
   <div id="zone-hint"></div>
-  <div id="recovery-hint">锟?<kbd>绌烘牸</kbd> 鍙楄韩</div>
-  <div id="parry-riposte-hint">锟?鍙嶅嚮绐楀彛锟?/div>
+  <div id="recovery-hint"><kbd>绌烘牸</kbd> 鍙楄韩</div>
+  <div id="parry-riposte-hint">鍙嶅嚮绐楀彛/div>
   <div id="player-hud">
-    <div id="player-portrait">锟?/div>
+    <div id="player-portrait">/div>
     <div>
       <div id="player-level">Lv.1</div>
       <div id="player-bars">
@@ -517,34 +517,34 @@ canvas { display: block; }
     </div>
   </div>
   <div id="weapon-bar">
-    <div class="weapon-slot active" id="weapon-a"><span>馃棥</span><span class="wname" id="wa-name">楸艰偁锟?/span></div>
-    <div class="weapon-slot" id="weapon-b"><span>馃寑</span><span class="wname" id="wb-name">软剑</span></div>
+    <div class="weapon-slot active" id="weapon-a"><span>🗡</span><span class="wname" id="wa-name">鱼肠/span></div>
+    <div class="weapon-slot" id="weapon-b"><span>🌀</span><span class="wname" id="wb-name">软剑</span></div>
   </div>
   <div id="skill-bar">
-    <div class="skill-slot" id="skill-q"><span class="key">Q</span><span class="icon" id="skill-q-icon">馃挩</span></div>
-    <div class="skill-slot" id="skill-e"><span class="key">E</span><span class="icon" id="skill-e-icon">馃寑</span></div>
-    <div class="skill-slot" id="skill-r"><span class="key">R</span><span class="icon" id="skill-r-icon">锟?/span></div>
-    <div class="skill-slot" id="skill-passive"><span class="key">琚姩</span><span class="icon" id="skill-p-icon">锟?/span></div>
+    <div class="skill-slot" id="skill-q"><span class="key">Q</span><span class="icon" id="skill-q-icon">💨</span></div>
+    <div class="skill-slot" id="skill-e"><span class="key">E</span><span class="icon" id="skill-e-icon">🌀</span></div>
+    <div class="skill-slot" id="skill-r"><span class="key">R</span><span class="icon" id="skill-r-icon">/span></div>
+    <div class="skill-slot" id="skill-passive"><span class="key">被动</span><span class="icon" id="skill-p-icon">/span></div>
   </div>
-  <div id="stamina-warning">锟?浣撳姏鑰楀敖锛佹棤娉曢棯閬垮拰鏍兼尅锟?/div>
+  <div id="stamina-warning">浣撳姏鑰楀敖锛佹棤娉曢棯閬垮拰鏍兼尅/div>
   <div id="quality-toast"></div>
 </div>
 
-<!-- F1 璁剧疆闈㈡澘 -->
+<!-- F1 设置闈㈡澘 -->
 <div class="info-panel" id="panel-f1" style="min-width:380px">
-  <h2>锟?娓告垙璁剧疆</h2>
+  <h2>娓告垙设置</h2>
   <div class="setting-row">
-    <span>榧犳爣鐏垫晱锟?/span>
+    <span>榧犳爣鐏垫晱/span>
     <input type="range" id="set-sensitivity" min="1" max="10" value="5" step="1">
     <span class="val" id="val-sensitivity">5</span>
   </div>
   <div class="setting-row">
-    <span>榛樿瑙嗚璺濈</span>
+    <span>默认视角距离</span>
     <input type="range" id="set-camdist" min="3" max="15" value="7" step="1">
     <span class="val" id="val-camdist">7</span>
   </div>
   <div class="setting-row">
-    <span>鐢婚潰浜害</span>
+    <span>画面亮度</span>
     <input type="range" id="set-brightness" min="5" max="20" value="12" step="1">
     <span class="val" id="val-brightness">12</span>
   </div>
@@ -558,7 +558,7 @@ canvas { display: block; }
     <label class="toggle"><input type="checkbox" id="set-crosshair" checked><span class="toggle-slider"></span></label>
   </div>
   <div class="setting-row">
-    <span>浼ゅ椋樺瓧</span>
+    <span>伤害飘字</span>
     <label class="toggle"><input type="checkbox" id="set-dmgtext" checked><span class="toggle-slider"></span></label>
   </div>
   <div class="setting-row">
@@ -570,15 +570,15 @@ canvas { display: block; }
     <label class="toggle"><input type="checkbox" id="set-shake" checked><span class="toggle-slider"></span></label>
   </div>
   <div class="setting-btns">
-    <button id="btn-reset-settings">鎭㈠榛樿</button>
+    <button id="btn-reset-settings">恢复默认</button>
   </div>
-  <div class="close-hint">锟?F1 鍏抽棴</div>
+  <div class="close-hint">F1 鍏抽棴</div>
 </div>
 
 <div class="info-panel" id="panel-f3">
   <h2>馃攳 闄勮繎鏁屼汉</h2>
   <div id="enemy-info-list"></div>
-  <div class="close-hint">锟?F3 鍏抽棴</div>
+  <div class="close-hint">F3 鍏抽棴</div>
 </div>
 
 <div class="weakness-overlay" id="weakness-overlay"></div>
@@ -588,7 +588,7 @@ canvas { display: block; }
 <script>
 const THREE = window.THREE;
 
-// ==================== roundRect 鍏煎 ====================
+// ==================== roundRect 兼容 ====================
 if (!CanvasRenderingContext2D.prototype.roundRect) {
   CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
     if (typeof r === 'number') r = [r, r, r, r];
@@ -611,25 +611,25 @@ const CHARACTERS = [
   {
         {id: 'jingru', name: '冷月 · 荆如', title: '刺客 · 武术',color: 0xff5588, weapons: ['鱼肠短剑','软剑'], skills: {Q:{name:'刀光', icon:'🗡️', cd:8, type:'dash', desc:'200ms 无敌帧突进5米，斩击55伤',color:0xff5588}, E:{name:'云隐步', icon:'💨', cd:6, type:'blink', desc:'瞬间移动5米+隐身1.2秒+减伤30%',color:0x55aaff}, R:{name:'千刃决', icon:'🌀', cd:12, type:'aoe', desc:'范围4米内8段伤害，总计240+2秒击退',color:0xff3333}}, passive: '弹反：完美格挡触发250ms反击窗口，1.8倍反伤' },
     color: 0x2244aa, emissive: 0x1122ff, portrait: '💤 剑,
-    system: 'wushu', systemName: '姝︽湳',
+    system: 'wushu', systemName: '武术',
     bodyColor: '#2244aa', accentColor: '#4488ff',
     weapons: [
-      { name: '鱼肠短剑', icon: '馃棥', range: 3, atkAngle: Math.PI/3, type: 'sword' },
-      { name: '软剑', icon: '馃寑', range: 4.5, atkAngle: Math.PI/4, type: 'whip' }
+      { name: '鱼肠短剑', icon: '🗡', range: 3, atkAngle: Math.PI/3, type: 'sword' },
+      { name: '软剑', icon: '🌀', range: 4.5, atkAngle: Math.PI/4, type: 'whip' }
     ],
     skills: {
-      Q: { name: '鍓戞皵绐佸埡', icon: '馃挩', cd: 8, range: 6, dmg: 120, type: 'dash' },
-      E: { name: '缂犵粫', icon: '馃寑', cd: 12, range: 8, dmg: 60, type: 'stun', stunDur: 1.0 },
-      R: { name: '鏈堝奖锟?, icon: '锟?, cd: 30, range: 10, dmg: 250, type: 'aoe' }
+      Q: { name: '鍓戞皵绐佸埡', icon: '💨', cd: 8, range: 6, dmg: 120, type: 'dash' },
+      E: { name: '缂犵粫', icon: '🌀', cd: 12, range: 8, dmg: 60, type: 'stun', stunDur: 1.0 },
+      R: { name: '鏈堝奖, icon: ', cd: 30, range: 10, dmg: 250, type: 'aoe' }
     },
-    passive: { name: '鍓戞剰', icon: '锟?, desc: '寮瑰弽鎴愬姛鍚庝笅涓€鍑讳激锟?50%' },
+    passive: { name: '鍓戞剰', icon: ', desc: '寮瑰弽鎴愬姛鍚庝笅涓€鍑讳激50%' },
     lightDmg: [30, 35, 40, 55], heavyDmg: [80, 90, 100],
     hpRegen: 20, style: 'balanced'
   },
   {
         {id: 'wuyin', name: '影忍 · 雾隐', title: '刺客 · 忍术',color: 0x8844ff, weapons: ['苦无','手里剑'], skills: {Q:{name:'影步', icon:'💨', cd:5, type:'blink', desc:'闪现5米，原地留残影',color:0x8844ff}, E:{name:'暗影突袭', icon:'🗡️', cd:7, type:'dash', desc:'隐身突进，背击130伤',color:0xff5588}, R:{name:'影分身', icon:'👥', cd:12, type:'summon', desc:'召唤分身同步攻击',color:0xaa55ff}}, passive: '暗杀：背击伤害+30%，成功击杀刷新影步CD' },
-    color: 0x552288, emissive: 0xaa00ff, portrait: '馃シ',
-    system: 'wushu2', systemName: '宸湳',
+    color: 0x552288, emissive: 0xaa00ff, portrait: '🎯',
+    system: 'wushu2', systemName: '忍术',
     bodyColor: '#442266', accentColor: '#aa44ff',
     weapons: [
       { name: '苦无', icon: '馃敧', range: 2.5, atkAngle: Math.PI/4, type: 'dagger' },
@@ -637,101 +637,101 @@ const CHARACTERS = [
     ],
     skills: {
       Q: { name: '褰遍亖', icon: '馃懁', cd: 10, range: 0, dmg: 0, type: 'stealth', dur: 2 },
-      E: { name: '姣掗浘', icon: '鈽狅笍', cd: 14, range: 6, dmg: 40, type: 'dot', dotDmg: 10, dotDur: 5 },
+      E: { name: '姣掗浘', icon: '⚠️', cd: 14, range: 6, dmg: 40, type: 'dot', dotDmg: 10, dotDur: 5 },
       R: { name: '鏆楀奖鍗冨垉', icon: '馃寫', cd: 28, range: 8, dmg: 200, type: 'multi', hits: 5 }
     },
-    passive: { name: '褰辨瘨', icon: '鈽狅笍', desc: '鏀诲嚮闄勫甫涓瘨鏁堟灉锛屾瘡绉掓帀琛€' },
+    passive: { name: '影毒', icon: '⚠️', desc: '攻击附带中毒效果，每秒掉血' },
     lightDmg: [25, 28, 32, 45], heavyDmg: [65, 75, 85],
     hpRegen: 10, style: 'assassin'
   },
   {
         {id: 'guanyun', name: '傲骨 · 关羽', title: '战士 · 武术',color: 0x22cc44, weapons: ['青龙刀','朴刀'], skills: {Q:{name:'斩龙击', icon:'🐉', cd:6, type:'line', desc:'直线突刺5米，碰撞造成85伤害+2秒倒地',color:0x22cc44}, E:{name:'霸体', icon:'🛡️', cd:10, type:'buff', desc:'3秒霸体+减伤50%+移速+20%',color:0xcccc22}, R:{name:'横扫千军', icon:'⚔️', cd:14, type:'spin', desc:'360°旋转3圈，每圈80伤害击退',color:0x44cc22}}, passive: '一骑当千：击杀敌人后全属性+30%持续5秒' },
-    color: 0x228822, emissive: 0x44ff44, portrait: '鈿旓笍',
-    system: 'magic', systemName: '姝︽湳',
+    color: 0x228822, emissive: 0x44ff44, portrait: '🌟',
+    system: 'magic', systemName: '武术',
     bodyColor: '#1a6622', accentColor: '#44cc44',
     weapons: [
       { name: '青龙刀', icon: '馃敧', range: 4, atkAngle: Math.PI/2, type: 'halberd' },
-      { name: '短刀', icon: '馃棥', range: 2.5, atkAngle: Math.PI/3, type: 'knife' }
+      { name: '短刀', icon: '🗡', range: 2.5, atkAngle: Math.PI/3, type: 'knife' }
     ],
     skills: {
       Q: { name: '榫欐柀', icon: '馃悏', cd: 8, range: 6, dmg: 150, type: 'line', width: 2 },
-      E: { name: '姝﹀湥姘斿満', icon: '馃挮', cd: 15, range: 5, dmg: 80, type: 'buff', atkBuff: 1.3, dur: 5 },
-      R: { name: '闈掗緳锟?, icon: '馃惒', cd: 35, range: 12, dmg: 350, type: 'aoe', hasSuperArmor: true }
+      E: { name: '武圣姘斿満', icon: '🗡', cd: 15, range: 5, dmg: 80, type: 'buff', atkBuff: 1.3, dur: 5 },
+      R: { name: '闈掗緳, icon: '馃惒', cd: 35, range: 12, dmg: 350, type: 'aoe', hasSuperArmor: true }
     },
-    passive: { name: '姝﹀湥', icon: '馃挭', desc: '閲嶆敾鍑昏嚜甯﹂湼浣擄紝涓嶈鎵撴柇' },
+    passive: { name: '武圣', icon: '💪', desc: '重攻击自带霸体，不被击断' },
     lightDmg: [35, 40, 48, 65], heavyDmg: [100, 120, 140],
     hpRegen: 20, style: 'berserker'
   },
   {
         {id: 'mulan', name: '追风 · 花木兰', title: '远程 · 仙术',color: 0x44aaff, weapons: ['长弓','法杖'], skills: {Q:{name:'天眼箭', icon:'👁️', cd:8, type:'snipe', desc:'超远距离穿透箭120伤害+标记5秒',color:0x44aaff}, E:{name:'仙术护盾', icon:'🛡️', cd:12, type:'shield', desc:'吸收150伤害护盾+反伤30',color:0x44ffaa}, R:{name:'万箭齐发', icon:'🌧️', cd:15, type:'rain', desc:'范围内箭雨8段伤害+减速',color:0x4488ff}}, passive: '远程优势：距离越远伤害越高(最高+40%)' },
-    color: 0xcc8800, emissive: 0xffaa00, portrait: '馃徆',
-    system: 'xianshu', systemName: '浠欐湳',
+    color: 0xcc8800, emissive: 0xffaa00, portrait: '🏹',
+    system: 'xianshu', systemName: '仙术',
     bodyColor: '#886600', accentColor: '#ffcc44',
     weapons: [
-      { name: '闀垮紦', icon: '馃徆', range: 12, atkAngle: Math.PI/8, type: 'bow' },
-      { name: '琚栫', icon: '馃挮', range: 5, atkAngle: Math.PI/4, type: 'dart' }
+      { name: '闀垮紦', icon: '🏹', range: 12, atkAngle: Math.PI/8, type: 'bow' },
+      { name: '袖箭', icon: '🗡', range: 5, atkAngle: Math.PI/4, type: 'dart' }
     ],
     skills: {
-      Q: { name: '澶╃溂', icon: '馃憗锟?, cd: 10, range: 15, dmg: 100, type: 'snipe' },
-      E: { name: '浠欓樀', icon: '锟?, cd: 12, range: 8, dmg: 50, type: 'trap', slowDur: 3 },
-      R: { name: '绠洦', icon: '馃導锟?, cd: 25, range: 12, dmg: 180, type: 'rain', hits: 8 }
+      Q: { name: '澶╃溂', icon: '馃憗, cd: 10, range: 15, dmg: 100, type: 'snipe' },
+      E: { name: '浠欓樀', icon: ', cd: 12, range: 8, dmg: 50, type: 'trap', slowDur: 3 },
+      R: { name: '箭雨', icon: '🌧, cd: 25, range: 12, dmg: 180, type: 'rain', hits: 8 }
     },
-    passive: { name: '杩介', icon: '馃挩', desc: '杩滅▼鏀诲嚮鏈夊嚑鐜囧噺閫熸晫锟? },
+    passive: { name: '追风', icon: '💨', desc: '远程攻击有几率减速敌人 },
     lightDmg: [20, 24, 28, 35], heavyDmg: [60, 70, 90],
     hpRegen: 20, style: 'ranger'
   },
-  // ===== V0.4 鏂板瑙掕壊 =====
+  // ===== V0.4 新增角色 =====
   {
         {id: 'hasang', name: '毒蝎 · 哈桑', title: '远程 · 忍术',color: 0x44dd44, weapons: ['吹箭','苦无'], skills: {Q:{name:'毒液喷射', icon:'☠️', cd:5, type:'dot', desc:'毒液攻击，5秒60持续伤害+减速',color:0x44dd44}, E:{name:'暗影陷阱', icon:'🪤', cd:8, type:'trap', desc:'2秒定身+60伤害',color:0x8844ff}, R:{name:'暗杀', icon:'🗡️', cd:15, type:'execute', desc:'隐身突进，背击直接斩杀低血量目标',color:0x222222}}, passive: '中毒叠加：每次攻击叠加1层中毒，3层触发毒性爆发' },
-    color: 0x448800, emissive: 0x88ff00, portrait: '馃',
-    system: 'wushu2', systemName: '宸湳',
+    color: 0x448800, emissive: 0x88ff00, portrait: '☠',
+    system: 'wushu2', systemName: '忍术',
     bodyColor: '#334400', accentColor: '#aaff00',
     weapons: [
       { name: '椋炲垁', icon: '馃敧', range: 10, atkAngle: Math.PI/6, type: 'throw' },
-      { name: '姣掗晼', icon: '鈽狅笍', range: 8, atkAngle: Math.PI/5, type: 'poison_dart' }
+      { name: '姣掗晼', icon: '⚠️', range: 8, atkAngle: Math.PI/5, type: 'poison_dart' }
     ],
     skills: {
-      Q: { name: '铔婃瘨锟?, icon: '馃', cd: 8, range: 10, dmg: 60, type: 'dot', dotDmg: 15, dotDur: 6 },
-      E: { name: '鏆楀奖锟?, icon: '馃懁', cd: 12, range: 8, dmg: 40, type: 'blink' },
-      R: { name: '铔婄垎', icon: '馃挜', cd: 28, range: 8, dmg: 250, type: 'aoe', requiresDot: true }
+      Q: { name: '蛊毒, icon: '☠', cd: 8, range: 10, dmg: 60, type: 'dot', dotDmg: 15, dotDur: 6 },
+      E: { name: '鏆楀奖, icon: '馃懁', cd: 12, range: 8, dmg: 40, type: 'blink' },
+      R: { name: '铔婄垎', icon: '💣', cd: 28, range: 8, dmg: 250, type: 'aoe', requiresDot: true }
     },
-    passive: { name: '鍓ф瘨', icon: '鈽狅笍', desc: '鏀诲嚮闄勫甫涓瘨锛屽彔灞傚悗瑙﹀彂铔婄垎浼ゅ+100%' },
+    passive: { name: '剧毒', icon: '⚠️', desc: '攻击附带中毒，叠层后触发蛊爆伤害+100%' },
     lightDmg: [22, 26, 30, 40], heavyDmg: [55, 65, 80],
     hpRegen: 10, style: 'ranger'
   },
   {
         {id: 'aolafu', name: '磐石 · 奥拉', title: '坦克 · 仙术',color: 0xff8844, weapons: ['塔盾','巨锤'], skills: {Q:{name:'盾击', icon:'🛡️', cd:5, type:'stun', desc:'近距离115伤害+1.5秒眩晕',color:0xff8844}, E:{name:'战吼', icon:'🗣️', cd:10, type:'buff', desc:'全队护盾+30%，持续6秒',color:0xffcc44}, R:{name:'仙术·不灭', icon:'✨', cd:20, type:'shield', desc:'6秒不死+生命恢复',color:0xff4444}}, passive: '磐石：血量越低防御越高(最低血量+40%减伤)' },
-    color: 0x886644, emissive: 0xffcc00, portrait: '馃洝锟?,
-    system: 'xianshu', systemName: '浠欐湳',
+    color: 0x886644, emissive: 0xffcc00, portrait: '馃洝,
+    system: 'xianshu', systemName: '仙术',
     bodyColor: '#664422', accentColor: '#ffaa00',
     weapons: [
-      { name: '鍙屾墜鎴樻枾', icon: '馃獡', range: 4.5, atkAngle: Math.PI*0.6, type: 'axe' },
-      { name: '椋炴枾', icon: '馃幆', range: 8, atkAngle: Math.PI/6, type: 'thrown_axe' }
+      { name: '鍙屾墜鎴樻枾', icon: '🪓', range: 4.5, atkAngle: Math.PI*0.6, type: 'axe' },
+      { name: '椋炴枾', icon: '⚔', range: 8, atkAngle: Math.PI/6, type: 'thrown_axe' }
     ],
     skills: {
       Q: { name: '鐙傛垬鍐查攱', icon: '馃弮', cd: 8, range: 8, dmg: 100, type: 'charge', hasSuperArmor: true },
       E: { name: '鎴樺殠', icon: '馃摙', cd: 14, range: 6, dmg: 60, type: 'fear', fearDur: 1.5 },
-      R: { name: '绁為檷', icon: '锟?, cd: 35, range: 0, dmg: 0, type: 'transform', atkBuff: 2.0, defBuff: 2.0, dur: 8 }
+      R: { name: '绁為檷', icon: ', cd: 35, range: 0, dmg: 0, type: 'transform', atkBuff: 2.0, defBuff: 2.0, dur: 8 }
     },
-    passive: { name: '涓嶅眻', icon: '馃挭', desc: '琛€閲忚秺浣庢敾鍑诲姏瓒婇珮锟?0%琛€浠ヤ笅鏀诲嚮+50%' },
+    passive: { name: '涓嶅眻', icon: '💪', desc: '琛€閲忚秺浣庢敾鍑诲姏瓒婇珮0%琛€浠ヤ笅鏀诲嚮+50%' },
     lightDmg: [40, 48, 55, 70], heavyDmg: [110, 130, 160],
     hpRegen: 30, style: 'tank'
   },
   {
         {id: 'kali', name: '雷鸣 · 卡利', title: '战士 · 魔法',color: 0xddaa00, weapons: ['弯刀','双刀'], skills: {Q:{name:'雷电附魔', icon:'⚡', cd:8, type:'enchant', desc:'5秒内攻击附带40雷电伤害',color:0xddaa00}, E:{name:'雷暴旋转', icon:'🌪️', cd:8, type:'spin', desc:'3段旋转每段80伤害+吸附',color:0xff8800}, R:{name:'天雷', icon:'🌩️', cd:14, type:'aoe', desc:'范围雷击200伤害+1.5秒眩晕',color:0xffff00}}, passive: '雷电：攻击10%概率触发连锁闪电' },
-    color: 0x0066cc, emissive: 0x00ccff, portrait: '锟?,
-    system: 'magic', systemName: '榄旀硶',
+    color: 0x0066cc, emissive: 0x00ccff, portrait: ',
+    system: 'magic', systemName: '魔法',
     bodyColor: '#003366', accentColor: '#00aaff',
     weapons: [
-      { name: '鍙屽集鍒€路鏌ュ厠锟?, icon: '馃寑', range: 3.5, atkAngle: Math.PI*0.7, type: 'chakra' },
-      { name: '鎶曟幏寮垁', icon: '馃', range: 9, atkAngle: Math.PI/6, type: 'boomerang' }
+      { name: '鍙屽集鍒€路鏌ュ厠, icon: '🌀', range: 3.5, atkAngle: Math.PI*0.7, type: 'chakra' },
+      { name: '投掷弯刀', icon: '🪃', range: 9, atkAngle: Math.PI/6, type: 'boomerang' }
     ],
     skills: {
-      Q: { name: '闆风數闄勯瓟', icon: '锟?, cd: 10, range: 0, dmg: 0, type: 'enchant', element: 'thunder', dur: 6 },
-      E: { name: '闆锋毚鏃嬭浆', icon: '馃尓锟?, cd: 12, range: 5, dmg: 120, type: 'spin', hits: 4 },
-      R: { name: '澶╅浄锟?, icon: '鉀堬笍', cd: 30, range: 10, dmg: 300, type: 'aoe', stunDur: 1.5 }
+      Q: { name: '闆风數闄勯瓟', icon: ', cd: 10, range: 0, dmg: 0, type: 'enchant', element: 'thunder', dur: 6 },
+      E: { name: '闆锋毚鏃嬭浆', icon: '馃尓, cd: 12, range: 5, dmg: 120, type: 'spin', hits: 4 },
+      R: { name: '澶╅浄, icon: '鉀堬笍', cd: 30, range: 10, dmg: 300, type: 'aoe', stunDur: 1.5 }
     },
-    passive: { name: '闆烽福', icon: '锟?, desc: '鏃嬭浆鏀诲嚮鏃剁敓鎴愮數寮э紝瀵瑰懆鍥存晫浜洪€犳垚棰濆浼ゅ' },
+    passive: { name: '雷鸣', icon: ', desc: '鏃嬭浆鏀诲嚮鏃剁敓鎴愮數寮э紝瀵瑰懆鍥存晫浜洪€犳垚棰濆浼ゅ' },
     lightDmg: [32, 38, 44, 58], heavyDmg: [85, 100, 120],
     hpRegen: 15, style: 'balanced'
   },
@@ -739,90 +739,90 @@ const CHARACTERS = [
   {
         {id: 'zhebie', name: '铁骑 · 哲别', title: '远程 · 武术',color: 0xaabb88, weapons: ['骑弓','长枪'], skills: {Q:{name:'冲锋箭', icon:'🏹', cd:5, type:'dash', desc:'冲锋射击70伤害+击退',color:0xaabb88}, E:{name:'铁骑践踏', icon:'🐎', cd:8, type:'aoe', desc:'骑马冲撞+范围120伤害击飞',color:0x888844}, R:{name:'万箭', icon:'🌧️', cd:12, type:'rain', desc:'箭雨覆盖8段伤害',color:0x444488}}, passive: '骑射：移动攻击不减速' },
     color: 0x884422, emissive: 0xff6600, portrait: '馃弴',
-    system: 'wushu', systemName: '姝︽湳',
+    system: 'wushu', systemName: '武术',
     bodyColor: '#663311', accentColor: '#ff8833',
     weapons: [
-      { name: '寮垁', icon: '馃寵', range: 3.5, atkAngle: Math.PI/2, type: 'saber' },
-      { name: '濂楅┈锟?, icon: '馃', range: 8, atkAngle: Math.PI/6, type: 'lasso' }
+      { name: '弯刀', icon: '🔪', range: 3.5, atkAngle: Math.PI/2, type: 'saber' },
+      { name: '套马, icon: '🪢', range: 8, atkAngle: Math.PI/6, type: 'lasso' }
     ],
     skills: {
       Q: { name: '鍐查攱', icon: '馃悗', cd: 8, range: 10, dmg: 120, type: 'charge', hasSuperArmor: true },
-      E: { name: '濂楃储', icon: '馃', cd: 12, range: 8, dmg: 50, type: 'hook', pullDist: 5 },
+      E: { name: '套索', icon: '🪢', cd: 12, range: 8, dmg: 50, type: 'hook', pullDist: 5 },
       R: { name: '涓囬┈濂旇吘', icon: '馃弴', cd: 30, range: 12, dmg: 280, type: 'line', width: 3, hits: 3 }
     },
-    passive: { name: '楠戞湳', icon: '馃悗', desc: '绉诲姩閫熷害+15%锛屽啿閿嬩激锟?20%' },
+    passive: { name: '楠戞湳', icon: '馃悗', desc: '绉诲姩閫熷害+15%锛屽啿閿嬩激20%' },
     lightDmg: [30, 35, 42, 55], heavyDmg: [80, 95, 115],
     hpRegen: 20, style: 'balanced'
   },
   {
         {id: 'makexi', name: '铁壁 · 马克达', title: '坦克 · 武术',color: 0xbbbbbb, weapons: ['大剑','塔盾'], skills: {Q:{name:'破防斩', icon:'⚔️', cd:6, type:'line', desc:'穿透斩击100伤害+减少防御',color:0xbbbbbb}, E:{name:'铁壁', icon:'🧱', cd:10, type:'shield', desc:'前方2米护盾，持续4秒',color:0x888888}, R:{name:'战争怒吼', icon:'🗣️', cd:14, type:'buff', desc:'全队攻击+30%，持续6秒',color:0xff4444}}, passive: '铁壁：前方受到的伤害减半' },
-    color: 0x884400, emissive: 0xffaa44, portrait: '馃彌锟?,
-    system: 'wushu', systemName: '姝︽湳',
+    color: 0x884400, emissive: 0xffaa44, portrait: '馃彌,
+    system: 'wushu', systemName: '武术',
     bodyColor: '#663300', accentColor: '#ff8800',
     weapons: [
-      { name: '鐭墤', icon: '馃棥', range: 2.5, atkAngle: Math.PI/3, type: 'gladius' },
-      { name: '鏂圭浘', icon: '馃洝锟?, range: 2, atkAngle: Math.PI, type: 'shield' }
+      { name: '短剑', icon: '🗡', range: 2.5, atkAngle: Math.PI/3, type: 'gladius' },
+      { name: '鏂圭浘', icon: '馃洝, range: 2, atkAngle: Math.PI, type: 'shield' }
     ],
     skills: {
-      Q: { name: '鐩惧嚮', icon: '馃洝锟?, cd: 8, range: 3, dmg: 80, type: 'stun', stunDur: 1.2 },
-      E: { name: '鐩惧', icon: '馃彴', cd: 15, range: 0, dmg: 0, type: 'shield_wall', defBuff: 3.0, dur: 4 },
-      R: { name: '缃楅┈闃靛垪', icon: '鈿旓笍', cd: 30, range: 8, dmg: 200, type: 'aoe', defBuff: 2.0, dur: 6 }
+      Q: { name: '鐩惧嚮', icon: '馃洝, cd: 8, range: 3, dmg: 80, type: 'stun', stunDur: 1.2 },
+      E: { name: '盾墙', icon: '🛡', cd: 15, range: 0, dmg: 0, type: 'shield_wall', defBuff: 3.0, dur: 4 },
+      R: { name: '缃楅┈闃靛垪', icon: '🌟', cd: 30, range: 8, dmg: 200, type: 'aoe', defBuff: 2.0, dur: 6 }
     },
-    passive: { name: '瑙掓枟锟?, icon: '馃彌锟?, desc: '鏍兼尅鎴愬姛鍚庡弽鍑讳激锟?30%锛屽畬缇庢牸鎸¤Е鍙戞皵鍔插弽锟? },
+    passive: { name: '瑙掓枟, icon: '馃彌, desc: '鏍兼尅鎴愬姛鍚庡弽鍑讳激30%锛屽畬缇庢牸鎸¤Е鍙戞皵鍔插弽 },
     lightDmg: [28, 33, 38, 50], heavyDmg: [70, 85, 100],
     hpRegen: 30, style: 'tank'
   },
   {
         {id: 'lishunchen', name: '破军 · 李舜臣', title: '远程 · 魔法',color: 0x4477aa, weapons: ['火铳','火炮'], skills: {Q:{name:'架设炮台', icon:'🧱', cd:8, type:'turret', desc:'放置自动炮台8秒',color:0x4477aa}, E:{name:'炮火覆盖', icon:'💥', cd:10, type:'aoe', desc:'范围轰炸150伤害',color:0xff4400}, R:{name:'火炮齐射', icon:'🚢', cd:15, type:'aoe', desc:'全方位炮击5段120伤害',color:0xff8800}}, passive: '炮台：炮台攻击附带减速效果' },
-    color: 0x224488, emissive: 0x4488ff, portrait: '馃挘',
-    system: 'magic', systemName: '榄旀硶',
+    color: 0x224488, emissive: 0x4488ff, portrait: '💣',
+    system: 'magic', systemName: '魔法',
     bodyColor: '#113355', accentColor: '#3366cc',
     weapons: [
-      { name: '鐏摮', icon: '馃敨', range: 12, atkAngle: Math.PI/8, type: 'musket' },
-      { name: '寮╃偖', icon: '馃挘', range: 10, atkAngle: Math.PI/6, type: 'cannon' }
+      { name: '火铳', icon: '🔫', range: 12, atkAngle: Math.PI/8, type: 'musket' },
+      { name: '寮╃偖', icon: '💣', range: 10, atkAngle: Math.PI/6, type: 'cannon' }
     ],
     skills: {
-      Q: { name: '鏋惰鐐彴', icon: '馃彴', cd: 10, range: 8, dmg: 60, type: 'turret', turretDur: 10 },
-      E: { name: '鐐伀瑕嗙洊', icon: '馃挜', cd: 14, range: 10, dmg: 150, type: 'aoe', radius: 4 },
-      R: { name: '榫熻埞鐐樀', icon: '馃悽', cd: 35, range: 12, dmg: 350, type: 'aoe', radius: 6, hits: 5 }
+      Q: { name: '架设炮台', icon: '🛡', cd: 10, range: 8, dmg: 60, type: 'turret', turretDur: 10 },
+      E: { name: '炮火覆盖', icon: '💣', cd: 14, range: 10, dmg: 150, type: 'aoe', radius: 4 },
+      R: { name: '榫熻埞鐐樀', icon: '🚢', cd: 35, range: 12, dmg: 350, type: 'aoe', radius: 6, hits: 5 }
     },
-    passive: { name: '姘村啗缁熷竻', icon: '锟?, desc: '鐐彴鏀诲嚮闄勫甫鍑忛€燂紝澶氫釜鐐彴鍚屾椂鏀诲嚮浼ゅ+25%' },
+    passive: { name: '水军统帅', icon: ', desc: '炮台攻击附带减速，多个炮台同时攻击伤害+25%' },
     lightDmg: [22, 26, 32, 42], heavyDmg: [65, 78, 95],
     hpRegen: 15, style: 'ranger'
   },
   {
         {id: 'amani', name: '圣歌 · 阿玛拉', title: '辅助 · 忍术',color: 0xffaacc, weapons: ['治疗法杖','图腾'], skills: {Q:{name:'治疗波', icon:'💚', cd:6, type:'heal', desc:'治疗自己200HP+净化负面效果',color:0x44ff44}, E:{name:'速度强化', icon:'⚡', cd:8, type:'buff', desc:'全队攻速+40%持续4秒',color:0xffaa44}, R:{name:'圣歌·复活', icon:'✨', cd:20, type:'resurrect', desc:'满血复活+5秒无敌',color:0xffff44}}, passive: '治疗：附近队友持续恢复生命' },
     color: 0x886644, emissive: 0xffcc88, portrait: '馃幍',
-    system: 'wushu2', systemName: '宸湳',
+    system: 'wushu2', systemName: '忍术',
     bodyColor: '#554422', accentColor: '#cc9955',
     weapons: [
-      { name: '鍥捐吘娉曟潠', icon: '馃獎', range: 6, atkAngle: Math.PI/4, type: 'totem' },
+      { name: '鍥捐吘娉曟潠', icon: '🏆', range: 6, atkAngle: Math.PI/4, type: 'totem' },
       { name: '楠ㄩ搩', icon: '馃敂', range: 8, atkAngle: Math.PI/6, type: 'bell' }
     ],
     skills: {
-      Q: { name: '绁栫伒绁濈', icon: '鈽€锟?, cd: 10, range: 8, dmg: 0, type: 'heal', healAmt: 200 },
+      Q: { name: '祖灵祝福', icon: '⭐, cd: 10, range: 8, dmg: 0, type: 'heal', healAmt: 200 },
       E: { name: '璇呭拻涔嬮搩', icon: '馃敂', cd: 12, range: 8, dmg: 60, type: 'debuff', slowMult: 0.5, dur: 3 },
-      R: { name: '绁栫伒闄嶄复', icon: '馃懟', cd: 35, range: 10, dmg: 0, type: 'resurrect', healAmt: 500, atkBuff: 1.5, dur: 8 }
+      R: { name: '绁栫伒闄嶄复', icon: '🌿', cd: 35, range: 10, dmg: 0, type: 'resurrect', healAmt: 500, atkBuff: 1.5, dur: 8 }
     },
-    passive: { name: '绁栫伒瀹堟姢', icon: '馃懟', desc: '闄勮繎闃熷弸姣忕鍥炲1%鏈€澶х敓鍛藉€硷紝鑷韩鍥炲缈伙拷? },
+    passive: { name: '祖灵守护', icon: '🌿', desc: '附近队友每秒回复1%最大生命值，自身回复翻倍 },
     lightDmg: [18, 22, 26, 35], heavyDmg: [50, 60, 75],
     hpRegen: 30, style: 'support'
   },
   {
         {id: 'dafenqi', name: '天机 · 达芬奇', title: '辅助 · 魔法',color: 0xccaa88, weapons: ['弩','陷阱'], skills: {Q:{name:'炮击', icon:'💥', cd:5, type:'line', desc:'弩箭射击80伤害',color:0xccaa88}, E:{name:'布置陷阱', icon:'🪤', cd:8, type:'trap', desc:'2秒定身+60伤害',color:0x884422}, R:{name:'召唤炮塔', icon:'🏰', cd:15, type:'summon', desc:'炮塔10秒攻击',color:0x444444}}, passive: '远程优势：距离越远伤害越高' },
     color: 0x664488, emissive: 0xaa66ff, portrait: '馃敡',
-    system: 'magic', systemName: '榄旀硶',
+    system: 'magic', systemName: '魔法',
     bodyColor: '#442266', accentColor: '#8844cc',
     weapons: [
-      { name: '鏈哄叧锟?, icon: '馃徆', range: 10, atkAngle: Math.PI/6, type: 'crossbow' },
-      { name: '鍌€锟?, icon: '馃', range: 8, atkAngle: Math.PI/4, type: 'puppet' }
+      { name: '鏈哄叧, icon: '🏹', range: 10, atkAngle: Math.PI/6, type: 'crossbow' },
+      { name: '傀, icon: '🪆', range: 8, atkAngle: Math.PI/4, type: 'puppet' }
     ],
     skills: {
-      Q: { name: '绗︽枃闄烽槺', icon: '锟?, cd: 8, range: 6, dmg: 80, type: 'trap', stunDur: 1.5 },
-      E: { name: '鍌€鍎℃帰锟?, icon: '馃', cd: 12, range: 15, dmg: 40, type: 'scout', scoutDur: 8 },
-      R: { name: '绗︽枃鐐彴', icon: '馃敭', cd: 30, range: 10, dmg: 200, type: 'turret', turretDur: 12, hits: 6 }
+      Q: { name: '绗︽枃闄烽槺', icon: ', cd: 8, range: 6, dmg: 80, type: 'trap', stunDur: 1.5 },
+      E: { name: '傀鍎℃帰, icon: '🪆', cd: 12, range: 15, dmg: 40, type: 'scout', scoutDur: 8 },
+      R: { name: '绗︽枃鐐彴', icon: '✨', cd: 30, range: 10, dmg: 200, type: 'turret', turretDur: 12, hits: 6 }
     },
-    passive: { name: '鏈哄叧澶у笀', icon: '馃敡', desc: '闄烽槺鍜岀偖鍙板喎锟?20%锛屽個鍎″彲鎺㈡煡闅愯韩鍗曚綅' },
+    passive: { name: '鏈哄叧澶у笀', icon: '馃敡', desc: '闄烽槺鍜岀偖鍙板喎20%锛屽個鍎″彲鎺㈡煡闅愯韩鍗曚綅' },
     lightDmg: [20, 24, 28, 38], heavyDmg: [55, 68, 85],
     hpRegen: 20, style: 'support'
   }
@@ -848,15 +848,15 @@ const CHARACTERS = [
 // ==================== 鍦板浘鏁版嵁 ====================
 const MAPS = [
   {
-    id: 'dragon_arena', name: '榫欏煄婕旀', desc: '鍙や唬鏍″満锛岄粍娌欐搨鍙?,
+    id: 'dragon_arena', name: '龙城演武', desc: '古代校场，黄沙拓土,
     icon: '馃悏', accentColor: '#ff4400'
   },
   {
-    id: 'roman_colosseum', name: '缃楅┈绔炴妧鍦?, desc: '宸ㄥ瀷瑙掓枟鍦猴紝瑙備紬鐜粫',
+    id: 'roman_colosseum', name: '罗马竞技场, desc: '宸ㄥ瀷瑙掓枟鍦猴紝瑙備紬鐜粫',
     icon: '馃彌锔?, accentColor: '#cc8844'
   },
   {
-    id: 'bamboo_forest', name: '绔规灄骞藉緞', desc: '绔规灄瀵嗗竷锛岄浘姘斿讥婕紝瑙嗛噹鍙楅檺',
+    id: 'bamboo_forest', name: '竹林幽径', desc: '绔规灄瀵嗗竷锛岄浘姘斿讥婕紝瑙嗛噹鍙楅檺',
     icon: '馃帇', accentColor: '#44cc44'
   }
 ];
@@ -977,7 +977,7 @@ function backToSelect() {
   if (state.playerMesh) { scene.remove(state.playerMesh); state.playerMesh = null; }
 }
 
-// ==================== 闂叧挑战垬绯荤粺 ====================
+// ==================== 关卡挑战绯荤粺 ====================
 let challengeState = {
   active: false,
   wave: 0,
@@ -1111,22 +1111,22 @@ let weaponRackState = {
   active: false,
   currentWeapon: 0,
   weaponList: [
-    { name: '鱼肠短剑', icon: '馃棥', type: 'sword', desc: '蹇€熻繛鍑伙紝鍓戞皵绾垫í' },
-    { name: '软剑', icon: '馃寑', type: 'whip', desc: '涓窛缂犵粫锛岀伒娲绘帶鍒? },
+    { name: '鱼肠短剑', icon: '🗡', type: 'sword', desc: '快速连击，剑气纵横' },
+    { name: '软剑', icon: '🌀', type: 'whip', desc: '中距缠绕，灵活控制 },
     { name: '苦无', icon: '馃敺', type: 'kunai', desc: '鏆楀櫒鎶曟幏锛岄珮閫熺獊琚? },
-    { name: '锁镰', icon: '鉀?, type: 'kama', desc: '閾惧紡鏀诲嚮锛屼腑璺濈鐗靛埗' },
-    { name: '青龙刀', icon: '馃敧', type: 'halberd', desc: '閲嶆柀AOE锛屾í鎵崈鍐? },
-    { name: '闀垮紦', icon: '馃徆', type: 'bow', desc: '杩滅▼鐙欏嚮锛岀鐭㈣拷韪? },
-    { name: '椋炲垁', icon: '馃棥', type: 'throwknife', desc: 'DOT姣掍激锛屽噺閫熸秷鑰? },
-    { name: '鍙屾墜鏂?, icon: '馃獡', type: 'axe', desc: '閲嶅嚮寮€鍥紝姝ｉ潰纭垰' },
-    { name: '寮垁', icon: '馃寵', type: 'saber', desc: '楠戞垬鍐查攱锛屾父璧版敹鍓? },
+    { name: '锁镰', icon: '⭐, type: 'kama', desc: '链式攻击，中距离牵制' },
+    { name: '青龙刀', icon: '馃敧', type: 'halberd', desc: '重斩AOE，横扫千军 },
+    { name: '闀垮紦', icon: '🏹', type: 'bow', desc: '杩滅▼鐙欏嚮锛岀鐭㈣拷韪? },
+    { name: '椋炲垁', icon: '🗡', type: 'throwknife', desc: 'DOT姣掍激锛屽噺閫熸秷鑰? },
+    { name: '鍙屾墜鏂?, icon: '🪓', type: 'axe', desc: '重击开团，正面硬刚' },
+    { name: '弯刀', icon: '🔪', type: 'saber', desc: '骑战冲锋，游走收割 },
     { name: '鏂圭浘', icon: '馃洝', type: 'shield', desc: '鏍兼尅鍙嶅嚮锛屼繚鎶ら槦鍙? },
-    { name: '鐏摮', icon: '馃敨', type: 'musket', desc: '鍗曞彂鐖嗗彂锛屾灦璁剧偖鍙? },
-    { name: '鍥捐吘娉曟潠', icon: '馃獎', type: 'totem', desc: '娌荤枟鍏夌幆锛岀兢浣撳鐩? },
-    { name: '鏈哄叧寮?, icon: '馃徆', type: 'crossbow', desc: '闄烽槺甯冪疆锛屽個鍎℃帰璺? },
-    { name: '鍙屽集鍒€', icon: '馃寑', type: 'chakra', desc: '鏃嬭浆鏀诲嚮锛岄浄鏆撮鏆? },
-    { name: '鐭墤', icon: '馃棥', type: 'gladius', desc: '杩戞垬杈撳嚭锛岀浘鐗岄厤鍚? },
-    { name: '寮╃偖', icon: '馃挘', type: 'cannon', desc: '鐐彴灏侀攣锛岀伀鍔涘帇鍒? },
+    { name: '火铳', icon: '🔫', type: 'musket', desc: '单发爆发，架设炮台 },
+    { name: '鍥捐吘娉曟潠', icon: '🏆', type: 'totem', desc: '治疗光环，群体增益 },
+    { name: '鏈哄叧寮?, icon: '🏹', type: 'crossbow', desc: '闄烽槺甯冪疆锛屽個鍎℃帰璺? },
+    { name: '鍙屽集鍒€', icon: '🌀', type: 'chakra', desc: '旋转攻击，雷暴风暴 },
+    { name: '短剑', icon: '🗡', type: 'gladius', desc: '近战输出，盾牌配合 },
+    { name: '寮╃偖', icon: '💣', type: 'cannon', desc: '炮台封锁，火力压制 },
   ],
   dummy: null,
   dummyMesh: null,
@@ -1189,7 +1189,7 @@ function showWeaponRackUI() {
   panel.id = 'weapon-rack-panel';
   panel.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translateX(-50%);z-index:16;pointer-events:auto;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:800px;';
   
-  let html = '<div style="width:100%;text-align:center;color:#ffd700;font-size:14px;margin-bottom:6px"><span class="wr-weapon-name">馃棥 鱼肠短剑</span> <span style="color:#888;font-size:12px">-</span> <span class="wr-weapon-desc" style="color:#aaa;font-size:12px">蹇€熻繛鍑伙紝鍓戞皵绾垫í</span></div>';
+  let html = '<div style="width:100%;text-align:center;color:#ffd700;font-size:14px;margin-bottom:6px"><span class="wr-weapon-name">🗡 鱼肠短剑</span> <span style="color:#888;font-size:12px">-</span> <span class="wr-weapon-desc" style="color:#aaa;font-size:12px">快速连击，剑气纵横</span></div>';
   
   weaponRackState.weaponList.forEach((w, i) => {
     html += '<div onclick="switchWeapon(' + i + ')" style="width:48px;height:36px;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.2);border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#ccc;transition:all 0.15s" title="' + w.name + ' - ' + w.desc + '">' + w.icon + '</div>';
@@ -1228,9 +1228,9 @@ let bossState = {
 };
 
 const BOSS_TYPES = [
-  { name: '鏆楀奖宸ㄥ吔', color: 0x440044, emissive: 0x880088, hp: 5000, atk: 80, desc: '楂樿閲忥紝鏆楀奖鏀诲嚮' },
-  { name: '鍐伴湝棰嗕富', color: 0x004488, emissive: 0x0088ff, hp: 3000, atk: 100, desc: '鍑忛€熷厜鐜紝鍐伴湝鏀诲嚮' },
-  { name: '鐑堢劙榄旂', color: 0x882200, emissive: 0xff4400, hp: 4000, atk: 120, desc: '鐏劙AOE锛屾寔缁伡鐑? },
+  { name: '暗影巨兽', color: 0x440044, emissive: 0x880088, hp: 5000, atk: 80, desc: '高血量，暗影攻击' },
+  { name: '冰霜领主', color: 0x004488, emissive: 0x0088ff, hp: 3000, atk: 100, desc: '鍑忛€熷厜鐜紝鍐伴湝鏀诲嚮' },
+  { name: '烈焰榄旂', color: 0x882200, emissive: 0xff4400, hp: 4000, atk: 120, desc: '火焰AOE，持续灼烧 },
 ];
 
 function startBossSimulation(typeIndex) {
@@ -1273,7 +1273,7 @@ function showBossUI(bType) {
   const panel = document.createElement('div');
   panel.id = 'boss-panel';
   panel.style.cssText = 'position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:16;pointer-events:none;text-align:center;';
-  panel.innerHTML = '<div style="color:#ff4444;font-size:18px;font-weight:bold;text-shadow:0 0 10px #ff4444">鈿旓笍 ' + bType.name + '</div>' +
+  panel.innerHTML = '<div style="color:#ff4444;font-size:18px;font-weight:bold;text-shadow:0 0 10px #ff4444">🌟 ' + bType.name + '</div>' +
     '<div id="boss-hp-bar" style="width:300px;height:12px;background:rgba(0,0,0,0.7);border-radius:6px;overflow:hidden;margin:6px auto"><div id="boss-hp-fill" style="width:100%;height:100%;background:linear-gradient(90deg,#ff4444,#ff8800);border-radius:6px;transition:width 0.15s"></div></div>' +
     '<div id="boss-hp-text" style="color:#aaa;font-size:12px">' + bType.hp + ' / ' + bType.hp + '</div>' +
     '<div id="boss-timer" style="color:#888;font-size:11px;margin-top:2px">00:00</div>';
@@ -1428,12 +1428,12 @@ function updateWeaponDrops() {
 
 // ==================== 鎺掍綅绯荤粺 ====================
 const RANK_TIERS = [
-  { name: '鍒濇偀', icon: '馃尡', color: '#88aa88', desc: '鍒濈闂ㄥ緞', minPoints: 0 },
-  { name: '鍑濆績', icon: '馃拵', color: '#66aacc', desc: '蹇冪鍑濊仛', minPoints: 500 },
-  { name: '鐮撮殰', icon: '鈿旓笍', color: '#cc8844', desc: '鎵撶牬妗庢', minPoints: 1200 },
-  { name: '閫氱巹', icon: '馃敭', color: '#aa66cc', desc: '鐜勫鍒濇樉', minPoints: 2000 },
-  { name: '鍖栧', icon: '馃専', color: '#ffcc00', desc: '鍑虹鍏ュ寲', minPoints: 3000 },
-  { name: '褰掔湡', icon: '鈽€锔?, color: '#ff8844', desc: '杩旂挒褰掔湡', minPoints: 4500 },
+  { name: '初悟', icon: '🌱', color: '#88aa88', desc: '初窥门径', minPoints: 0 },
+  { name: '凝心', icon: '💎', color: '#66aacc', desc: '心神凝聚', minPoints: 500 },
+  { name: '破障', icon: '🌟', color: '#cc8844', desc: '鎵撶牬妗庢', minPoints: 1200 },
+  { name: '通玄', icon: '✨', color: '#aa66cc', desc: '玄妙初显', minPoints: 2000 },
+  { name: '化境', icon: '🦋', color: '#ffcc00', desc: '出神入化', minPoints: 3000 },
+  { name: '褰掔湡', icon: '⭐锔?, color: '#ff8844', desc: '杩旂挒褰掔湡', minPoints: 4500 },
   { name: '鏃犳瀬', icon: '鈾撅笍', color: '#ff4488', desc: '鏃犵┓鏃犲敖', minPoints: 6500 },
 ];
 
@@ -1585,9 +1585,9 @@ const TEAM_COMPOSITIONS = {
 
 function getRandomCharIdx(role) {
   const roleMap = {
-    assassin: [0, 1], // 鑽嗗, 闆鹃殣
-    warrior: [2, 4, 6, 7], // 鍏充簯, 鍝堟, 鍗″埄, 鍝插埆
-    tank: [5, 8], // 濂ユ媺澶? 椹厠瑗?
+    assassin: [0, 1], // 荆如, 雾隐
+    warrior: [2, 4, 6, 7], // 关云, 哈桑, 卡利, 哲别
+    tank: [5, 8], // 奥拉夫 马克西
     support: [10, 11], // 闃跨帥灏? 杈捐姮濂?
     ranger: [3, 9], // 鑺辨湪鍏? 鏉庤垳鑷?
   };
@@ -2162,10 +2162,10 @@ const CONFIG = {
   DUMMY_COUNT: 3, AI_COUNT: 3,
   // 鍙楄韩
   RECOVERY_WINDOW: 0.8, RECOVERY_SPEED: 12,
-  // 璁粌鍦哄尯锟?  ZONES: ZONES: {
-    DUMMY: { cx: 0, cz: -20, r: 12, name: '鏈ㄤ汉妗╄缁冨尯' },
+  // 训练区域  ZONES: ZONES: {
+    DUMMY: { cx: 0, cz: -20, r: 12, name: '木人桩训练区' },
     ARENA: { cx: 0, cz: 10, r: 14, name: '对垬鎿傚彴' },
-    CHALLENGE: { cx: 25, cz: 0, r: 10, name: '闂叧挑战垬鍖? },
+    CHALLENGE: { cx: 25, cz: 0, r: 10, name: '关卡挑战区 },
     WEAPONS: { cx: -25, cz: 0, r: 10, name: '武器鏋惰瘯鐐? },
     BOSS: { cx: 0, cz: 30, r: 12, name: 'Boss模嫙鍖? }
   };
@@ -2178,7 +2178,7 @@ const WEAPON_QUALITY = {
   gold:    { name: '榛勯噾', atkMult: 1.50, color: '#ffd700', cssClass: 'quality-gold',    dropWeight: 3  },
 };
 const QUALITY_ORDER = ['black', 'bronze', 'silver', 'gold'];
-const GOLD_SPECIALS = ['鐮寸敳', '鍚歌', '浼氬績', '鐤鹃', '鐑堢劙'];
+const GOLD_SPECIALS = ['破甲', '吸血', '会心', '疾风', '烈焰'];
 
 function rollQuality(source) {
   // source: 'dummy' | 'enemy' | 'kill_reward'
@@ -2208,54 +2208,54 @@ function createWeaponDrop(qualityKey, weaponDef) {
     name: weaponDef.name,
     icon: weaponDef.icon,
     special,
-    displayName: special ? `${q.name}路${weaponDef.name}锟?{special}銆慲 : `${q.name}路${weaponDef.name}`
+    displayName: special ? `${q.name}路${weaponDef.name}{special}銆慲 : `${q.name}路${weaponDef.name}`
   };
 }
 
-// ==================== 瑙掕壊涓撳睘杩炴嫑锟?====================
+// ==================== 瑙掕壊涓撳睘杩炴嫑====================
 const CHARACTER_COMBOS = {
   jingru: {
-    A: { // 楸艰偁锟?- 蹇拷?杩炴柀
-      name: '楸艰偁锟?路 蹇€熷洓杩炴柀',
+    A: { // 鱼肠- 蹇拷?杩炴柀
+      name: '鱼肠路 快速四连斩',
       lightDmg: [30, 35, 40, 55],
       heavyDmg: [80, 90, 100],
       lightCount: 4, heavyCount: 3,
-      desc: '杞伙拷?蹇€熻繛鏂╋紝閲嶏拷?鎸戦缁堢粨'
+      desc: '轻击蹇€熻繛鏂╋紝重击挑飞终结'
     },
-    B: { // 软剑 - 涓窛缂犵粫鎺у埗
+    B: { // 软剑 - 中距缠绕控制
       name: '软剑 路 缂犵粫鎺у埗',
       lightDmg: [25, 28, 32, 38],
       heavyDmg: [60, 70, 85],
       lightCount: 3, heavyCount: 2,
-      desc: '杞伙拷?缂犵粫杩炲嚮锛岄噸脳2鎷夋嫿鎺у埗'
+      desc: '轻击缂犵粫杩炲嚮锛岄噸脳2鎷夋嫿鎺у埗'
     }
   },
   wuyin: {
-    A: { // 苦无 - 鏋侀€熻繎韬繛锟?      name: '苦无 路 鏋侀€熻繛锟?,
+    A: { // 苦无 - 鏋侀€熻繎韬繛      name: '苦无 路 鏋侀€熻繛,
       lightDmg: [25, 28, 32, 45],
       heavyDmg: [65, 75, 85],
       lightCount: 4, heavyCount: 3,
-      desc: '杞伙拷?鏋侀€熺獊鍒猴紝閲嶏拷?鏆楁潃缁堢粨'
+      desc: '轻击鏋侀€熺獊鍒猴紝重击鏆楁潃缁堢粨'
     },
-    B: { // 锁镰 - 涓窛绂荤壍锟?      name: '锁镰 路 鐗垫媺杩炴嫑',
+    B: { // 锁镰 - 涓窛绂荤壍      name: '锁镰 路 牵引连招',
       lightDmg: [20, 24, 30],
       heavyDmg: [55, 65, 80],
       lightCount: 3, heavyCount: 3,
-      desc: '杞伙拷?鐗垫媺杩炲嚮锛岄噸脳3閽╅攣鎺у埗'
+      desc: '轻击鐗垫媺杩炲嚮锛岄噸脳3閽╅攣鎺у埗'
     }
   },
   guanyun: {
-    A: { // 青龙刀 - 澶ц寖鍥存í锟?      name: '青龙刀 路 横扫千军',
+    A: { // 青龙刀 - 澶ц寖鍥存í      name: '青龙刀 路 横扫千军',
       lightDmg: [35, 40, 48, 65],
       heavyDmg: [100, 120, 140],
       lightCount: 4, heavyCount: 3,
-      desc: '杞伙拷?澶ц寖鍥存í鎵紝閲嶏拷?霸体重斩'
+      desc: '轻击澶ц寖鍥存í鎵紝重击霸体重斩'
     },
-    B: { // 短刀 - 蹇€熷簲锟?      name: '短刀 路 搴旀€ヨ繛锟?,
+    B: { // 短刀 - 蹇€熷簲      name: '短刀 路 搴旀€ヨ繛,
       lightDmg: [28, 32, 38, 50],
       heavyDmg: [70, 80, 95],
       lightCount: 4, heavyCount: 3,
-      desc: '杞伙拷?蹇€熷簲鎬ヨ繛鍑伙紝閲嶏拷?绐佸埡缁堢粨'
+      desc: '轻击蹇€熷簲鎬ヨ繛鍑伙紝重击突刺终结'
     }
   },
   mulan: {
@@ -2264,13 +2264,13 @@ const CHARACTER_COMBOS = {
       lightDmg: [20, 24, 28, 35],
       heavyDmg: [60, 70, 90],
       lightCount: 4, heavyCount: 3,
-      desc: '杞伙拷?閫熷皠杩炲嚮锛岄噸脳3钃勫姏绌匡拷?
+      desc: '轻击閫熷皠杩炲嚮锛岄噸脳3钃勫姏绌匡拷?
     },
-    B: { // 琚栫 - 蹇€熻繛锟?      name: '琚栫 路 蹇€熻繛锟?,
+    B: { // 袖箭 - 蹇€熻繛      name: '袖箭 路 蹇€熻繛,
       lightDmg: [18, 22, 26, 32],
       heavyDmg: [50, 60, 75],
       lightCount: 4, heavyCount: 2,
-      desc: '杞伙拷?蹇€熻繛灏勶紝閲嶏拷?鏁ｅ皠瑕嗙洊'
+      desc: '轻击蹇€熻繛灏勶紝重击散射覆盖'
     }
   }
 };
@@ -2306,7 +2306,7 @@ const SFX = {
           g.gain.setValueAtTime(vol * 0.5, now);
           g.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
           o.connect(g); o.start(now); o.stop(now + 0.25);
-          // 娣诲姞鍣煶
+          // 娣诲姞鍣煶
           const buf = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.1, audioCtx.sampleRate);
           const data = buf.getChannelData(0);
           for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * 0.3;
@@ -2335,7 +2335,7 @@ const SFX = {
           g.gain.setValueAtTime(vol * 0.4, now);
           g.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
           o.connect(g); o.start(now); o.stop(now + 0.3);
-          // 楂橀鍙０
+          // 高频叫声
           const o2 = audioCtx.createOscillator();
           o2.type = 'sine'; o2.frequency.setValueAtTime(3000, now + 0.05);
           const g2 = audioCtx.createGain();
@@ -2424,7 +2424,7 @@ const SFX = {
 let selectedCharIdx = 0;
 const state = {
   started: false, time: 0, dt: 0,
-  player: null, // 鍒濆鍖栧湪 startGame
+  player: null, // 初始化在 startGame
   keys: {}, mouse: { dx: 0, dy: 0 }, mouseButtons: { left: false, right: false },
   cameraYaw: 0, cameraPitch: 0.3, cameraDistance: 7, cameraTargetPos: null,
   lockedTarget: null,
@@ -2479,7 +2479,7 @@ camera.position.set(0, 8, 15);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 if (!renderer.getContext()) {
-  document.body.innerHTML = '<h1 style="color:#f44;font-size:32px;text-align:center;margin-top:40vh">WebGL 涓嶅彲锟?/h1>';
+  document.body.innerHTML = '<h1 style="color:#f44;font-size:32px;text-align:center;margin-top:40vh">WebGL 涓嶅彲/h1>';
 }
 renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -2530,7 +2530,7 @@ for (let i = 0; i < 40; i++) {
   scene.add(grass);
 }
 
-// 涓ぎ鎿傚彴
+// 涓ぎ鎿傚彴
 const platGeo = new THREE.BoxGeometry(24, 0.4, 24);
 const platMat = new THREE.MeshStandardMaterial({ color: 0x5a5046, roughness: 0.7, metalness: 0.2 });
 const platform = new THREE.Mesh(platGeo, platMat);
@@ -2549,7 +2549,7 @@ for (let i = -10; i <= 10; i += 2) {
   addPlatformLine(-12, i, 12, i);
 }
 
-// 鎿傚彴杈规
+// 擂台边框
 const borderMat = new THREE.MeshStandardMaterial({ color: 0x8b4513, roughness: 0.6 });
 for (let i = 0; i < 4; i++) {
   const isX = i < 2;
@@ -2560,20 +2560,20 @@ for (let i = 0; i < 4; i++) {
   border.castShadow = true; border.receiveShadow = true; scene.add(border);
 }
 
-// 鏈ㄤ汉妗╄缁冨尯鍦伴潰鏍囪
+// 木人桩训练区地面标记
 const dummyZoneGeo = new THREE.RingGeometry(10, 12, 32);
 const dummyZoneMat = new THREE.MeshBasicMaterial({ color: 0x886622, side: THREE.DoubleSide, transparent: true, opacity: 0.2 });
 const dummyZone = new THREE.Mesh(dummyZoneGeo, dummyZoneMat);
 dummyZone.rotation.x = -Math.PI / 2; dummyZone.position.set(0, 0.43, -20);
 scene.add(dummyZone);
 
-// 闂叧挑战垬鍖烘爣锟?const challengeZoneGeo = new THREE.RingGeometry(8, 10, 32);
+// 关卡挑战鍖烘爣const challengeZoneGeo = new THREE.RingGeometry(8, 10, 32);
 const challengeZoneMat = new THREE.MeshBasicMaterial({ color: 0x884422, side: THREE.DoubleSide, transparent: true, opacity: 0.2 });
 const challengeZone = new THREE.Mesh(challengeZoneGeo, challengeZoneMat);
 challengeZone.rotation.x = -Math.PI / 2; challengeZone.position.set(25, 0.43, 0);
 scene.add(challengeZone);
 
-// 鍖哄煙鏂囧瓧鏍囪瘑锟?function createZoneSign(x, z, text, color) {
+// 鍖哄煙鏂囧瓧鏍囪瘑function createZoneSign(x, z, text, color) {
   const c = document.createElement('canvas'); c.width = 256; c.height = 64;
   const ctx = c.getContext('2d');
   ctx.fillStyle = 'rgba(0,0,0,0.6)';
@@ -2587,11 +2587,11 @@ scene.add(challengeZone);
   sp.scale.set(4, 1, 1); sp.position.set(x, 3, z);
   scene.add(sp);
 }
-createZoneSign(0, -30, '馃 鏈ㄤ汉妗╄缁冨尯', '#cc8844');
-createZoneSign(0, 22, '锟?对垬鎿傚彴', '#ffcc44');
-createZoneSign(33, 0, '馃幆 闂叧挑战垬锟?, '#ff8844');
+createZoneSign(0, -30, '🏋 木人桩训练区', '#cc8844');
+createZoneSign(0, 22, '对垬鎿傚彴', '#ffcc44');
+createZoneSign(33, 0, '⚔ 关卡挑战, '#ff8844');
 
-// 绾㈡煴 + 鐏
+// 绾㈡煴 + 鐏
 function createPillar(x, z) {
   const pGeo = new THREE.CylinderGeometry(0.35, 0.45, 9, 8);
   const pMat = new THREE.MeshStandardMaterial({ color: 0x8b0000, roughness: 0.5 });
@@ -2653,7 +2653,7 @@ function createRock(x, z, scale) {
 [[-8,-18,1.2],[-6,-20,0.8],[-10,-19,1.5],[10,18,1.0],[8,20,0.7],[12,17,1.3],
 [-18,-8,0.9],[-20,-6,1.1],[18,8,1.0],[20,6,0.8],[-5,18,1.4],[-3,20,0.6],[5,-18,1.1],[7,-20,0.7]].forEach(([x,z,s]) => createRock(x,z,s));
 
-// 搴熷
+// 废墟
 function createRuin(x, z) {
   const g = new THREE.Group();
   const wallMat = new THREE.MeshStandardMaterial({ color: 0x6a5a4a, roughness: 0.8 });
@@ -2699,7 +2699,7 @@ function createPond(x, z, r) {
 }
 createPond(-22, 0, 5); createPond(22, 0, 5);
 
-// 璺伅
+// 路灯
 function createGroundLantern(x, z) {
   const post = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 2.5, 4), new THREE.MeshStandardMaterial({ color: 0x4a3a2a }));
   post.position.set(x, 1.25, z); scene.add(post);
@@ -2991,7 +2991,7 @@ function createCharacter(color, emissiveColor, isPlayer, weaponType) {
   const skinMat = new THREE.MeshStandardMaterial({ color: 0xffdbac, roughness: 0.7 });
   const bootMat = new THREE.MeshStandardMaterial({ color: 0x3a2a1a, roughness: 0.7, metalness: 0.2 });
 
-  // 韬共
+  // 身干
   const torso = new THREE.Mesh(new THREE.BoxGeometry(0.9, 1.1, 0.55), bodyMat);
   torso.position.y = 1.45; torso.castShadow = true; g.add(torso);
 
@@ -3002,7 +3002,7 @@ function createCharacter(color, emissiveColor, isPlayer, weaponType) {
   );
   chestPlate.position.set(0, 1.5, 0.3); g.add(chestPlate);
 
-  // 鑳稿墠鏍囪
+  // 胸前标记
   const emblem = new THREE.Mesh(
     new THREE.CircleGeometry(0.12, 8),
     new THREE.MeshStandardMaterial({ color: 0xffd700, emissive: 0xffaa00, emissiveIntensity: 0.5, metalness: 0.8 })
@@ -3018,14 +3018,14 @@ function createCharacter(color, emissiveColor, isPlayer, weaponType) {
   );
   buckle.position.set(0, 0.9, 0.32); g.add(buckle);
 
-  // 鎶
+  // 披风
   const cape = new THREE.Mesh(
     new THREE.PlaneGeometry(0.8, 1.0),
     new THREE.MeshStandardMaterial({ color: isPlayer ? new THREE.Color(color).multiplyScalar(0.7) : new THREE.Color(color).multiplyScalar(0.6), side: THREE.DoubleSide, roughness: 0.8 })
   );
   cape.position.set(0, 1.3, -0.3); cape.rotation.x = 0.15; g.add(cape);
 
-  // 锟?  const helmetBase = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.36, 0.15, 8), armorMat);
+  //   const helmetBase = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.36, 0.15, 8), armorMat);
   helmetBase.position.y = 2.25; g.add(helmetBase);
   const head = new THREE.Mesh(new THREE.SphereGeometry(0.33, 10, 10), skinMat);
   head.position.y = 2.5; head.castShadow = true; g.add(head);
@@ -3042,7 +3042,7 @@ function createCharacter(color, emissiveColor, isPlayer, weaponType) {
   const eyeR = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.04, 0.04), eyeMat);
   eyeR.position.set(0.11, 2.54, 0.3); g.add(eyeR);
 
-  // 鍙戦
+  // 发髻
   const topKnot = new THREE.Mesh(
     new THREE.ConeGeometry(0.08, 0.25, 6),
     new THREE.MeshStandardMaterial({ color: isPlayer ? new THREE.Color(color).multiplyScalar(0.8) : 0x443322, roughness: 0.6 })
@@ -3066,7 +3066,7 @@ function createCharacter(color, emissiveColor, isPlayer, weaponType) {
   const gauntletL = new THREE.Mesh(gauntletGeo, armorMat); gauntletL.position.set(-0.58, 1.05, 0); g.add(gauntletL);
   const gauntletR = new THREE.Mesh(gauntletGeo, armorMat); gauntletR.position.set(0.58, 1.05, 0); g.add(gauntletR);
 
-  // 锟?  const legGeo = new THREE.BoxGeometry(0.26, 0.55, 0.26);
+  //   const legGeo = new THREE.BoxGeometry(0.26, 0.55, 0.26);
   const legL = new THREE.Mesh(legGeo, darkMat); legL.position.set(-0.2, 0.55, 0); legL.castShadow = true; g.add(legL);
   const legR = new THREE.Mesh(legGeo, darkMat); legR.position.set(0.2, 0.55, 0); legR.castShadow = true; g.add(legR);
 
@@ -3080,7 +3080,7 @@ function createCharacter(color, emissiveColor, isPlayer, weaponType) {
   const kneeL = new THREE.Mesh(kneeGeo, armorMat); kneeL.position.set(-0.2, 0.75, 0.1); g.add(kneeL);
   const kneeR = new THREE.Mesh(kneeGeo, armorMat); kneeR.position.set(0.2, 0.75, 0.1); g.add(kneeR);
 
-  // ===== 武器锛堟牴鎹被鍨嬪樊寮傚寲锟?====
+  // ===== 武器锛堟牴鎹被鍨嬪樊寮傚寲====
   const wg = new THREE.Group();
   const wt = weaponType || 'sword';
 
@@ -3108,11 +3108,11 @@ function createCharacter(color, emissiveColor, isPlayer, weaponType) {
     pommel.position.y = -0.42; wg.add(pommel);
     wg.position.set(0.7, 1.3, 0.15); wg.rotation.z = -0.25;
   } else if (wt === 'halberd') {
-    // 澶у垁/锟?    const bladeMat = new THREE.MeshStandardMaterial({ color: 0xccccdd, metalness: 0.9, roughness: 0.15, emissive: 0x22aa22, emissiveIntensity: 0.2 });
+    // 澶у垁/    const bladeMat = new THREE.MeshStandardMaterial({ color: 0xccccdd, metalness: 0.9, roughness: 0.15, emissive: 0x22aa22, emissiveIntensity: 0.2 });
     // 闀挎焺
     const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 2.0, 6), new THREE.MeshStandardMaterial({ color: 0x6a4a2a, roughness: 0.8 }));
     pole.position.y = 0.8; wg.add(pole);
-    // 鍒€锟?    const bladeShape = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.8, 0.04), bladeMat);
+    // 鍒€    const bladeShape = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.8, 0.04), bladeMat);
     bladeShape.position.set(0.1, 1.9, 0); bladeShape.rotation.z = -0.15; wg.add(bladeShape);
     const bladeTip = new THREE.Mesh(new THREE.ConeGeometry(0.12, 0.3, 4), bladeMat);
     bladeTip.position.set(0.15, 2.35, 0); wg.add(bladeTip);
@@ -3121,10 +3121,10 @@ function createCharacter(color, emissiveColor, isPlayer, weaponType) {
     guard.position.y = 1.45; wg.add(guard);
     wg.position.set(0.7, 0.5, 0.15); wg.rotation.z = -0.15;
   } else if (wt === 'bow') {
-    // 锟?    const bowMat = new THREE.MeshStandardMaterial({ color: 0xcc8800, roughness: 0.6, emissive: 0xffaa00, emissiveIntensity: 0.15 });
+    //     const bowMat = new THREE.MeshStandardMaterial({ color: 0xcc8800, roughness: 0.6, emissive: 0xffaa00, emissiveIntensity: 0.15 });
     const bowCurve = new THREE.Mesh(new THREE.TorusGeometry(0.7, 0.04, 6, 12, Math.PI * 0.8), bowMat);
     bowCurve.rotation.z = Math.PI / 2; wg.add(bowCurve);
-    // 锟?    const stringGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, -0.65, 0), new THREE.Vector3(0, 0.65, 0)]);
+    //     const stringGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, -0.65, 0), new THREE.Vector3(0, 0.65, 0)]);
     wg.add(new THREE.Line(stringGeo, new THREE.LineBasicMaterial({ color: 0xdddddd })));
     wg.position.set(0.6, 1.4, 0.2); wg.rotation.z = -0.3;
   } else if (wt === 'chain') {
@@ -3211,14 +3211,14 @@ function startGame() {
   document.getElementById('char-select').style.display = 'none';
   document.getElementById('hud').style.display = 'block';
 
-  // 鍒涘缓鐜╁妯″瀷
+  // 创建玩家模型
   if (state.playerMesh) scene.remove(state.playerMesh);
   const weaponA = c.weapons[0].type;
   state.playerMesh = createCharacter(c.color, c.emissive, true, weaponA);
   state.playerMesh.position.set(0, 0, 5);
   scene.add(state.playerMesh);
 
-  // 鐜╁鏍囪瘑
+  // 玩家标识
   const playerArrow = new THREE.Mesh(
     new THREE.ConeGeometry(0.35, 0.7, 3),
     new THREE.MeshBasicMaterial({ color: 0x00ff88, transparent: true, opacity: 0.9 })
@@ -3240,12 +3240,12 @@ function startGame() {
   groundRing.position.y = 0.05; groundRing.rotation.x = -Math.PI / 2;
   state.playerMesh.add(groundRing); state.groundRing = groundRing;
 
-  // 鐜╁鍚嶅瓧
+  // 玩家名字
   const pnC = document.createElement('canvas'); pnC.width = 256; pnC.height = 48;
   const pnCtx = pnC.getContext('2d');
   pnCtx.fillStyle = 'rgba(0,255,136,0.25)'; pnCtx.beginPath(); pnCtx.roundRect(0, 0, 256, 48, 8); pnCtx.fill();
   pnCtx.font = 'bold 20px Microsoft YaHei'; pnCtx.fillStyle = '#00ff88'; pnCtx.textAlign = 'center';
-  pnCtx.fillText(`锟?${c.name}锛堜綘锛塦, 128, 32);
+  pnCtx.fillText(`${c.name}锛堜綘锛塦, 128, 32);
   const pnSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(pnC), transparent: true }));
   pnSprite.scale.set(3.5, 0.65, 1); pnSprite.position.y = 5.0;
   state.playerMesh.add(pnSprite);
@@ -3257,21 +3257,21 @@ function startGame() {
   document.getElementById('wb-name').textContent = c.weapons[1].name;
   document.getElementById('weapon-a').querySelector('span').textContent = c.weapons[0].icon;
   document.getElementById('weapon-b').querySelector('span').textContent = c.weapons[1].icon;
-  // 武器鍝佽川杈规鍒濆锟?  document.getElementById('weapon-a').classList.add('quality-black');
+  // 武器品质边框初始  document.getElementById('weapon-a').classList.add('quality-black');
   document.getElementById('weapon-b').classList.add('quality-black');
   document.getElementById('skill-q-icon').textContent = c.skills.Q.icon;
   document.getElementById('skill-e-icon').textContent = c.skills.E.icon;
   document.getElementById('skill-r-icon').textContent = c.skills.R.icon;
   document.getElementById('skill-p-icon').textContent = c.passive.icon;
 
-  // 鍒濆鍖栨湪浜烘々鍜屾晫锟?  initDummies();
+  // 初始化木人桩和敌  initDummies();
   initEnemies();
 
   state.started = true;
   try { document.body.requestPointerLock(); } catch(e) {}
 }
 
-// ==================== 鏈ㄤ汉锟?====================
+// ==================== 鏈ㄤ汉====================
 function initDummies() {
   state.dummies.forEach(d => { if (d.mesh) scene.remove(d.mesh); });
   state.dummies = [];
@@ -3294,9 +3294,9 @@ function initDummies() {
 
 // ==================== 鏁屼汉 ====================
 const ENEMY_DEFS = [
-  { color: 0x882222, emissive: 0xff0000, name: '褰卞繊路闆鹃殣', charIdx: 1, style: 'assassin' },
-  { color: 0x228822, emissive: 0x00ff00, name: '鍌查路鍏充簯', charIdx: 2, style: 'berserker' },
-  { color: 0xcc8800, emissive: 0xffaa00, name: '杩介路鑺辨湪锟?, charIdx: 3, style: 'ranger' },
+  { color: 0x882222, emissive: 0xff0000, name: '褰卞繊路雾隐', charIdx: 1, style: 'assassin' },
+  { color: 0x228822, emissive: 0x00ff00, name: '傲骨·关云', charIdx: 2, style: 'berserker' },
+  { color: 0xcc8800, emissive: 0xffaa00, name: '追风路鑺辨湪, charIdx: 3, style: 'ranger' },
 ];
 
 function initEnemies() {
@@ -3334,7 +3334,7 @@ function initEnemies() {
   }
 }
 
-// ==================== 琛€锟?D ====================
+// ==================== 琛€D ====================
 function createHPBar3D() {
   const c = document.createElement('canvas'); c.width = 128; c.height = 16;
   const tex = new THREE.CanvasTexture(c);
@@ -3389,7 +3389,7 @@ document.addEventListener('keydown', e => {
   }
   if (e.code === 'KeyV') lockNearestEnemy();
 
-  // 1-4 蹇€熷垏瑙掕壊锛堣皟璇曠敤锛屽疄鎴樹腑涓嶅彲鐢紝浠呭師鍨嬶級
+  // 1-4 蹇€熷垏瑙掕壊锛堣皟璇曠敤锛屽疄鎴樹腑涓嶅彲鐢紝浠呭師鍨嬶級
   if (e.code >= 'Digit1' && e.code <= 'Digit4') {
     const idx = parseInt(e.code[5]) - 1;
     if (idx < CHARACTERS.length) switchCharacter(idx);
@@ -3417,7 +3417,7 @@ document.addEventListener('wheel', e => {
   state.cameraDistance = Math.max(3, Math.min(15, state.cameraDistance));
 });
 
-// 璁剧疆闈㈡澘
+// 设置闈㈡澘
 const settings = {
   sensitivity: 5, camDist: 7, brightness: 12, volume: 7,
   crosshair: true, dmgText: true, lockAssist: true, shake: true
@@ -3510,7 +3510,7 @@ function switchCharacter(idx) {
   const pnCtx = pnC.getContext('2d');
   pnCtx.fillStyle = 'rgba(0,255,136,0.25)'; pnCtx.beginPath(); pnCtx.roundRect(0, 0, 256, 48, 8); pnCtx.fill();
   pnCtx.font = 'bold 20px Microsoft YaHei'; pnCtx.fillStyle = '#00ff88'; pnCtx.textAlign = 'center';
-  pnCtx.fillText(`锟?${c.name}锛堜綘锛塦, 128, 32);
+  pnCtx.fillText(`${c.name}锛堜綘锛塦, 128, 32);
   const pnSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(pnC), transparent: true }));
   pnSprite.scale.set(3.5, 0.65, 1); pnSprite.position.y = 5.0;
   state.playerMesh.add(pnSprite);
@@ -3522,14 +3522,14 @@ function switchCharacter(idx) {
   document.getElementById('wb-name').textContent = c.weapons[1].name;
   document.getElementById('weapon-a').querySelector('span').textContent = c.weapons[0].icon;
   document.getElementById('weapon-b').querySelector('span').textContent = c.weapons[1].icon;
-  // 武器鍝佽川閲嶇疆涓洪粦锟?  document.getElementById('weapon-a').className = 'weapon-slot active quality-black';
+  // 武器鍝佽川閲嶇疆涓洪粦  document.getElementById('weapon-a').className = 'weapon-slot active quality-black';
   document.getElementById('weapon-b').className = 'weapon-slot quality-black';
   document.getElementById('skill-q-icon').textContent = c.skills.Q.icon;
   document.getElementById('skill-e-icon').textContent = c.skills.E.icon;
   document.getElementById('skill-r-icon').textContent = c.skills.R.icon;
   document.getElementById('skill-p-icon').textContent = c.passive.icon;
 
-  showStatus(`鍒囨崲锟?${c.name}`);
+  showStatus(`鍒囨崲${c.name}`);
   SFX.play('weapon_switch');
 }
 
@@ -3551,7 +3551,7 @@ function lockNearestEnemy() {
     state.lockedTarget = nearest;
     showStatus('馃敀 閿佸畾 ' + nearest.name);
   } else {
-    showStatus('闄勮繎娌℃湁鍙攣瀹氱殑鏁屼汉');
+    showStatus('附近没有可锁定的敌人');
   }
 }
 
@@ -3579,15 +3579,15 @@ function updateEnemyInfoPanel() {
   state.enemies.forEach(e => {
     const d = e.isDead ? '馃拃 宸插嚮鏉€' : `${Math.ceil(e.hp)} / ${e.maxHp}`;
     const dist = e.isDead ? '-' : Math.ceil(state.player.position.distanceTo(e.position)) + 'm';
-    const status = e.isDead ? '姝讳骸' : (e.isAttacking ? '鏀诲嚮锟? : (e.isBlocking ? '鏍兼尅锟? : '寰呮満'));
+    const status = e.isDead ? '姝讳骸' : (e.isAttacking ? '鏀诲嚮 : (e.isBlocking ? '鏍兼尅 : '寰呮満'));
     list.innerHTML += `
-      <div class="row"><span>${e.name}</span><span class="val">${e.isDead ? '馃拃' : '锟?}</span></div>
-      <div class="row"><span>銆€琛€锟?/span><span class="val">${d}</span></div>
-      <div class="row"><span>銆€璺濈</span><span class="val">${dist}</span></div>
+      <div class="row"><span>${e.name}</span><span class="val">${e.isDead ? '馃拃' : '}</span></div>
+      <div class="row"><span>銆€琛€/span><span class="val">${d}</span></div>
+      <div class="row"><span>銆€璺濈</span><span class="val">${dist}</span></div>
       <div class="row"><span>銆€鐘讹拷?/span><span class="val">${status}</span></div>
     `;
   });
-  if (list.children.length === 0) list.innerHTML = '<div style="color:rgba(255,255,255,0.4);text-align:center">闄勮繎鏃犳晫锟?/div>';
+  if (list.children.length === 0) list.innerHTML = '<div style="color:rgba(255,255,255,0.4);text-align:center">闄勮繎鏃犳晫/div>';
 }
 
 // ==================== 鎴樻枟 ====================
@@ -3644,7 +3644,7 @@ function performAttack(entity, type, isPlayer) {
   entity.lastAttackTime = now;
   entity.stamina = Math.max(0, entity.stamina - (type === 'light' ? 5 : 15));
 
-  // 杩炴嫑缁熻
+  // 连招统计
   if (isPlayer && entity.comboCount > state.stats.maxCombo) state.stats.maxCombo = entity.comboCount;
 
   if (isPlayer) {
@@ -3660,7 +3660,7 @@ function performAttack(entity, type, isPlayer) {
       if (dir.dot(fwd) < Math.cos(angle)) return;
       applyDmg(t, getDmg(type, entity.attackPhase, entity.hasSwitchBonus, entity), entity);
       hitAny = true;
-      if (type === 'heavy' && entity.attackPhase === 2) { t.stunTimer = 1.0; showStatus('鎸戦锟?); }
+      if (type === 'heavy' && entity.attackPhase === 2) { t.stunTimer = 1.0; showStatus('挑飞); }
     });
     if (hitAny) {
       if (entity.hasSwitchBonus) entity.hasSwitchBonus = false;
@@ -3677,7 +3677,7 @@ function performAirAttack() {
   if (p.isDead || p.isGrounded) return;
   p.isAttacking = true; p.attackType = 'light'; p.attackTimer = 0.4;
   p.velocityY = -15;
-  showStatus('锟?绌轰腑涓嬬牳锟?);
+  showStatus('绌轰腑涓嬬牳);
   [...state.dummies, ...state.enemies].forEach(t => {
     if (t.isDead) return;
     if (p.position.distanceTo(t.position) < 3) applyDmg(t, 70, p);
@@ -3711,7 +3711,7 @@ function applyDmg(target, dmg, attacker) {
     if (target.stamina <= 0) {
       target.stamina = 0; target.isBlocking = false;
       target.isWeak = true; target.weakTimer = 2;
-      showStatus('鐮撮槻锟?);
+      showStatus('鐮撮槻);
       SFX.play('weak');
     }
     showDmgText(dmg * 0.3, target.position, '#8888ff');
@@ -3735,7 +3735,7 @@ function applyDmg(target, dmg, attacker) {
   }
   if (target === state.player) state.player.lastHitTime = state.time;
 
-  // 宸湳琚姩锛氫腑锟?  if (attacker && attacker.char && attacker.char.system === 'wushu2' && attacker === state.player) {
+  // 忍术被动锛氫腑  if (attacker && attacker.char && attacker.char.system === 'wushu2' && attacker === state.player) {
     state.dotEffects.push({ target, dmg: 8, dur: 3, timer: 0, interval: 0.5 });
   }
 
@@ -3743,7 +3743,7 @@ function applyDmg(target, dmg, attacker) {
     target.isDead = true; target.mesh.visible = false;
     if (target.type === 'dummy') {
       target.respawnTimer = 3;
-      // 鏈ㄤ汉妗╂帀钀介粦閾佹锟?      if (attacker === state.player) {
+      // 鏈ㄤ汉妗╂帀钀介粦閾佹      if (attacker === state.player) {
         const qKey = rollQuality('dummy');
         const wIdx = Math.random() < 0.5 ? 0 : 1;
         const drop = createWeaponDrop(qKey, attacker.char.weapons[wIdx]);
@@ -3758,13 +3758,13 @@ function applyDmg(target, dmg, attacker) {
         attacker.hp = Math.min(attacker.maxHp, attacker.hp + heal);
         attacker.kills++;
         state.stats.kills++;
-        // 鍑绘潃鎺夎惤武器锛堥潚锟?鐧介摱/灏忔鐜囬粍閲戯級
+        // 击杀掉落武器锛堥潚鐧介摱/灏忔鐜囬粍閲戯級
         const qKey = rollQuality('enemy');
         const wIdx = Math.random() < 0.5 ? 0 : 1;
         const drop = createWeaponDrop(qKey, attacker.char.weapons[wIdx]);
         attacker.weaponQuality[wIdx === 0 ? 'A' : 'B'] = drop;
         showQualityToast(drop);
-        showStatus(`鍑绘潃 ${target.name}锟?${heal} HP`);
+        showStatus(`鍑绘潃 ${target.name}${heal} HP`);
         addKillFeed(attacker.char.name, target.name);
         const ke = document.getElementById('kill-effect'); ke.style.opacity = '1';
         setTimeout(() => ke.style.opacity = '0', 200);
@@ -3821,10 +3821,10 @@ function showParry() {
 function showQualityToast(drop) {
   const el = document.getElementById('quality-toast');
   el.className = '';
-  const specialText = drop.special ? ` 锟?{drop.special}銆慲 : '';
+  const specialText = drop.special ? ` {drop.special}銆慲 : '';
   el.textContent = `鑾峰緱 ${drop.qualityName}路${drop.name}${specialText}`;
   el.classList.add('q-' + drop.quality);
-  // 寮哄埗 reflow 鍚庢樉锟?  void el.offsetWidth;
+  // 寮哄埗 reflow 鍚庢樉  void el.offsetWidth;
   el.classList.add('show');
   clearTimeout(el._qt);
   el._qt = setTimeout(() => { el.classList.remove('show'); }, 2500);
@@ -3832,7 +3832,7 @@ function showQualityToast(drop) {
 function addKillFeed(k, v) {
   const feed = document.getElementById('kill-feed');
   const msg = document.createElement('div'); msg.className = 'kill-msg';
-  msg.innerHTML = `锟?<b>${k}</b> 鍑绘潃锟?<b>${v}</b>`;
+  msg.innerHTML = `<b>${k}</b> 鍑绘潃<b>${v}</b>`;
   feed.appendChild(msg); setTimeout(() => msg.remove(), 3000);
 }
 
@@ -3871,7 +3871,7 @@ function updateAI(e, dt) {
       break;
     case 'chase':
       if (style === 'ranger' && dist < 8) {
-        // 杩滅▼瑙掕壊淇濇寔璺濈
+        // 远程角色保持距离
         e.state = 'retreat'; e.stateTimer = 1; break;
       }
       if (dist > 3) {
@@ -3887,7 +3887,7 @@ function updateAI(e, dt) {
       if (e.attackTimer <= 0 && !e.isAttacking) {
         let at;
         if (style === 'berserker') at = Math.random() < 0.4 ? 'light' : 'heavy';
-        else if (style === 'ranger') at = 'light'; // 杩滅▼涓昏杞绘敾锟?        else at = Math.random() < 0.6 ? 'light' : 'heavy';
+        else if (style === 'ranger') at = 'light'; // 远程主要轻击        else at = Math.random() < 0.6 ? 'light' : 'heavy';
 
         if (e.stamina < (at==='light'?5:15)) { e.state='retreat'; e.stateTimer=1; break; }
         e.isAttacking = true; e.attackType = at;
@@ -3937,7 +3937,7 @@ function updateAI(e, dt) {
       break;
   }
 
-  // 闂伩鐜╁鏀诲嚮
+  // 闪避玩家攻击
   if (p.isAttacking && dist < 4.5 && !e.isDodging) {
     const dodgeChance = style === 'assassin' ? 0.25 : style === 'ranger' ? 0.2 : 0.1;
     if (Math.random() < dodgeChance) { e.state = 'dodge'; e.stamina -= CONFIG.DODGE_COST * 0.5; }
@@ -3946,7 +3946,7 @@ function updateAI(e, dt) {
   updateHPBar3D(e.hpBar, e.hp, e.maxHp);
 }
 
-// ==================== 鎶€锟?====================
+// ==================== 鎶€====================
 function useSkill(sk) {
   const p = state.player;
   const c = p.char;
@@ -3989,7 +3989,7 @@ function useSkill(sk) {
     }
     case 'stealth': {
       showStatus(`${skillDef.icon} ${skillDef.name}锛乣);
-      // 闅愯韩鏁堟灉 - 鐜╁鍗婇€忔槑
+      // 隐身效果 - 玩家半透明
       if (state.playerMesh) {
         state.playerMesh.traverse(child => {
           if (child.material) { child.material.transparent = true; child.material.opacity = 0.3; }
@@ -4149,7 +4149,7 @@ function updateHUD() {
   document.getElementById('stat-maxcombo').textContent = state.stats.maxCombo;
   document.getElementById('stat-parries').textContent = state.stats.parries;
 
-  // 武器鍝佽川杈规 + 鍚嶇О鏇存柊
+  // 武器品质边框 + 鍚嶇О鏇存柊
   const qA = p.weaponQuality.A, qB = p.weaponQuality.B;
   if (qA) {
     const slotA = document.getElementById('weapon-a');
@@ -4163,7 +4163,7 @@ function updateHUD() {
   }
 }
 
-// ==================== 鍖哄煙妫€锟?====================
+// ==================== 鍖哄煙妫€====================
 function updateZoneHint() {
   const p = state.player;
   if (!p) return;
@@ -4178,7 +4178,7 @@ function updateZoneHint() {
   else el.style.opacity = '0';
 }
 
-// ==================== 灏忓湴锟?====================
+// ==================== 灏忓湴====================
 function updateMinimap() {
   const canvas = document.getElementById('minimap-canvas');
   const ctx = canvas.getContext('2d');
@@ -4192,7 +4192,7 @@ function updateMinimap() {
   ctx.strokeStyle = 'rgba(255,215,0,0.3)'; ctx.lineWidth = 1;
   ctx.strokeRect(ox - 12*scale, oy - 12*scale, 24*scale, 24*scale);
 
-  // 鍖哄煙鏍囪
+  // 区域标记
   ctx.strokeStyle = 'rgba(136,102,34,0.3)'; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.arc(ox, oy - 20*scale, 11*scale, 0, Math.PI*2); ctx.stroke();
   ctx.strokeStyle = 'rgba(136,68,34,0.3)';
@@ -4222,7 +4222,7 @@ function updateMinimap() {
   }
 }
 
-// ==================== 鐜╁鏇存柊 ====================
+// ==================== 玩家更新 ====================
 function updatePlayer(dt) {
   const p = state.player;
   if (!p) return;
@@ -4233,12 +4233,12 @@ function updatePlayer(dt) {
     if (p.respawnTimer <= 0) {
       p.isDead = false; p.hp = p.maxHp; p.stamina = p.maxStamina; p.isWeak = false;
       p.position.set(0, 0, 5); state.playerMesh.position.copy(p.position);
-      state.playerMesh.visible = true; showStatus('澶嶆椿锟?);
+      state.playerMesh.visible = true; showStatus('澶嶆椿);
     }
     return;
   }
 
-  // 鍙楄韩锛堣鍑婚鍚庢寜绌烘牸蹇€熸仮澶嶏級
+  // 鍙楄韩锛堣鍑婚鍚庢寜绌烘牸蹇€熸仮澶嶏級
   if (state.canRecover) {
     state.recoverTimer -= dt;
     if (state.keys['Space']) {
@@ -4247,13 +4247,13 @@ function updatePlayer(dt) {
       p.stunTimer = 0;
       p.knockbackVel.set(0, 0, 0);
       SFX.play('recovery');
-      showStatus('鍙楄韩锟?);
+      showStatus('鍙楄韩);
       state.keys['Space'] = false;
     }
     if (state.recoverTimer <= 0) state.canRecover = false;
   }
 
-  // 瑙嗚
+  // 视角
   if (!state.lockedTarget || !(state.settings && state.settings.lockAssist)) {
     const sens = (state.settings ? state.settings.sensitivity : 5) * 0.0004;
     state.cameraYaw -= state.mouse.dx * sens;
@@ -4269,12 +4269,12 @@ function updatePlayer(dt) {
     else document.getElementById('weakness-overlay').style.opacity = '0.5';
   }
 
-  // 浣撳姏鍥炲
+  // 体力回复
   if (!p.inCombat || (state.time - p.lastCombatTime) > CONFIG.STAMINA_REGEN_DELAY) p.inCombat = false;
   if (!p.isAttacking && !p.isDodging) p.stamina = Math.min(p.maxStamina, p.stamina + CONFIG.STAMINA_REGEN * dt);
   if (p.stamina <= 0 && !p.isWeak) { p.isWeak = true; p.weakTimer = 2; p.isBlocking = false; p.isDodging = false; SFX.play('weak'); }
 
-  // 鑴辨垬鍥炶锛堟寜瑙掕壊瀹氫綅宸紓鍖栵級
+  // 脱战回血（按角色定位差异化）
   if (!p.inCombat && (state.time - p.lastHitTime) > CONFIG.COMBAT_REGEN_DELAY) {
     const roleMap = { wushu: 'assassin', wushu2: 'assassin', magic: 'warrior', xianshu: 'ranger' };
     const role = roleMap[p.char.system] || 'warrior';
@@ -4286,7 +4286,7 @@ function updatePlayer(dt) {
   if (p.stunTimer > 0) {
     p.stunTimer -= dt;
     p.isAttacking = false;
-    // 鍑婚鍙楄韩
+    // 击飞受身
     if (p.knockbackVel.length() > 0) {
       p.position.add(p.knockbackVel.clone().multiplyScalar(dt));
       p.knockbackVel.multiplyScalar(0.95);
@@ -4342,8 +4342,8 @@ function updatePlayer(dt) {
             const drop = createWeaponDrop(qKey, p.char.weapons[wIdx]);
             p.weaponQuality[wIdx === 0 ? 'A' : 'B'] = drop;
             showQualityToast(drop);
-            showStatus(`鍑绘潃 ${dot.target.name}锟?锟? +${heal} HP`);
-            addKillFeed(p.char.name + ' 鈽狅笍', dot.target.name);
+            showStatus(`鍑绘潃 ${dot.target.name} +${heal} HP`);
+            addKillFeed(p.char.name + ' ⚠️', dot.target.name);
             SFX.play('kill');
             if (p === state.player) spawnWeaponDrop(dot.target.position.clone(), p.char.weapons[Math.floor(Math.random()*2)], rollQuality(dot.target.type === 'dummy' ? 'dummy' : 'enemy'));
           }
@@ -4388,7 +4388,7 @@ function updatePlayer(dt) {
     p.position.z = Math.max(-55, Math.min(55, p.position.z));
   }
 
-  // 闂伩
+  // 闪避
   if (state.keys['ShiftLeft'] && !p.isDodging && p.stamina >= CONFIG.DODGE_COST && !p.isWeak) {
     p.isDodging = true; p.dodgeTimer = 0; p.stamina -= CONFIG.DODGE_COST;
     SFX.play('dodge');
@@ -4409,7 +4409,7 @@ function updatePlayer(dt) {
   // 鏀诲嚮璁℃椂
   if (p.attackTimer > 0) { p.attackTimer -= dt; if (p.attackTimer <= 0) p.isAttacking = false; }
 
-  // 閲嶅嚮钃勫姏
+  // 重击钃勫姏
   if (state.mouseButtons.right && !p.isAttacking && !p.isDodging && !p.isWeak) {
     if (!p.isCharging) p.isCharging = true;
   } else if (p.isCharging) {
@@ -4418,27 +4418,27 @@ function updatePlayer(dt) {
     p.isCharging = false;
   }
 
-  // 杞绘敾锟?  if (state.mouseButtons.left && !p.isAttacking && !p.isDodging && !p.isWeak && !p.isCharging) {
+  // 杞绘敾  if (state.mouseButtons.left && !p.isAttacking && !p.isDodging && !p.isWeak && !p.isCharging) {
     if (!p.isGrounded) performAirAttack();
     else performAttack(p, 'light', true);
     state.mouseButtons.left = false;
   }
 
-  // 鎶€锟?  if (state.keys['KeyQ'] && p.skills.Q.cd <= 0) useSkill('Q');
+  // 鎶€  if (state.keys['KeyQ'] && p.skills.Q.cd <= 0) useSkill('Q');
   if (state.keys['KeyE'] && p.skills.E.cd <= 0) useSkill('E');
   if (state.keys['KeyR'] && p.skills.R.cd <= 0) useSkill('R');
   for (const k in p.skills) p.skills[k].cd = Math.max(0, p.skills[k].cd - dt);
 
-  // 鍒囨锟?  if (state.keys['Tab'] && p.weaponSwitchTimer <= 0) {
+  // 鍒囨  if (state.keys['Tab'] && p.weaponSwitchTimer <= 0) {
     p.currentWeapon = p.currentWeapon === 'A' ? 'B' : 'A';
     p.weaponSwitchTimer = CONFIG.WEAPON_SWITCH_TIME; p.hasSwitchBonus = true;
     SFX.play('weapon_switch');
     const wIdx = p.currentWeapon === 'B' ? 1 : 0;
     const wDef = p.char.weapons[wIdx];
-    showStatus(`鍒囨崲武器 锟?${wDef.icon} ${wDef.name}`);
+    showStatus(`鍒囨崲武器 ${wDef.icon} ${wDef.name}`);
     state.keys['Tab'] = false;
 
-    // ===== 瑙嗚鍙樺寲锛氶噸寤烘鍣ㄦā锟?=====
+    // ===== 瑙嗚鍙樺寲锛氶噸寤烘鍣ㄦā=====
     const ud = state.playerMesh.userData;
     if (ud && ud.weaponGroup) {
       state.playerMesh.remove(ud.weaponGroup);
@@ -4447,21 +4447,21 @@ function updatePlayer(dt) {
     state.playerMesh.add(newWg);
     state.playerMesh.userData.weaponGroup = newWg;
 
-    // 鍒囨崲鍔ㄧ敾锟?.3绉掑唴武器鎸ヨ垶
+    // 鍒囨崲鍔ㄧ敾.3绉掑唴武器鎸ヨ垶
     p._switchAnimTimer = CONFIG.WEAPON_SWITCH_TIME;
 
-    // 鏇存柊 HUD 武器鏍忛珮浜拰鍝佽川棰滆壊
+    // 鏇存柊 HUD 武器鏍忛珮浜拰鍝佽川棰滆壊
     const qA = p.weaponQuality.A, qB = p.weaponQuality.B;
     const slotA = document.getElementById('weapon-a');
     const slotB = document.getElementById('weapon-b');
     slotA.classList.toggle('active', p.currentWeapon === 'A');
     slotB.classList.toggle('active', p.currentWeapon === 'B');
-    // 鍝佽川杈规
+    // 品质边框
     slotA.className = 'weapon-slot' + (p.currentWeapon === 'A' ? ' active' : '') + ' ' + qA.cssClass;
     slotB.className = 'weapon-slot' + (p.currentWeapon === 'B' ? ' active' : '') + ' ' + qB.cssClass;
   }
   p.weaponSwitchTimer = Math.max(0, p.weaponSwitchTimer - dt);
-  // 鍒囨崲鍔ㄧ敾锟?.3绉掓鍣ㄦ尌鑸炴晥锟?  if (p._switchAnimTimer > 0) {
+  // 鍒囨崲鍔ㄧ敾.3绉掓鍣ㄦ尌鑸炴晥  if (p._switchAnimTimer > 0) {
     p._switchAnimTimer -= dt;
     const t = 1 - (p._switchAnimTimer / CONFIG.WEAPON_SWITCH_TIME);
     const ud = state.playerMesh.userData;
@@ -4481,7 +4481,7 @@ function updatePlayer(dt) {
   updateHUD();
 }
 
-// ==================== 涓诲惊锟?====================
+// ==================== 涓诲惊====================
 const clock = new THREE.Clock();
 function gameLoop() {
   requestAnimationFrame(gameLoop);
@@ -4491,7 +4491,7 @@ function gameLoop() {
 
   updatePlayer(dt);
 
-  // 鏈ㄤ汉锟?  state.dummies.forEach(d => {
+  // 鏈ㄤ汉  state.dummies.forEach(d => {
     if (d.isDead) { d.respawnTimer -= dt; if (d.respawnTimer<=0) { d.isDead=false; d.hp=d.maxHp; d.mesh.visible=true; } return; }
     updateHPBar3D(d.hpBar, d.hp, d.maxHp);
   });
@@ -4517,7 +4517,7 @@ function gameLoop() {
   updateLockMarker();
   updateZoneHint();
 
-  // 鐜╁鏍囪鍔ㄧ敾
+  // 玩家标记动画
   if (state.playerArrow) {
     const pulse = 0.5 + Math.sin(state.time*4)*0.3;
     state.playerArrow.material.opacity = 0.6 + pulse*0.4;
@@ -4541,7 +4541,7 @@ window.addEventListener('resize', () => {
 });
 
 gameLoop();
-console.log('娴佹槦铦磋澏锟?路 Web 鍘熷瀷 V0.2 Enhanced 宸插姞锟?);
+console.log('娴佹槦铦磋澏路 Web 鍘熷瀷 V0.2 Enhanced 宸插姞);
 
 // ==================== V0.3 联机系统 ====================
 let net, lobby;
@@ -4560,7 +4560,7 @@ let gameMode = 'single';
 // 网络事件绑定
 if (net) {
 net.on('welcome', (data) => {
-  console.log(`[鑱旀満] 宸茶繛锟? ${data.playerName} (ID: ${data.playerId})`);
+  console.log(`[鑱旀満] 宸茶繛 ${data.playerName} (ID: ${data.playerId})`);
 });
 
 net.on('game_start', (data) => {
@@ -4568,7 +4568,7 @@ net.on('game_start', (data) => {
   isMultiplayer = data.mode === '1v1';
   if (lobby) lobby.hide();
   
-  // 濡傛灉鏄浜烘ā寮忥紝鍒濆鍖栬繙绋嬬帺锟?  if (isMultiplayer && data.players) {
+  // 濡傛灉鏄浜烘ā寮忥紝鍒濆鍖栬繙绋嬬帺  if (isMultiplayer && data.players) {
     data.players.forEach(p => {
       if (p.id !== net.playerId) {
         createRemotePlayer(p);
@@ -4576,7 +4576,7 @@ net.on('game_start', (data) => {
     });
   }
   
-  // 寮€濮嬫父锟?  if (!state.started) {
+  // 寮€濮嬫父  if (!state.started) {
     state.started = true;
   }
   showStatus(`娓告垙寮€濮嬶紒妯″紡: ${gameMode}`);
@@ -4585,9 +4585,9 @@ net.on('game_start', (data) => {
 net.on('frame', (data) => {
   if (!data.frame || !data.frame.inputs) return;
   
-  // 澶勭悊杩滅▼鐜╁杈撳叆
+  // 处理远程玩家输入
   for (const [playerId, input] of Object.entries(data.frame.inputs)) {
-    if (parseInt(playerId) === net.playerId) continue; // 璺宠繃鑷繁
+    if (parseInt(playerId) === net.playerId) continue; // 跳过自己
     updateRemotePlayer(parseInt(playerId), input);
   }
 });
@@ -4605,13 +4605,13 @@ net.on('player_left', (data) => {
 });
 
 net.on('matched', (data) => {
-  showStatus(`鍖归厤鎴愬姛锛佸锟? ${data.opponent?.name || '鏈煡'}`);
+  showStatus(`匹配成功！对手 ${data.opponent?.name || '未知'}`);
   gameMode = '1v1';
   isMultiplayer = true;
 });
 } // end if(net)
 
-// 鍒涘缓杩滅▼鐜╁妯″瀷
+// 创建远程玩家模型
 function createRemotePlayer(playerData) {
   const char = CHAR_DATA[playerData.character] || CHAR_DATA.yinren;
   const mesh = buildCharModel(char);
@@ -4637,7 +4637,7 @@ function createRemotePlayer(playerData) {
   showStatus(`${playerData.name} 鍔犲叆浜嗘父鎴廯);
 }
 
-// 鏇存柊杩滅▼鐜╁
+// 更新远程玩家
 function updateRemotePlayer(playerId, input) {
   const player = remotePlayers[playerId];
   const mesh = remoteMeshes[playerId];
@@ -4645,7 +4645,7 @@ function updateRemotePlayer(playerId, input) {
   
   if (input.idle) return;
   
-  // 鏍规嵁杈撳叆鏇存柊浣嶇疆鍜岀姸锟?  if (input.keys) {
+  // 鏍规嵁杈撳叆鏇存柊浣嶇疆鍜岀姸  if (input.keys) {
     const speed = CONFIG.MOVE_SPEED * (state.dt || 0.016);
     if (input.keys.KeyW) mesh.position.z -= speed;
     if (input.keys.KeyS) mesh.position.z += speed;
@@ -4653,13 +4653,13 @@ function updateRemotePlayer(playerId, input) {
     if (input.keys.KeyD) mesh.position.x += speed;
   }
   
-  // 鍚屾鍔ㄧ敾
+  // 同步动画
   if (mesh.userData && mesh.userData.animateChar) {
     mesh.userData.animateChar(mesh, player, state.dt || 0.016);
   }
 }
 
-// 绉婚櫎杩滅▼鐜╁
+// 移除远程玩家
 function removeRemotePlayer(playerId) {
   const mesh = remoteMeshes[playerId];
   if (mesh) {
@@ -4669,7 +4669,7 @@ function removeRemotePlayer(playerId) {
   delete remotePlayers[playerId];
 }
 
-// 鍙戦€佹湰鍦拌緭鍏ュ埌鏈嶅姟锟?function sendLocalInput() {
+// 鍙戦€佹湰鍦拌緭鍏ュ埌鏈嶅姟function sendLocalInput() {
   if (!net.connected || !isMultiplayer) return;
   
   net.sendInput(
@@ -4695,7 +4695,7 @@ function removeRemotePlayer(playerId) {
   );
 }
 
-// 淇敼涓诲惊鐜紝鍔犲叆缃戠粶杈撳叆鍙戯拷?const originalGameLoop = gameLoop;
+// 修改主循环，加入网络输入发送const originalGameLoop = gameLoop;
 function networkedGameLoop() {
   originalGameLoop();
   sendLocalInput();
@@ -4707,12 +4707,12 @@ function showLobby() {
   state.started = false;
 }
 
-// 鍒濆鍖栨椂鏄剧ず澶у巺
+// 初始化时显示大厅
 setTimeout(() => {
   showLobby();
 }, 500);
 
-// 娣诲姞澶у巺鎸夐挳锟?HUD
+// 娣诲姞澶у巺鎸夐挳HUD
 document.addEventListener('DOMContentLoaded', () => {
   const hud = document.getElementById('hud');
   if (hud) {
