@@ -8,7 +8,8 @@ namespace QBlockyFighter.Modes
         Duel1v1,
         TeamBattle5v5,
         Training,
-        Challenge
+        Challenge,
+        BattleRoyale
     }
 
     public abstract class GameMode : MonoBehaviour

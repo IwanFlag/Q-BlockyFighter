@@ -59,6 +59,7 @@ namespace QBlockyFighter
         private int selectedCharIndex = 0;
         private int selectedMapIndex = 0;
         private string selectedMode = "1v1";
+        private bool isOfflineMode = false; // 单机模式
 
         void Awake()
         {
@@ -260,10 +261,20 @@ namespace QBlockyFighter
         }
 
         // ===== 游戏流程 =====
-        public void StartGame(string mode)
+        public void StartGame(string mode, bool offline = false)
         {
             selectedMode = mode;
-            SetState(GameState.CharacterSelect);
+            isOfflineMode = offline;
+
+            if (offline)
+            {
+                // 单机模式：直接进角色选择，不连服务器
+                SetState(GameState.CharacterSelect);
+            }
+            else
+            {
+                SetState(GameState.CharacterSelect);
+            }
         }
 
         private void StartLocalGame()
@@ -294,6 +305,9 @@ namespace QBlockyFighter
                     break;
                 case "challenge":
                     currentMode = gameObject.AddComponent<ChallengeMode>();
+                    break;
+                case "battleroyale":
+                    currentMode = gameObject.AddComponent<BattleRoyaleMode>();
                     break;
             }
 

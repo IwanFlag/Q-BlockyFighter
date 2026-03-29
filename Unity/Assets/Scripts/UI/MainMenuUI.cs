@@ -6,6 +6,7 @@ namespace QBlockyFighter.UI
     {
         private bool showMenu = true;
         private string playerName = "";
+        private bool offlineMode = false;
         private enum MenuState { Main, Settings, Credits }
         private MenuState state = MenuState.Main;
 
@@ -29,24 +30,36 @@ namespace QBlockyFighter.UI
             if (state == MenuState.Main)
             {
                 // 玩家名输入
-                GUI.Label(new Rect(cx - 100, cy - 100, 100, 30), "名字:");
-                playerName = GUI.TextField(new Rect(cx - 20, cy - 100, 200, 30), playerName, 16);
+                GUI.Label(new Rect(cx - 100, cy - 120, 100, 30), "名字:");
+                playerName = GUI.TextField(new Rect(cx - 20, cy - 120, 200, 30), playerName, 16);
 
-                if (GUI.Button(new Rect(cx - 120, cy - 50, 240, 45), "⚔ 1V1 匹配", btnStyle))
+                // 单机/联机切换
+                offlineMode = GUI.Toggle(new Rect(cx - 100, cy - 85, 200, 25), offlineMode,
+                    offlineMode ? "📴 单机模式 (离线)" : "🌐 联机模式 (在线)");
+
+                if (GUI.Button(new Rect(cx - 120, cy - 45, 240, 40), "⚔ 1V1 决斗", btnStyle))
                 {
                     EnterGame("1v1");
                 }
-                if (GUI.Button(new Rect(cx - 120, cy + 5, 240, 45), "🏰 5V5 团战", btnStyle))
+                if (GUI.Button(new Rect(cx - 120, cy + 0, 240, 40), "🏰 5V5 团战", btnStyle))
                 {
                     EnterGame("5v5");
                 }
-                if (GUI.Button(new Rect(cx - 120, cy + 60, 240, 45), "🎯 训练场", btnStyle))
+                if (GUI.Button(new Rect(cx - 120, cy + 45, 240, 40), "🏆 吃鸡模式", btnStyle))
+                {
+                    EnterGame("battleroyale");
+                }
+                if (GUI.Button(new Rect(cx - 120, cy + 90, 240, 40), "🎯 训练场", btnStyle))
                 {
                     EnterGame("training");
                 }
-                if (GUI.Button(new Rect(cx - 120, cy + 115, 240, 45), "⚙ 设置", btnStyle))
+                if (GUI.Button(new Rect(cx - 120, cy + 145, 115, 35), "⚙ 设置", btnStyle))
                 {
                     state = MenuState.Settings;
+                }
+                if (GUI.Button(new Rect(cx + 5, cy + 145, 115, 35), "❓ 帮助", btnStyle))
+                {
+                    Application.OpenURL("https://github.com/IwanFlag/Q-BlockyFighter");
                 }
             }
             else if (state == MenuState.Settings)
@@ -68,10 +81,22 @@ namespace QBlockyFighter.UI
 
         private void EnterGame(string mode)
         {
-            if (string.IsNullOrEmpty(playerName)) playerName = "玩家";
+            if (string.IsNullOrEmpty(playerName)) playerName = offlineMode ? "单机玩家" : "玩家";
 
             showMenu = false;
 
+            if (offlineMode)
+            {
+                // 单机模式：不连服务器，直接开始
+                var gm = GameManager.Instance;
+                if (gm != null)
+                {
+                    gm.StartGame(mode, true);
+                }
+                return;
+            }
+
+            // 联机模式
             if (networkClient != null && networkClient.IsConnected)
             {
                 networkClient.SetName(playerName);
