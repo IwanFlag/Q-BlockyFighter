@@ -1870,7 +1870,7 @@ function addChatMessage(sender, text, type) {
   renderChat();
   
   // Send to server if connected
-  if (window.gameNetwork && window.gameNetwork.connected) {
+  if (window.gameNetwork && window.gameNetwork.connected && typeof net !== 'undefined' && net) {
     window.gameNetwork.sendChat(sender + ': ' + text);
   }
 }
@@ -4543,15 +4543,22 @@ window.addEventListener('resize', () => {
 gameLoop();
 console.log('娴佹槦铦磋澏锟?路 Web 鍘熷瀷 V0.2 Enhanced 宸插姞锟?);
 
-// ==================== V0.3 鑱旀満绯荤粺 ====================
-const net = new GameNetwork();
-const lobby = new LobbyUI(net);
-let remotePlayers = {};  // 杩滅▼鐜╁鏁版嵁
-let remoteMeshes = {};   // 杩滅▼鐜╁妯″瀷
+// ==================== V0.3 联机系统 ====================
+let net, lobby;
+try {
+  net = new GameNetwork();
+  lobby = new LobbyUI(net);
+  lobby.hide(); // 单机模式隐藏大厅UI，使用游戏自带界面
+} catch(e) {
+  console.log('[Local] Network module not available, running in local mode');
+}
+let remotePlayers = {};
+let remoteMeshes = {};
 let isMultiplayer = false;
-let gameMode = 'single'; // 'single' | '1v1' | 'training'
+let gameMode = 'single';
 
-// 缃戠粶浜嬩欢缁戝畾
+// 网络事件绑定
+if (net) {
 net.on('welcome', (data) => {
   console.log(`[鑱旀満] 宸茶繛锟? ${data.playerName} (ID: ${data.playerId})`);
 });
@@ -4559,7 +4566,7 @@ net.on('welcome', (data) => {
 net.on('game_start', (data) => {
   gameMode = data.mode;
   isMultiplayer = data.mode === '1v1';
-  lobby.hide();
+  if (lobby) lobby.hide();
   
   // 濡傛灉鏄浜烘ā寮忥紝鍒濆鍖栬繙绋嬬帺锟?  if (isMultiplayer && data.players) {
     data.players.forEach(p => {
@@ -4602,6 +4609,7 @@ net.on('matched', (data) => {
   gameMode = '1v1';
   isMultiplayer = true;
 });
+} // end if(net)
 
 // 鍒涘缓杩滅▼鐜╁妯″瀷
 function createRemotePlayer(playerData) {
