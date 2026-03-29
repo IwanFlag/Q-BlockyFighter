@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LBR Web Prototype V0.3</title>
-<script src="Client/network.js"></script>
-<script src="Client/lobby.js"></script>
+<script src="../Client/network.js"></script>
+<script src="../Client/lobby.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { overflow: hidden; background: #000; font-family: 'Microsoft YaHei', sans-serif; cursor: crosshair; }
@@ -609,7 +609,7 @@ if (!CanvasRenderingContext2D.prototype.roundRect) {
 // ==================== 瑙掕壊瀹氫箟 ====================
 const CHARACTERS = [
   {
-    id: 'jingru', name: '鍐锋湀 路 鑽嗗', title: '鍒哄 路 姝︽湳',
+        {id: 'jingru', name: '冷月 · 荆如', title: '刺客 · 武术',color: 0xff5588, weapons: ['鱼肠短剑','软剑'], skills: {Q:{name:'刀光', icon:'🗡️', cd:8, type:'dash', desc:'200ms 无敌帧突进5米，斩击55伤',color:0xff5588}, E:{name:'云隐步', icon:'💨', cd:6, type:'blink', desc:'瞬间移动5米+隐身1.2秒+减伤30%',color:0x55aaff}, R:{name:'千刃决', icon:'🌀', cd:12, type:'aoe', desc:'范围4米内8段伤害，总计240+2秒击退',color:0xff3333}}, passive: '弹反：完美格挡触发250ms反击窗口，1.8倍反伤' },
     color: 0x2244aa, emissive: 0x1122ff, portrait: '馃棥锟?,
     system: 'wushu', systemName: '姝︽湳',
     bodyColor: '#2244aa', accentColor: '#4488ff',
@@ -627,7 +627,7 @@ const CHARACTERS = [
     hpRegen: 20, style: 'balanced'
   },
   {
-    id: 'wuyin', name: '影忍 · 雾隐', title: '鍒哄 路 宸湳',
+        {id: 'wuyin', name: '影忍 · 雾隐', title: '刺客 · 忍术',color: 0x8844ff, weapons: ['苦无','手里剑'], skills: {Q:{name:'影步', icon:'💨', cd:5, type:'blink', desc:'闪现5米，原地留残影',color:0x8844ff}, E:{name:'暗影突袭', icon:'🗡️', cd:7, type:'dash', desc:'隐身突进，背击130伤',color:0xff5588}, R:{name:'影分身', icon:'👥', cd:12, type:'summon', desc:'召唤分身同步攻击',color:0xaa55ff}}, passive: '暗杀：背击伤害+30%，成功击杀刷新影步CD' },
     color: 0x552288, emissive: 0xaa00ff, portrait: '馃シ',
     system: 'wushu2', systemName: '宸湳',
     bodyColor: '#442266', accentColor: '#aa44ff',
@@ -645,7 +645,7 @@ const CHARACTERS = [
     hpRegen: 10, style: 'assassin'
   },
   {
-    id: 'guanyun', name: '鍌查 路 鍏充簯', title: '鎴樺＋ 路 姝︽湳',
+        {id: 'guanyun', name: '傲骨 · 关羽', title: '战士 · 武术',color: 0x22cc44, weapons: ['青龙刀','朴刀'], skills: {Q:{name:'斩龙击', icon:'🐉', cd:6, type:'line', desc:'直线突刺5米，碰撞造成85伤害+2秒倒地',color:0x22cc44}, E:{name:'霸体', icon:'🛡️', cd:10, type:'buff', desc:'3秒霸体+减伤50%+移速+20%',color:0xcccc22}, R:{name:'横扫千军', icon:'⚔️', cd:14, type:'spin', desc:'360°旋转3圈，每圈80伤害击退',color:0x44cc22}}, passive: '一骑当千：击杀敌人后全属性+30%持续5秒' },
     color: 0x228822, emissive: 0x44ff44, portrait: '鈿旓笍',
     system: 'magic', systemName: '姝︽湳',
     bodyColor: '#1a6622', accentColor: '#44cc44',
@@ -663,7 +663,7 @@ const CHARACTERS = [
     hpRegen: 20, style: 'berserker'
   },
   {
-    id: 'mulan', name: '杩介 路 鑺辨湪锟?, title: '杩滅▼ 路 浠欐湳',
+        {id: 'mulan', name: '追风 · 花木兰', title: '远程 · 仙术',color: 0x44aaff, weapons: ['长弓','法杖'], skills: {Q:{name:'天眼箭', icon:'👁️', cd:8, type:'snipe', desc:'超远距离穿透箭120伤害+标记5秒',color:0x44aaff}, E:{name:'仙术护盾', icon:'🛡️', cd:12, type:'shield', desc:'吸收150伤害护盾+反伤30',color:0x44ffaa}, R:{name:'万箭齐发', icon:'🌧️', cd:15, type:'rain', desc:'范围内箭雨8段伤害+减速',color:0x4488ff}}, passive: '远程优势：距离越远伤害越高(最高+40%)' },
     color: 0xcc8800, emissive: 0xffaa00, portrait: '馃徆',
     system: 'xianshu', systemName: '浠欐湳',
     bodyColor: '#886600', accentColor: '#ffcc44',
@@ -682,7 +682,7 @@ const CHARACTERS = [
   },
   // ===== V0.4 鏂板瑙掕壊 =====
   {
-    id: 'hasang', name: '姣掕潕 路 鍝堟', title: '杩滅▼ 路 宸湳',
+        {id: 'hasang', name: '毒蝎 · 哈桑', title: '远程 · 忍术',color: 0x44dd44, weapons: ['吹箭','苦无'], skills: {Q:{name:'毒液喷射', icon:'☠️', cd:5, type:'dot', desc:'毒液攻击，5秒60持续伤害+减速',color:0x44dd44}, E:{name:'暗影陷阱', icon:'🪤', cd:8, type:'trap', desc:'2秒定身+60伤害',color:0x8844ff}, R:{name:'暗杀', icon:'🗡️', cd:15, type:'execute', desc:'隐身突进，背击直接斩杀低血量目标',color:0x222222}}, passive: '中毒叠加：每次攻击叠加1层中毒，3层触发毒性爆发' },
     color: 0x448800, emissive: 0x88ff00, portrait: '馃',
     system: 'wushu2', systemName: '宸湳',
     bodyColor: '#334400', accentColor: '#aaff00',
@@ -700,7 +700,7 @@ const CHARACTERS = [
     hpRegen: 10, style: 'ranger'
   },
   {
-    id: 'aolafu', name: '纾愮煶 路 濂ユ媺锟?, title: '鍧﹀厠 路 浠欐湳',
+        {id: 'aolafu', name: '磐石 · 奥拉', title: '坦克 · 仙术',color: 0xff8844, weapons: ['塔盾','巨锤'], skills: {Q:{name:'盾击', icon:'🛡️', cd:5, type:'stun', desc:'近距离115伤害+1.5秒眩晕',color:0xff8844}, E:{name:'战吼', icon:'🗣️', cd:10, type:'buff', desc:'全队护盾+30%，持续6秒',color:0xffcc44}, R:{name:'仙术·不灭', icon:'✨', cd:20, type:'shield', desc:'6秒不死+生命恢复',color:0xff4444}}, passive: '磐石：血量越低防御越高(最低血量+40%减伤)' },
     color: 0x886644, emissive: 0xffcc00, portrait: '馃洝锟?,
     system: 'xianshu', systemName: '浠欐湳',
     bodyColor: '#664422', accentColor: '#ffaa00',
@@ -718,7 +718,7 @@ const CHARACTERS = [
     hpRegen: 30, style: 'tank'
   },
   {
-    id: 'kali', name: '雷鸣 · 卡利', title: '鎴樺＋ 路 榄旀硶',
+        {id: 'kali', name: '雷鸣 · 卡利', title: '战士 · 魔法',color: 0xddaa00, weapons: ['弯刀','双刀'], skills: {Q:{name:'雷电附魔', icon:'⚡', cd:8, type:'enchant', desc:'5秒内攻击附带40雷电伤害',color:0xddaa00}, E:{name:'雷暴旋转', icon:'🌪️', cd:8, type:'spin', desc:'3段旋转每段80伤害+吸附',color:0xff8800}, R:{name:'天雷', icon:'🌩️', cd:14, type:'aoe', desc:'范围雷击200伤害+1.5秒眩晕',color:0xffff00}}, passive: '雷电：攻击10%概率触发连锁闪电' },
     color: 0x0066cc, emissive: 0x00ccff, portrait: '锟?,
     system: 'magic', systemName: '榄旀硶',
     bodyColor: '#003366', accentColor: '#00aaff',
@@ -737,7 +737,7 @@ const CHARACTERS = [
   },
   // ===== V0.4 琛ュ厖瑙掕壊 =====
   {
-    id: 'zhebie', name: '铁骑 · 哲别', title: '鎴樺＋ 路 姝︽湳',
+        {id: 'zhebie', name: '铁骑 · 哲别', title: '远程 · 武术',color: 0xaabb88, weapons: ['骑弓','长枪'], skills: {Q:{name:'冲锋箭', icon:'🏹', cd:5, type:'dash', desc:'冲锋射击70伤害+击退',color:0xaabb88}, E:{name:'铁骑践踏', icon:'🐎', cd:8, type:'aoe', desc:'骑马冲撞+范围120伤害击飞',color:0x888844}, R:{name:'万箭', icon:'🌧️', cd:12, type:'rain', desc:'箭雨覆盖8段伤害',color:0x444488}}, passive: '骑射：移动攻击不减速' },
     color: 0x884422, emissive: 0xff6600, portrait: '馃弴',
     system: 'wushu', systemName: '姝︽湳',
     bodyColor: '#663311', accentColor: '#ff8833',
@@ -755,7 +755,7 @@ const CHARACTERS = [
     hpRegen: 20, style: 'balanced'
   },
   {
-    id: 'makexi', name: '閾佸 路 椹厠锟?, title: '鍧﹀厠 路 姝︽湳',
+        {id: 'makexi', name: '铁壁 · 马克达', title: '坦克 · 武术',color: 0xbbbbbb, weapons: ['大剑','塔盾'], skills: {Q:{name:'破防斩', icon:'⚔️', cd:6, type:'line', desc:'穿透斩击100伤害+减少防御',color:0xbbbbbb}, E:{name:'铁壁', icon:'🧱', cd:10, type:'shield', desc:'前方2米护盾，持续4秒',color:0x888888}, R:{name:'战争怒吼', icon:'🗣️', cd:14, type:'buff', desc:'全队攻击+30%，持续6秒',color:0xff4444}}, passive: '铁壁：前方受到的伤害减半' },
     color: 0x884400, emissive: 0xffaa44, portrait: '馃彌锟?,
     system: 'wushu', systemName: '姝︽湳',
     bodyColor: '#663300', accentColor: '#ff8800',
@@ -773,7 +773,7 @@ const CHARACTERS = [
     hpRegen: 30, style: 'tank'
   },
   {
-    id: 'lishunchen', name: '鐮村啗 路 鏉庤垳锟?, title: '杩滅▼ 路 榄旀硶',
+        {id: 'lishunchen', name: '破军 · 李舜臣', title: '远程 · 魔法',color: 0x4477aa, weapons: ['火铳','火炮'], skills: {Q:{name:'架设炮台', icon:'🧱', cd:8, type:'turret', desc:'放置自动炮台8秒',color:0x4477aa}, E:{name:'炮火覆盖', icon:'💥', cd:10, type:'aoe', desc:'范围轰炸150伤害',color:0xff4400}, R:{name:'火炮齐射', icon:'🚢', cd:15, type:'aoe', desc:'全方位炮击5段120伤害',color:0xff8800}}, passive: '炮台：炮台攻击附带减速效果' },
     color: 0x224488, emissive: 0x4488ff, portrait: '馃挘',
     system: 'magic', systemName: '榄旀硶',
     bodyColor: '#113355', accentColor: '#3366cc',
@@ -791,7 +791,7 @@ const CHARACTERS = [
     hpRegen: 15, style: 'ranger'
   },
   {
-    id: 'amani', name: '鍦ｆ瓕 路 闃跨帥锟?, title: '杈呭姪 路 宸湳',
+        {id: 'amani', name: '圣歌 · 阿玛拉', title: '辅助 · 忍术',color: 0xffaacc, weapons: ['治疗法杖','图腾'], skills: {Q:{name:'治疗波', icon:'💚', cd:6, type:'heal', desc:'治疗自己200HP+净化负面效果',color:0x44ff44}, E:{name:'速度强化', icon:'⚡', cd:8, type:'buff', desc:'全队攻速+40%持续4秒',color:0xffaa44}, R:{name:'圣歌·复活', icon:'✨', cd:20, type:'resurrect', desc:'满血复活+5秒无敌',color:0xffff44}}, passive: '治疗：附近队友持续恢复生命' },
     color: 0x886644, emissive: 0xffcc88, portrait: '馃幍',
     system: 'wushu2', systemName: '宸湳',
     bodyColor: '#554422', accentColor: '#cc9955',
@@ -809,7 +809,7 @@ const CHARACTERS = [
     hpRegen: 30, style: 'support'
   },
   {
-    id: 'dafenqi', name: '澶╂満 路 杈捐姮锟?, title: '杈呭姪 路 榄旀硶',
+        {id: 'dafenqi', name: '天机 · 达芬奇', title: '辅助 · 魔法',color: 0xccaa88, weapons: ['弩','陷阱'], skills: {Q:{name:'炮击', icon:'💥', cd:5, type:'line', desc:'弩箭射击80伤害',color:0xccaa88}, E:{name:'布置陷阱', icon:'🪤', cd:8, type:'trap', desc:'2秒定身+60伤害',color:0x884422}, R:{name:'召唤炮塔', icon:'🏰', cd:15, type:'summon', desc:'炮塔10秒攻击',color:0x444444}}, passive: '远程优势：距离越远伤害越高' },
     color: 0x664488, emissive: 0xaa66ff, portrait: '馃敡',
     system: 'magic', systemName: '榄旀硶',
     bodyColor: '#442266', accentColor: '#8844cc',
