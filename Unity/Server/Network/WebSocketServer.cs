@@ -8,6 +8,7 @@ using Fleck;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using QBlockyFighter.Server.Protocol;
+using QBlockyFighter.Server.Utils;
 
 namespace QBlockyFighter.Server.Network
 {
@@ -278,6 +279,24 @@ namespace QBlockyFighter.Server.Network
             if (player.RoomId == null) return;
             var room = _matchmaker.GetRoom(player.RoomId.Value);
             if (room == null || room.State != "playing") return;
+
+            // 防作弊验证
+            var inputDict = msg["keys"]?.ToObject<Dictionary<string, object>>();
+            var validation = Utils.AntiCheat.ValidateInput(player.Id, inputDict, 0.05f);
+
+            if (validation.IsBanned)
+            {
+                player.Send(MsgType.S_ERROR, new { message = $"已被封禁: {validation.Reason}" });
+                room.RemovePlayer(player.Id);
+                Console.WriteLine($"[反作弊] 玩家 {player.Name} 被封禁: {validation.Reason}");
+                return;
+            }
+
+            if (!validation.IsValid)
+            {
+                Console.WriteLine($"[反作弊] 玩家 {player.Name} 可疑输入: {validation.Reason}");
+                // 不阻止，但记录
+            }
 
             player.LastInput = new PlayerInput
             {
