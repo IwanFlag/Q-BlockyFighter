@@ -121,6 +121,12 @@ namespace QBlockyFighter.Map
         private void CreateNorthSeaIce()
         {
             CreatePlatform(Vector3.zero, new Vector3(25, 0.1f, 25), new Color(0.8f, 0.9f, 0.95f));
+
+            // 封闭空间A（左上）
+            CreateRoom(new Vector3(-12, 0, 10), 8f, 6f, new Color(0.7f, 0.85f, 0.95f));
+            // 封闭空间B（右下）
+            CreateRoom(new Vector3(12, 0, -10), 8f, 6f, new Color(0.7f, 0.85f, 0.95f));
+
             // 冰柱
             for (int i = 0; i < 8; i++)
             {
@@ -136,25 +142,32 @@ namespace QBlockyFighter.Map
         private void CreateChangAnCity()
         {
             CreatePlatform(Vector3.zero, new Vector3(25, 0.2f, 25), new Color(0.5f, 0.45f, 0.4f));
+
+            // 封闭宫殿区（中央）
+            CreateRoom(new Vector3(0, 0, 0), 10f, 10f, new Color(0.55f, 0.4f, 0.3f));
+
             // 废墟建筑
-            CreateRuin(new Vector3(-8, 0, -8), 4f);
-            CreateRuin(new Vector3(8, 0, -5), 3f);
-            CreateRuin(new Vector3(-5, 0, 10), 3.5f);
-            CreateRuin(new Vector3(10, 0, 8), 2.5f);
-            // 桥
-            CreateBridge(new Vector3(0, 0, 0), 8f);
+            CreateRuin(new Vector3(-15, 0, -8), 4f);
+            CreateRuin(new Vector3(15, 0, -5), 3f);
+            CreateRuin(new Vector3(-8, 0, 15), 3.5f);
+            CreateRuin(new Vector3(8, 0, 15), 2.5f);
         }
 
         // ===== 波斯花园 =====
         private void CreatePersianGarden()
         {
             CreatePlatform(Vector3.zero, new Vector3(25, 0.1f, 25), new Color(0.6f, 0.55f, 0.3f));
+
+            // 封闭花园（中央）
+            CreateRoom(new Vector3(0, 0, 0), 8f, 8f, new Color(0.5f, 0.6f, 0.3f));
+
             // 绿洲水池
             CreatePond(new Vector3(0, 0, 8), 3f);
             // 灌木
             for (int i = 0; i < 15; i++)
             {
                 Vector3 pos = new Vector3(Random.Range(-12f, 12f), 0, Random.Range(-12f, 12f));
+                if (Vector3.Distance(pos, Vector3.zero) < 6f) continue;
                 CreateTree(pos, new Color(0.2f, 0.5f, 0.15f));
             }
         }
@@ -237,6 +250,108 @@ namespace QBlockyFighter.Map
             obj.name = "Bridge";
             obj.isStatic = true;
             mapObjects.Add(obj);
+        }
+
+        /// <summary>
+        /// 创建封闭空间（带机关门的房间）
+        /// 四面墙，每面留出门洞，门洞上安装GateController
+        /// </summary>
+        private void CreateRoom(Vector3 center, float width, float depth, Color wallColor)
+        {
+            float wallHeight = 4f;
+            float wallThick = 0.5f;
+            float doorWidth = 3f; // 门洞宽度
+
+            // 北墙（z + depth/2）
+            CreateWallSegment(center + new Vector3(0, wallHeight / 2f, depth / 2f),
+                width, wallHeight, wallThick, wallColor, true, "North");
+            // 南墙
+            CreateWallSegment(center + new Vector3(0, wallHeight / 2f, -depth / 2f),
+                width, wallHeight, wallThick, wallColor, true, "South");
+            // 东墙
+            CreateWallSegment(center + new Vector3(width / 2f, wallHeight / 2f, 0),
+                wallThick, wallHeight, depth, wallColor, true, "East");
+            // 西墙
+            CreateWallSegment(center + new Vector3(-width / 2f, wallHeight / 2f, 0),
+                wallThick, wallHeight, depth, wallColor, true, "West");
+
+            // 在每个门洞安装机关门
+            // 北门
+            CreateGate(center + new Vector3(0, 0, depth / 2f), 0, "Gate_North");
+            // 南门
+            CreateGate(center + new Vector3(0, 0, -depth / 2f), 180, "Gate_South");
+        }
+
+        /// <summary>创建墙段（中间留门洞）</summary>
+        private void CreateWallSegment(Vector3 center, float w, float h, float d, Color color, bool hasDoor, string name)
+        {
+            if (!hasDoor)
+            {
+                var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                wall.transform.position = center;
+                wall.transform.localScale = new Vector3(w, h, d);
+                wall.GetComponent<Renderer>().material.color = color;
+                wall.name = $"Wall_{name}";
+                wall.isStatic = true;
+                mapObjects.Add(wall);
+                return;
+            }
+
+            float doorWidth = 3f;
+            float sideWidth;
+
+            // 根据墙的方向决定分割方式
+            if (w > d) // 横墙（南北）
+            {
+                sideWidth = (w - doorWidth) / 2f;
+                // 左半墙
+                CreateWallBlock(center + new Vector3(-doorWidth / 2f - sideWidth / 2f, 0, 0),
+                    sideWidth, h, d, color, $"Wall_{name}_L");
+                // 右半墙
+                CreateWallBlock(center + new Vector3(doorWidth / 2f + sideWidth / 2f, 0, 0),
+                    sideWidth, h, d, color, $"Wall_{name}_R");
+                // 门楣
+                CreateWallBlock(center + new Vector3(0, h / 2f - 0.5f, 0),
+                    doorWidth, 1f, d, color, $"Wall_{name}_Top");
+            }
+            else // 竖墙（东西）
+            {
+                sideWidth = (d - doorWidth) / 2f;
+                CreateWallBlock(center + new Vector3(0, 0, -doorWidth / 2f - sideWidth / 2f),
+                    w, h, sideWidth, color, $"Wall_{name}_L");
+                CreateWallBlock(center + new Vector3(0, 0, doorWidth / 2f + sideWidth / 2f),
+                    w, h, sideWidth, color, $"Wall_{name}_R");
+                CreateWallBlock(center + new Vector3(0, h / 2f - 0.5f, 0),
+                    w, 1f, doorWidth, color, $"Wall_{name}_Top");
+            }
+        }
+
+        private void CreateWallBlock(Vector3 pos, float w, float h, float d, Color color, string name)
+        {
+            var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wall.transform.position = pos;
+            wall.transform.localScale = new Vector3(w, h, d);
+            wall.GetComponent<Renderer>().material.color = color;
+            wall.name = name;
+            wall.isStatic = true;
+            var rb = wall.AddComponent<Rigidbody>();
+            rb.isKinematic = true;
+            mapObjects.Add(wall);
+        }
+
+        /// <summary>创建机关门</summary>
+        private void CreateGate(Vector3 position, float rotationY, string name)
+        {
+            var gateGo = new GameObject(name);
+            gateGo.transform.position = position;
+            gateGo.transform.rotation = Quaternion.Euler(0, rotationY, 0);
+            var gate = gateGo.AddComponent<GateController>();
+            gate.lockedDuration = 30f;
+            gate.closeSpeed = 2f;
+            gate.openSpeed = 1.5f;
+            gate.requireHold = true;
+            gate.holdTime = 1.5f;
+            mapObjects.Add(gateGo);
         }
 
         private void CreatePond(Vector3 pos, float radius)
