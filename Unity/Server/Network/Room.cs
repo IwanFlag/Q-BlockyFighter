@@ -33,7 +33,13 @@ namespace QBlockyFighter.Server.Network
 
         public bool AddPlayer(Player player)
         {
-            if (Mode == "1v1" && Players.Count >= GameConfig.MAX_PLAYERS_PER_ROOM)
+            int maxPlayers = Mode switch
+            {
+                "1v1" => GameConfig.MAX_PLAYERS_PER_ROOM,
+                "5v5" => 10,
+                _ => GameConfig.MAX_PLAYERS_PER_ROOM
+            };
+            if (Players.Count >= maxPlayers)
                 return false;
 
             Players[player.Id] = player;
@@ -70,6 +76,8 @@ namespace QBlockyFighter.Server.Network
         {
             if (Mode == "training") return Players.Count >= 1;
             if (Mode == "1v1") return Players.Count == 2 && Players.Values.All(p => p.IsReady);
+            if (Mode == "5v5") return Players.Count >= 2 && Players.Values.All(p => p.IsReady);
+            if (Mode == "challenge") return Players.Count >= 1;
             return false;
         }
 
