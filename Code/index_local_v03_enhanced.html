@@ -309,13 +309,13 @@ canvas { display: block; }
 }
 #stats-bar .stat-val { color: #ffd700; font-weight: bold; }
 
-/* 姝﹀櫒鍝佽川杈规 */
+/* 武器鍝佽川杈规 */
 .weapon-slot.quality-black { border-color: #888; }
 .weapon-slot.quality-bronze { border-color: #44cc44; box-shadow: 0 0 6px rgba(68,204,68,0.3); }
 .weapon-slot.quality-silver { border-color: #6688ff; box-shadow: 0 0 8px rgba(102,136,255,0.4); }
 .weapon-slot.quality-gold { border-color: #ffd700; box-shadow: 0 0 12px rgba(255,215,0,0.5); }
 
-/* 姝﹀櫒鍝佽川鎻愮ず */
+/* 武器鍝佽川鎻愮ず */
 #quality-toast {
   position: absolute; bottom: 160px; left: 50%; transform: translateX(-50%);
   font-size: 16px; font-weight: bold; padding: 8px 24px; border-radius: 8px;
@@ -359,7 +359,7 @@ canvas { display: block; }
 
 <!-- ===== 瑙掕壊閫夋嫨 ===== -->
 <div id="char-select">
-  <h1>锟?锟?锟?锟?锟?/h1>
+  <h1>⚔ 开始战斗 ⚔锟?/h1>
   <div class="subtitle">Web 鍘熷瀷 V0.2 Enhanced 路 閫夋嫨浣犵殑姝︼拷?/div>
   <div class="char-grid">
     <div class="char-card selected" data-char="0" onclick="selectChar(0)">
@@ -367,26 +367,26 @@ canvas { display: block; }
       <div class="char-name">鍐锋湀 路 鑽嗗</div>
       <div class="char-title">鍒哄 路 鐮存檽</div>
       <div class="char-system system-wushu">姝︽湳</div>
-      <div class="char-desc">鍓戞皵绾垫í锛岃繎韬紶锟?br>寮瑰弽鍙嶅嚮涓撳锛岃繛鎷涚妧锟?br>馃棥 楸艰偁鐭墤 + 馃寑 杞墤</div>
+      <div class="char-desc">剑气纵横，近身缠斗锟?br>弹反反击专家锛岃繛鎷涚妧锟?br>馃棥 鱼肠短剑 + 馃寑 软剑</div>
     </div>
     <div class="char-card" data-char="1" onclick="selectChar(1)">
       <div class="char-icon">馃シ</div>
-      <div class="char-name">褰卞繊 路 闆鹃殣</div>
+      <div class="char-name">影忍 · 雾隐</div>
       <div class="char-title">鍒哄 路 榛勬槒</div>
       <div class="char-system system-wushu2">宸湳</div>
-      <div class="char-desc">褰遍亖鏆楁潃锛屾寔缁瘨锟?br>闅愯韩绐佽锛孌OT鍙犲眰<br>馃敧 鑻︽棤 + 鉀擄笍 閿侀暟</div>
+      <div class="char-desc">影遁暗杀锛屾寔缁瘨锟?br>隐身突袭锛孌OT鍙犲眰<br>馃敧 苦无 + 鉀擄笍 锁镰</div>
     </div>
     <div class="char-card" data-char="2" onclick="selectChar(2)">
       <div class="char-icon">鈿旓笍</div>
       <div class="char-name">鍌查 路 鍏充簯</div>
-      <div class="char-title">鎴樺＋ 路 鐮存檽</div>
+      <div class="char-title">战士 · 破晓</div>
       <div class="char-system system-magic">姝︽湳</div>
-      <div class="char-desc">澶у紑澶у悎锛孉OE鏍稿績<br>闇镐綋閲嶆柀锛屾í鎵崈锟?br>馃敧 闈掗緳鍒€ + 馃棥 鐭垁</div>
+      <div class="char-desc">大开大合锛孉OE鏍稿績<br>霸体重斩锛屾í鎵崈锟?br>馃敧 青龙刀 + 馃棥 短刀</div>
     </div>
     <div class="char-card" data-char="3" onclick="selectChar(3)">
       <div class="char-icon">馃徆</div>
       <div class="char-name">杩介 路 鑺辨湪锟?/div>
-      <div class="char-title">杩滅▼ 路 鐮存檽</div>
+      <div class="char-title">远程 · 破晓</div>
       <div class="char-system system-xianshu">浠欐湳</div>
       <div class="char-desc">杩滆窛鐙欏嚮锛岄櫡闃卞竷灞€<br>澶╃溂閿佸畾锛岀闆ㄨ锟?br>馃徆 闀垮紦 + 馃挮 琚栫</div>
     </div>
@@ -394,7 +394,7 @@ canvas { display: block; }
     <div class="char-card" data-char="4" onclick="selectChar(4)">
       <div class="char-icon">馃</div>
       <div class="char-name">姣掕潕 路 鍝堟</div>
-      <div class="char-title">杩滅▼ 路 榛勬槒</div>
+      <div class="char-title">远程 · 黄昏</div>
       <div class="char-system system-wushu2">宸湳</div>
       <div class="char-desc">铔婃瘨鍙犲眰锛岄绛濇秷锟?br>鏆楀奖鐬Щ锛岃泭鐖嗘敹锟?br>馃敧 椋炲垁 + 鈽狅笍 姣掗晼</div>
     </div>
@@ -407,15 +407,15 @@ canvas { display: block; }
     </div>
     <div class="char-card" data-char="6" onclick="selectChar(6)">
       <div class="char-icon">锟?/div>
-      <div class="char-name">闆烽福 路 鍗″埄</div>
-      <div class="char-title">鎴樺＋ 路 榛勬槒</div>
+      <div class="char-name">雷鸣 · 卡利</div>
+      <div class="char-title">战士 · 黄昏</div>
       <div class="char-system system-magic">榄旀硶</div>
       <div class="char-desc">闆风數闄勯瓟锛屾棆杞敾锟?br>闆锋毚椋庢毚锛岃秺鎴樿秺锟?br>馃寑 鏌ュ厠锟?+ 馃 椋炲垉</div>
     </div>
     <div class="char-card" data-char="7" onclick="selectChar(7)">
       <div class="char-icon">馃弴</div>
-      <div class="char-name">閾侀獞 路 鍝插埆</div>
-      <div class="char-title">鎴樺＋ 路 榛勬槒</div>
+      <div class="char-name">铁骑 · 哲别</div>
+      <div class="char-title">战士 · 黄昏</div>
       <div class="char-system system-wushu">姝︽湳</div>
       <div class="char-desc">楠戦┈鍐查攱锛屾父璧版敹锟?br>濂楃储鎷夋壇锛屼竾椹锟?br>馃寵 寮垁 + 馃 濂楅┈锟?/div>
     </div>
@@ -429,21 +429,21 @@ canvas { display: block; }
     <div class="char-card" data-char="9" onclick="selectChar(9)">
       <div class="char-icon">馃挘</div>
       <div class="char-name">鐮村啗 路 鏉庤垳锟?/div>
-      <div class="char-title">杩滅▼ 路 鐮存檽</div>
+      <div class="char-title">远程 · 破晓</div>
       <div class="char-system system-magic">榄旀硶</div>
       <div class="char-desc">鏋惰鐐彴锛屽尯鍩熷皝锟?br>榫熻埞鐐樀锛岀伀鍔涘帇锟?br>馃敨 鐏摮 + 馃挘 寮╃偖</div>
     </div>
     <div class="char-card" data-char="10" onclick="selectChar(10)">
       <div class="char-icon">馃幍</div>
       <div class="char-name">鍦ｆ瓕 路 闃跨帥锟?/div>
-      <div class="char-title">杈呭姪 路 鐮存檽</div>
+      <div class="char-title">辅助 · 破晓</div>
       <div class="char-system system-wushu2">宸湳</div>
       <div class="char-desc">娌荤枟鍏夌幆锛岀兢浣撳锟?br>绁栫伒闄嶄复锛岃寖鍥村锟?br>馃獎 鍥捐吘娉曟潠 + 馃敂 楠ㄩ搩</div>
     </div>
     <div class="char-card" data-char="11" onclick="selectChar(11)">
       <div class="char-icon">馃敡</div>
       <div class="char-name">澶╂満 路 杈捐姮锟?/div>
-      <div class="char-title">杈呭姪 路 榛勬槒</div>
+      <div class="char-title">辅助 · 黄昏</div>
       <div class="char-system system-magic">榄旀硶</div>
       <div class="char-desc">绗︽枃闄烽槺锛屽個鍎℃帰锟?br>鏈哄叧甯冪疆锛屾帶鍒跺噺锟?br>馃徆 鏈哄叧锟?+ 馃 鍌€锟?/div>
     </div>
@@ -453,7 +453,7 @@ canvas { display: block; }
     <div class="map-subtitle">Select Map</div>
     <div class="map-grid" id="map-grid"></div>
   </div>
-  <button id="btn-start" onclick="startGame()">锟?锟?锟?锟?/button>
+  <button id="btn-start" onclick="startGame()">⚔ 开始战斗 ⚔/button>
 </div>
 
 <div id="crosshair"></div>
@@ -465,12 +465,12 @@ canvas { display: block; }
   <div id="challenge-score" style="color:#aaa;font-size:12px;margin-top:2px"></div>
 </div>
 <div id="zone-btns" style="position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:15;pointer-events:auto;display:flex;gap:8px;">
-  <div style="padding:8px 16px;background:rgba(255,50,50,0.3);border:2px solid #ff4444;border-radius:8px;color:#ff8888;font-size:13px;cursor:pointer;font-family:inherit" onclick="startChallenge()">馃幆 闂叧鎸戞垬
-  <div style="padding:8px 16px;background:rgba(255,0,0,0.3);border:2px solid #ff4444;border-radius:8px;color:#ff8888;font-size:13px;cursor:pointer;font-family:inherit" onclick="startTeamBattle()">鈿?5V5鍥㈡垬
+  <div style="padding:8px 16px;background:rgba(255,50,50,0.3);border:2px solid #ff4444;border-radius:8px;color:#ff8888;font-size:13px;cursor:pointer;font-family:inherit" onclick="startChallenge()">馃幆 闂叧挑战垬
+  <div style="padding:8px 16px;background:rgba(255,0,0,0.3);border:2px solid #ff4444;border-radius:8px;color:#ff8888;font-size:13px;cursor:pointer;font-family:inherit" onclick="startTeamBattle()">鈿?5V5团战垬
   <div style="padding:8px 16px;background:rgba(200,200,0,0.3);border:2px solid #cccc00;border-radius:8px;color:#ffff88;font-size:13px;cursor:pointer;font-family:inherit" onclick="startSpectating()">👁 观战
   <div style="padding:8px 16px;background:rgba(255,215,0,0.3);border:2px solid #ffd700;border-radius:8px;color:#ffd700;font-size:13px;cursor:pointer;font-family:inherit" onclick="showShopUI()">🏪 商城
   <div style="padding:8px 16px;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.3);border-radius:8px;color:#ccc;font-size:13px;cursor:pointer;font-family:inherit" onclick="toggleFullscreen()">⛶ 全屏</div></div></div></div></div>
-  <div style="padding:8px 16px;background:rgba(0,150,255,0.3);border:2px solid #4488ff;border-radius:8px;color:#88bbff;font-size:13px;cursor:pointer;font-family:inherit" onclick="startWeaponRack()">馃棥 姝﹀櫒鏋?/div>
+  <div style="padding:8px 16px;background:rgba(0,150,255,0.3);border:2px solid #4488ff;border-radius:8px;color:#88bbff;font-size:13px;cursor:pointer;font-family:inherit" onclick="startWeaponRack()">馃棥 武器鏋?/div>
   <div style="padding:8px 16px;background:rgba(255,100,0,0.3);border:2px solid #ff6600;border-radius:8px;color:#ff9944;font-size:13px;cursor:pointer;font-family:inherit" onclick="startBossSimulation()">馃懝 Boss</div>
 </div>
 <div id="minimap">
@@ -518,7 +518,7 @@ canvas { display: block; }
   </div>
   <div id="weapon-bar">
     <div class="weapon-slot active" id="weapon-a"><span>馃棥</span><span class="wname" id="wa-name">楸艰偁锟?/span></div>
-    <div class="weapon-slot" id="weapon-b"><span>馃寑</span><span class="wname" id="wb-name">杞墤</span></div>
+    <div class="weapon-slot" id="weapon-b"><span>馃寑</span><span class="wname" id="wb-name">软剑</span></div>
   </div>
   <div id="skill-bar">
     <div class="skill-slot" id="skill-q"><span class="key">Q</span><span class="icon" id="skill-q-icon">馃挩</span></div>
@@ -614,8 +614,8 @@ const CHARACTERS = [
     system: 'wushu', systemName: '姝︽湳',
     bodyColor: '#2244aa', accentColor: '#4488ff',
     weapons: [
-      { name: '楸艰偁鐭墤', icon: '馃棥', range: 3, atkAngle: Math.PI/3, type: 'sword' },
-      { name: '杞墤', icon: '馃寑', range: 4.5, atkAngle: Math.PI/4, type: 'whip' }
+      { name: '鱼肠短剑', icon: '馃棥', range: 3, atkAngle: Math.PI/3, type: 'sword' },
+      { name: '软剑', icon: '馃寑', range: 4.5, atkAngle: Math.PI/4, type: 'whip' }
     ],
     skills: {
       Q: { name: '鍓戞皵绐佸埡', icon: '馃挩', cd: 8, range: 6, dmg: 120, type: 'dash' },
@@ -627,13 +627,13 @@ const CHARACTERS = [
     hpRegen: 20, style: 'balanced'
   },
   {
-    id: 'wuyin', name: '褰卞繊 路 闆鹃殣', title: '鍒哄 路 宸湳',
+    id: 'wuyin', name: '影忍 · 雾隐', title: '鍒哄 路 宸湳',
     color: 0x552288, emissive: 0xaa00ff, portrait: '馃シ',
     system: 'wushu2', systemName: '宸湳',
     bodyColor: '#442266', accentColor: '#aa44ff',
     weapons: [
-      { name: '鑻︽棤', icon: '馃敧', range: 2.5, atkAngle: Math.PI/4, type: 'dagger' },
-      { name: '閿侀暟', icon: '鉀擄笍', range: 5, atkAngle: Math.PI/6, type: 'chain' }
+      { name: '苦无', icon: '馃敧', range: 2.5, atkAngle: Math.PI/4, type: 'dagger' },
+      { name: '锁镰', icon: '鉀擄笍', range: 5, atkAngle: Math.PI/6, type: 'chain' }
     ],
     skills: {
       Q: { name: '褰遍亖', icon: '馃懁', cd: 10, range: 0, dmg: 0, type: 'stealth', dur: 2 },
@@ -650,8 +650,8 @@ const CHARACTERS = [
     system: 'magic', systemName: '姝︽湳',
     bodyColor: '#1a6622', accentColor: '#44cc44',
     weapons: [
-      { name: '闈掗緳鍒€', icon: '馃敧', range: 4, atkAngle: Math.PI/2, type: 'halberd' },
-      { name: '鐭垁', icon: '馃棥', range: 2.5, atkAngle: Math.PI/3, type: 'knife' }
+      { name: '青龙刀', icon: '馃敧', range: 4, atkAngle: Math.PI/2, type: 'halberd' },
+      { name: '短刀', icon: '馃棥', range: 2.5, atkAngle: Math.PI/3, type: 'knife' }
     ],
     skills: {
       Q: { name: '榫欐柀', icon: '馃悏', cd: 8, range: 6, dmg: 150, type: 'line', width: 2 },
@@ -718,7 +718,7 @@ const CHARACTERS = [
     hpRegen: 30, style: 'tank'
   },
   {
-    id: 'kali', name: '闆烽福 路 鍗″埄', title: '鎴樺＋ 路 榄旀硶',
+    id: 'kali', name: '雷鸣 · 卡利', title: '鎴樺＋ 路 榄旀硶',
     color: 0x0066cc, emissive: 0x00ccff, portrait: '锟?,
     system: 'magic', systemName: '榄旀硶',
     bodyColor: '#003366', accentColor: '#00aaff',
@@ -737,7 +737,7 @@ const CHARACTERS = [
   },
   // ===== V0.4 琛ュ厖瑙掕壊 =====
   {
-    id: 'zhebie', name: '閾侀獞 路 鍝插埆', title: '鎴樺＋ 路 姝︽湳',
+    id: 'zhebie', name: '铁骑 · 哲别', title: '鎴樺＋ 路 姝︽湳',
     color: 0x884422, emissive: 0xff6600, portrait: '馃弴',
     system: 'wushu', systemName: '姝︽湳',
     bodyColor: '#663311', accentColor: '#ff8833',
@@ -977,7 +977,7 @@ function backToSelect() {
   if (state.playerMesh) { scene.remove(state.playerMesh); state.playerMesh = null; }
 }
 
-// ==================== 闂叧鎸戞垬绯荤粺 ====================
+// ==================== 闂叧挑战垬绯荤粺 ====================
 let challengeState = {
   active: false,
   wave: 0,
@@ -1106,16 +1106,16 @@ function updateChallengeHUD() {
   }
 }
 
-// ==================== 姝﹀櫒鏋惰瘯鐐肩郴缁?====================
+// ==================== 武器鏋惰瘯鐐肩郴缁?====================
 let weaponRackState = {
   active: false,
   currentWeapon: 0,
   weaponList: [
-    { name: '楸艰偁鐭墤', icon: '馃棥', type: 'sword', desc: '蹇€熻繛鍑伙紝鍓戞皵绾垫í' },
-    { name: '杞墤', icon: '馃寑', type: 'whip', desc: '涓窛缂犵粫锛岀伒娲绘帶鍒? },
-    { name: '鑻︽棤', icon: '馃敺', type: 'kunai', desc: '鏆楀櫒鎶曟幏锛岄珮閫熺獊琚? },
-    { name: '閿侀暟', icon: '鉀?, type: 'kama', desc: '閾惧紡鏀诲嚮锛屼腑璺濈鐗靛埗' },
-    { name: '闈掗緳鍒€', icon: '馃敧', type: 'halberd', desc: '閲嶆柀AOE锛屾í鎵崈鍐? },
+    { name: '鱼肠短剑', icon: '馃棥', type: 'sword', desc: '蹇€熻繛鍑伙紝鍓戞皵绾垫í' },
+    { name: '软剑', icon: '馃寑', type: 'whip', desc: '涓窛缂犵粫锛岀伒娲绘帶鍒? },
+    { name: '苦无', icon: '馃敺', type: 'kunai', desc: '鏆楀櫒鎶曟幏锛岄珮閫熺獊琚? },
+    { name: '锁镰', icon: '鉀?, type: 'kama', desc: '閾惧紡鏀诲嚮锛屼腑璺濈鐗靛埗' },
+    { name: '青龙刀', icon: '馃敧', type: 'halberd', desc: '閲嶆柀AOE锛屾í鎵崈鍐? },
     { name: '闀垮紦', icon: '馃徆', type: 'bow', desc: '杩滅▼鐙欏嚮锛岀鐭㈣拷韪? },
     { name: '椋炲垁', icon: '馃棥', type: 'throwknife', desc: 'DOT姣掍激锛屽噺閫熸秷鑰? },
     { name: '鍙屾墜鏂?, icon: '馃獡', type: 'axe', desc: '閲嶅嚮寮€鍥紝姝ｉ潰纭垰' },
@@ -1189,7 +1189,7 @@ function showWeaponRackUI() {
   panel.id = 'weapon-rack-panel';
   panel.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translateX(-50%);z-index:16;pointer-events:auto;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:800px;';
   
-  let html = '<div style="width:100%;text-align:center;color:#ffd700;font-size:14px;margin-bottom:6px"><span class="wr-weapon-name">馃棥 楸艰偁鐭墤</span> <span style="color:#888;font-size:12px">-</span> <span class="wr-weapon-desc" style="color:#aaa;font-size:12px">蹇€熻繛鍑伙紝鍓戞皵绾垫í</span></div>';
+  let html = '<div style="width:100%;text-align:center;color:#ffd700;font-size:14px;margin-bottom:6px"><span class="wr-weapon-name">馃棥 鱼肠短剑</span> <span style="color:#888;font-size:12px">-</span> <span class="wr-weapon-desc" style="color:#aaa;font-size:12px">蹇€熻繛鍑伙紝鍓戞皵绾垫í</span></div>';
   
   weaponRackState.weaponList.forEach((w, i) => {
     html += '<div onclick="switchWeapon(' + i + ')" style="width:48px;height:36px;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.2);border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#ccc;transition:all 0.15s" title="' + w.name + ' - ' + w.desc + '">' + w.icon + '</div>';
@@ -1326,7 +1326,7 @@ function showBossResult(won) {
   document.body.appendChild(overlay);
 }
 
-// ==================== 姝﹀櫒鎺夎惤/鎷惧彇/娑堝け绯荤粺 ====================
+// ==================== 武器鎺夎惤/鎷惧彇/娑堝け绯荤粺 ====================
 const weaponDrops = []; // { mesh, quality, weapon, createdAt, position }
 
 function spawnWeaponDrop(position, weapon, quality) {
@@ -1557,7 +1557,7 @@ function updateRankButton() {
   }
 }
 
-// ==================== 5V5 鍥㈡垬妯″紡 ====================
+// ==================== 5V5 团战垬妯″紡 ====================
 let teamState = {
   active: false,
   redTeam: [], // Your team (player + 4 AI allies)
@@ -2164,13 +2164,13 @@ const CONFIG = {
   RECOVERY_WINDOW: 0.8, RECOVERY_SPEED: 12,
   // 璁粌鍦哄尯锟?  ZONES: ZONES: {
     DUMMY: { cx: 0, cz: -20, r: 12, name: '鏈ㄤ汉妗╄缁冨尯' },
-    ARENA: { cx: 0, cz: 10, r: 14, name: '瀵规垬鎿傚彴' },
-    CHALLENGE: { cx: 25, cz: 0, r: 10, name: '闂叧鎸戞垬鍖? },
-    WEAPONS: { cx: -25, cz: 0, r: 10, name: '姝﹀櫒鏋惰瘯鐐? },
-    BOSS: { cx: 0, cz: 30, r: 12, name: 'Boss妯℃嫙鍖? }
+    ARENA: { cx: 0, cz: 10, r: 14, name: '对垬鎿傚彴' },
+    CHALLENGE: { cx: 25, cz: 0, r: 10, name: '闂叧挑战垬鍖? },
+    WEAPONS: { cx: -25, cz: 0, r: 10, name: '武器鏋惰瘯鐐? },
+    BOSS: { cx: 0, cz: 30, r: 12, name: 'Boss模嫙鍖? }
   };
 
-// ==================== 姝﹀櫒鍝佽川绯荤粺 ====================
+// ==================== 武器鍝佽川绯荤粺 ====================
 const WEAPON_QUALITY = {
   black:   { name: '榛戦搧', atkMult: 1.0,  color: '#aaa',    cssClass: 'quality-black',   dropWeight: 60 },
   bronze:  { name: '闈掗摐', atkMult: 1.10, color: '#44cc44', cssClass: 'quality-bronze',  dropWeight: 25 },
@@ -2222,8 +2222,8 @@ const CHARACTER_COMBOS = {
       lightCount: 4, heavyCount: 3,
       desc: '杞伙拷?蹇€熻繛鏂╋紝閲嶏拷?鎸戦缁堢粨'
     },
-    B: { // 杞墤 - 涓窛缂犵粫鎺у埗
-      name: '杞墤 路 缂犵粫鎺у埗',
+    B: { // 软剑 - 涓窛缂犵粫鎺у埗
+      name: '软剑 路 缂犵粫鎺у埗',
       lightDmg: [25, 28, 32, 38],
       heavyDmg: [60, 70, 85],
       lightCount: 3, heavyCount: 2,
@@ -2231,13 +2231,13 @@ const CHARACTER_COMBOS = {
     }
   },
   wuyin: {
-    A: { // 鑻︽棤 - 鏋侀€熻繎韬繛锟?      name: '鑻︽棤 路 鏋侀€熻繛锟?,
+    A: { // 苦无 - 鏋侀€熻繎韬繛锟?      name: '苦无 路 鏋侀€熻繛锟?,
       lightDmg: [25, 28, 32, 45],
       heavyDmg: [65, 75, 85],
       lightCount: 4, heavyCount: 3,
       desc: '杞伙拷?鏋侀€熺獊鍒猴紝閲嶏拷?鏆楁潃缁堢粨'
     },
-    B: { // 閿侀暟 - 涓窛绂荤壍锟?      name: '閿侀暟 路 鐗垫媺杩炴嫑',
+    B: { // 锁镰 - 涓窛绂荤壍锟?      name: '锁镰 路 鐗垫媺杩炴嫑',
       lightDmg: [20, 24, 30],
       heavyDmg: [55, 65, 80],
       lightCount: 3, heavyCount: 3,
@@ -2245,13 +2245,13 @@ const CHARACTER_COMBOS = {
     }
   },
   guanyun: {
-    A: { // 闈掗緳鍒€ - 澶ц寖鍥存í锟?      name: '闈掗緳鍒€ 路 妯壂鍗冨啗',
+    A: { // 青龙刀 - 澶ц寖鍥存í锟?      name: '青龙刀 路 横扫千军',
       lightDmg: [35, 40, 48, 65],
       heavyDmg: [100, 120, 140],
       lightCount: 4, heavyCount: 3,
-      desc: '杞伙拷?澶ц寖鍥存í鎵紝閲嶏拷?闇镐綋閲嶆柀'
+      desc: '杞伙拷?澶ц寖鍥存í鎵紝閲嶏拷?霸体重斩'
     },
-    B: { // 鐭垁 - 蹇€熷簲锟?      name: '鐭垁 路 搴旀€ヨ繛锟?,
+    B: { // 短刀 - 蹇€熷簲锟?      name: '短刀 路 搴旀€ヨ繛锟?,
       lightDmg: [28, 32, 38, 50],
       heavyDmg: [70, 80, 95],
       lightCount: 4, heavyCount: 3,
@@ -2453,7 +2453,7 @@ function createPlayerState(charIdx) {
     isWeak: false, weakTimer: 0,
     inCombat: false, lastCombatTime: 0, lastHitTime: 0,
     currentWeapon: 'A', weaponSwitchTimer: 0, hasSwitchBonus: false,
-    // 姝﹀櫒鍝佽川
+    // 武器鍝佽川
     weaponQuality: { A: createWeaponDrop('black', c.weapons[0]), B: createWeaponDrop('black', c.weapons[1]) },
     attackPhase: 0, attackTimer: 0, isAttacking: false, attackType: null,
     comboCount: 0, lastAttackTime: 0, isCharging: false,
@@ -2567,7 +2567,7 @@ const dummyZone = new THREE.Mesh(dummyZoneGeo, dummyZoneMat);
 dummyZone.rotation.x = -Math.PI / 2; dummyZone.position.set(0, 0.43, -20);
 scene.add(dummyZone);
 
-// 闂叧鎸戞垬鍖烘爣锟?const challengeZoneGeo = new THREE.RingGeometry(8, 10, 32);
+// 闂叧挑战垬鍖烘爣锟?const challengeZoneGeo = new THREE.RingGeometry(8, 10, 32);
 const challengeZoneMat = new THREE.MeshBasicMaterial({ color: 0x884422, side: THREE.DoubleSide, transparent: true, opacity: 0.2 });
 const challengeZone = new THREE.Mesh(challengeZoneGeo, challengeZoneMat);
 challengeZone.rotation.x = -Math.PI / 2; challengeZone.position.set(25, 0.43, 0);
@@ -2588,8 +2588,8 @@ scene.add(challengeZone);
   scene.add(sp);
 }
 createZoneSign(0, -30, '馃 鏈ㄤ汉妗╄缁冨尯', '#cc8844');
-createZoneSign(0, 22, '锟?瀵规垬鎿傚彴', '#ffcc44');
-createZoneSign(33, 0, '馃幆 闂叧鎸戞垬锟?, '#ff8844');
+createZoneSign(0, 22, '锟?对垬鎿傚彴', '#ffcc44');
+createZoneSign(33, 0, '馃幆 闂叧挑战垬锟?, '#ff8844');
 
 // 绾㈡煴 + 鐏
 function createPillar(x, z) {
@@ -2831,7 +2831,7 @@ starsGeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
   }
 scene.add(new THREE.Points(starsGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.3, transparent: true, opacity: 0.5 })));
 
-// ==================== 姝﹀櫒妯″瀷鏋勫缓锛堢嫭绔嬪嚱鏁帮紝鐢ㄤ簬鍒囨崲鏃堕噸寤猴級====================
+// ==================== 武器妯″瀷鏋勫缓锛堢嫭绔嬪嚱鏁帮紝鐢ㄤ簬鍒囨崲鏃堕噸寤猴級====================
 function 
 // ==================== 鍦板浘鍔ㄦ€佸姞杞?====================
 function loadMap(idx) {
@@ -3080,12 +3080,12 @@ function createCharacter(color, emissiveColor, isPlayer, weaponType) {
   const kneeL = new THREE.Mesh(kneeGeo, armorMat); kneeL.position.set(-0.2, 0.75, 0.1); g.add(kneeL);
   const kneeR = new THREE.Mesh(kneeGeo, armorMat); kneeR.position.set(0.2, 0.75, 0.1); g.add(kneeR);
 
-  // ===== 姝﹀櫒锛堟牴鎹被鍨嬪樊寮傚寲锟?====
+  // ===== 武器锛堟牴鎹被鍨嬪樊寮傚寲锟?====
   const wg = new THREE.Group();
   const wt = weaponType || 'sword';
 
   if (wt === 'sword' || wt === 'dagger' || wt === 'knife') {
-    // 鍓戠被姝﹀櫒
+    // 鍓戠被武器
     const bladeColor = wt === 'dagger' ? 0x8866aa : wt === 'knife' ? 0x44aa44 : 0xdddddd;
     const emissiveC = wt === 'dagger' ? 0x6600aa : wt === 'knife' ? 0x22aa22 : 0x4466ff;
     const bladeLen = wt === 'dagger' ? 0.8 : wt === 'knife' ? 0.7 : 1.3;
@@ -3128,7 +3128,7 @@ function createCharacter(color, emissiveColor, isPlayer, weaponType) {
     wg.add(new THREE.Line(stringGeo, new THREE.LineBasicMaterial({ color: 0xdddddd })));
     wg.position.set(0.6, 1.4, 0.2); wg.rotation.z = -0.3;
   } else if (wt === 'chain') {
-    // 閿侀暟
+    // 锁镰
     const chainMat = new THREE.MeshStandardMaterial({ color: 0x888899, metalness: 0.8, roughness: 0.3, emissive: 0x6600aa, emissiveIntensity: 0.15 });
     const sickle = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.03, 6, 8, Math.PI), chainMat);
     sickle.position.y = 0.2; wg.add(sickle);
@@ -3138,7 +3138,7 @@ function createCharacter(color, emissiveColor, isPlayer, weaponType) {
     weight.position.y = -0.65; wg.add(weight);
     wg.position.set(0.7, 1.3, 0.15); wg.rotation.z = -0.25;
   } else if (wt === 'whip' || wt === 'dart') {
-    // 杞墤/琚栧墤
+    // 软剑/琚栧墤
     const bladeMat = new THREE.MeshStandardMaterial({
       color: wt === 'whip' ? 0x6699ff : 0xffcc44,
       metalness: 0.8, roughness: 0.2,
@@ -3257,7 +3257,7 @@ function startGame() {
   document.getElementById('wb-name').textContent = c.weapons[1].name;
   document.getElementById('weapon-a').querySelector('span').textContent = c.weapons[0].icon;
   document.getElementById('weapon-b').querySelector('span').textContent = c.weapons[1].icon;
-  // 姝﹀櫒鍝佽川杈规鍒濆锟?  document.getElementById('weapon-a').classList.add('quality-black');
+  // 武器鍝佽川杈规鍒濆锟?  document.getElementById('weapon-a').classList.add('quality-black');
   document.getElementById('weapon-b').classList.add('quality-black');
   document.getElementById('skill-q-icon').textContent = c.skills.Q.icon;
   document.getElementById('skill-e-icon').textContent = c.skills.E.icon;
@@ -3522,7 +3522,7 @@ function switchCharacter(idx) {
   document.getElementById('wb-name').textContent = c.weapons[1].name;
   document.getElementById('weapon-a').querySelector('span').textContent = c.weapons[0].icon;
   document.getElementById('weapon-b').querySelector('span').textContent = c.weapons[1].icon;
-  // 姝﹀櫒鍝佽川閲嶇疆涓洪粦锟?  document.getElementById('weapon-a').className = 'weapon-slot active quality-black';
+  // 武器鍝佽川閲嶇疆涓洪粦锟?  document.getElementById('weapon-a').className = 'weapon-slot active quality-black';
   document.getElementById('weapon-b').className = 'weapon-slot quality-black';
   document.getElementById('skill-q-icon').textContent = c.skills.Q.icon;
   document.getElementById('skill-e-icon').textContent = c.skills.E.icon;
@@ -3603,7 +3603,7 @@ function getDmg(type, phase, bonus, attacker) {
   } else {
     d = comboData ? (comboData.heavyDmg[phase] || 80) : (c.heavyDmg[phase] || 80);
   }
-  // 姝﹀櫒鍝佽川鍔犳垚
+  // 武器鍝佽川鍔犳垚
   if (attacker && attacker.weaponQuality) {
     const wq = attacker.weaponQuality[weaponKey];
     if (wq) d *= wq.atkMult;
@@ -3758,7 +3758,7 @@ function applyDmg(target, dmg, attacker) {
         attacker.hp = Math.min(attacker.maxHp, attacker.hp + heal);
         attacker.kills++;
         state.stats.kills++;
-        // 鍑绘潃鎺夎惤姝﹀櫒锛堥潚锟?鐧介摱/灏忔鐜囬粍閲戯級
+        // 鍑绘潃鎺夎惤武器锛堥潚锟?鐧介摱/灏忔鐜囬粍閲戯級
         const qKey = rollQuality('enemy');
         const wIdx = Math.random() < 0.5 ? 0 : 1;
         const drop = createWeaponDrop(qKey, attacker.char.weapons[wIdx]);
@@ -4149,7 +4149,7 @@ function updateHUD() {
   document.getElementById('stat-maxcombo').textContent = state.stats.maxCombo;
   document.getElementById('stat-parries').textContent = state.stats.parries;
 
-  // 姝﹀櫒鍝佽川杈规 + 鍚嶇О鏇存柊
+  // 武器鍝佽川杈规 + 鍚嶇О鏇存柊
   const qA = p.weaponQuality.A, qB = p.weaponQuality.B;
   if (qA) {
     const slotA = document.getElementById('weapon-a');
@@ -4435,7 +4435,7 @@ function updatePlayer(dt) {
     SFX.play('weapon_switch');
     const wIdx = p.currentWeapon === 'B' ? 1 : 0;
     const wDef = p.char.weapons[wIdx];
-    showStatus(`鍒囨崲姝﹀櫒 锟?${wDef.icon} ${wDef.name}`);
+    showStatus(`鍒囨崲武器 锟?${wDef.icon} ${wDef.name}`);
     state.keys['Tab'] = false;
 
     // ===== 瑙嗚鍙樺寲锛氶噸寤烘鍣ㄦā锟?=====
@@ -4447,10 +4447,10 @@ function updatePlayer(dt) {
     state.playerMesh.add(newWg);
     state.playerMesh.userData.weaponGroup = newWg;
 
-    // 鍒囨崲鍔ㄧ敾锟?.3绉掑唴姝﹀櫒鎸ヨ垶
+    // 鍒囨崲鍔ㄧ敾锟?.3绉掑唴武器鎸ヨ垶
     p._switchAnimTimer = CONFIG.WEAPON_SWITCH_TIME;
 
-    // 鏇存柊 HUD 姝﹀櫒鏍忛珮浜拰鍝佽川棰滆壊
+    // 鏇存柊 HUD 武器鏍忛珮浜拰鍝佽川棰滆壊
     const qA = p.weaponQuality.A, qB = p.weaponQuality.B;
     const slotA = document.getElementById('weapon-a');
     const slotB = document.getElementById('weapon-b');
